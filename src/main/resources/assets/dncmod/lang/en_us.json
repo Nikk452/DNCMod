@@ -1,5 +1,22 @@
 {
   "item.dncmod.white_iron_crystal": "White Iron Crystal",
+  "item.dncmod.arcanum_ingot": "Arcanum Ingot",
+  "item.dncmod.astral_crystal": "Astral Crystal",
+  "item.dncmod.bronze_ingot": "Bronze Ingot",
+  "item.dncmod.dark_steel_ingot": "Dark Steel Ingot",
+  "item.dncmod.dark_stone": "Dark Stone",
+  "item.dncmod.electrum_ingot": "Electrum Ingot",
+  "item.dncmod.lead_ingot": "Lead Ingot",
+  "item.dncmod.mithril_ingot": "Mithril Ingot",
+  "item.dncmod.obsidian_ingot": "Obsidian Ingot",
+  "item.dncmod.platinum_ingot": "Platinum Ingot",
+  "item.dncmod.redstone_ingot": "Redstone Ingot",
+  "item.dncmod.adamantine_ingot": "Adamantine Ingot",
+  "item.dncmod.shadowthrall": "Shadow Thrall",
+  "item.dncmod.silver_ingot": "Silver Ingot",
+  "item.dncmod.titanium_ingot": "Titanium Ingot",
+
+  "block.dncmod.silver_ore": "Silver Ore",
 
   "itemGroup.dncmod.dnctab": "Dungeons & Crafting Tab",
   "key.category.dncmod.dnc": "Dungeons & Crafting Mod",

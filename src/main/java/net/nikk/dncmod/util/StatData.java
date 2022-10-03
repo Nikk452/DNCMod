@@ -9,7 +9,7 @@ import net.nikk.dncmod.networking.Networking;
 
 public class StatData {
     public static int[] addStat(IEntityDataSaver player, int type, String key, int amount) {
-        NbtCompound nbt = player.getCharacterData().getCompound("dncmod.chart");
+        NbtCompound nbt = player.getPersistentData();
         int[] stat = nbt.getIntArray(key).length == 0? new int[]{0, 0, 0, 0, 0, 0} :nbt.getIntArray(key);
         if(stat[type] + amount >= 100) {
             stat[type] = 100;
@@ -22,7 +22,7 @@ public class StatData {
     }
 
     public static int[] removeStat(IEntityDataSaver player, int type, String key, int amount) {
-        NbtCompound nbt = player.getCharacterData().getCompound("dncmod.chart");
+        NbtCompound nbt = player.getPersistentData();
         int[] stat = nbt.getIntArray(key).length == 0? new int[]{0, 0, 0, 0, 0, 0} :nbt.getIntArray(key);
         if(stat[type] - amount < 0) {
             stat[type] = 0;

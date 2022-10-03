@@ -20,6 +20,7 @@ import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.networking.Networking;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CharCreationScreen5 extends Screen {
     final private String race;
@@ -28,7 +29,7 @@ public class CharCreationScreen5 extends Screen {
     private boolean E1 = false;
     final private String lastName;
     final private String classname;
-    private int[] stats;
+    private final int[] stats;
     private int skillsnum = 0;
     private int[] allskills = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
     private String[] skillnames = {"Empty", "Empty", "Empty", "Empty"};
@@ -96,37 +97,14 @@ public class CharCreationScreen5 extends Screen {
         int y = (height - backgroundHeight) / 2;
         int x = (width - backgroundWidth) / 2;
         this.next_button = new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
-            switch(this.classname){
-                case "Fighter":
-                    if(this.skillcount[0]>0 && this.skillcount[1] > 0 && this.allSlotsTaken)
-                        this.E1 = false;
-                    else this.E1 = true;
-                    break;
-                case "Wizard":
-                    if(this.skillcount[3]>1 && this.skillcount[4] > 0 && this.allSlotsTaken)
-                        this.E1 = false;
-                    else this.E1 = true;
-                    break;
-                case "Druid":
-                    if(this.skillcount[0]>0 && this.skillcount[1] > 0 && this.skillcount[4] > 0 && this.allSlotsTaken)
-                        this.E1 = false;
-                    else this.E1 = true;
-                    break;
-                case "Cleric":
-                    if(this.skillcount[4]>1 && this.skillcount[3] > 0 && this.allSlotsTaken)
-                        this.E1 = false;
-                    else this.E1 = true;
-                    break;
-                case "Sorcerer":
-                    if(this.skillcount[5]>0 && this.skillcount[4] > 0 && this.allSlotsTaken)
-                        this.E1 = false;
-                    else this.E1 = true;
-                    break;
-                case "Monk":
-                    if(this.skillcount[4]>1 && this.skillcount[1] > 0 && this.allSlotsTaken)
-                        this.E1 = false;
-                    else this.E1 = true;
-                    break;
+            switch (this.classname) {
+                case "Fighter" -> this.E1 = this.skillcount[0] <= 0 || this.skillcount[1] <= 0 || !this.allSlotsTaken;
+                case "Wizard" -> this.E1 = this.skillcount[3] <= 1 || this.skillcount[4] <= 0 || !this.allSlotsTaken;
+                case "Druid" ->
+                        this.E1 = this.skillcount[0] <= 0 || this.skillcount[1] <= 0 || this.skillcount[4] <= 0 || !this.allSlotsTaken;
+                case "Cleric" -> this.E1 = this.skillcount[4] <= 1 || this.skillcount[3] <= 0 || !this.allSlotsTaken;
+                case "Sorcerer" -> this.E1 = this.skillcount[5] <= 0 || this.skillcount[4] <= 0 || !this.allSlotsTaken;
+                case "Monk" -> this.E1 = this.skillcount[4] <= 1 || this.skillcount[1] <= 0 || !this.allSlotsTaken;
             }
             if(!E1) {
                 this.complete = true;
@@ -152,83 +130,57 @@ public class CharCreationScreen5 extends Screen {
         this.slots[1].active = false;
         this.slots[2].active = false;
         this.slots[3].active = false;
-        this.skillsbuttons[0] = new TexturedButtonWidget(x+collum*12-4, y+23+line*20/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/grapleskill.png"),16,16,(button) -> {
-            this.selectSlot("Grapple",0,0);});
+        this.skillsbuttons[0] = new TexturedButtonWidget(x+collum*12-4, y+23+line*20/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/grapleskill.png"),16,16,(button) -> this.selectSlot("Grapple",0,0));
         this.addDrawableChild(skillsbuttons[0]);
-        this.skillsbuttons[1] = new TexturedButtonWidget(x+collum*14-4, y+23+line*20/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/mineskill.png"),16,16,(button) -> {
-            this.selectSlot("Mine",1,0);});
+        this.skillsbuttons[1] = new TexturedButtonWidget(x+collum*14-4, y+23+line*20/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/mineskill.png"),16,16,(button) -> this.selectSlot("Mine",1,0));
         this.addDrawableChild(skillsbuttons[1]);
-        this.skillsbuttons[2] = new TexturedButtonWidget(x+collum*16-4, y+23+line*20/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/jumpskill.png"),16,16,(button) -> {
-            this.selectSlot("Jump",2,0);});
+        this.skillsbuttons[2] = new TexturedButtonWidget(x+collum*16-4, y+23+line*20/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/jumpskill.png"),16,16,(button) -> this.selectSlot("Jump",2,0));
         this.addDrawableChild(skillsbuttons[2]);
-        this.skillsbuttons[3] = new TexturedButtonWidget(x+collum*12-4, y+23+line*30/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/acrobaticsskill.png"),16,16,(button) -> {
-            this.selectSlot("Acrobatics",3,1);});
+        this.skillsbuttons[3] = new TexturedButtonWidget(x+collum*12-4, y+23+line*30/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/acrobaticsskill.png"),16,16,(button) -> this.selectSlot("Acrobatics",3,1));
         this.addDrawableChild(skillsbuttons[3]);
-        this.skillsbuttons[4] = new TexturedButtonWidget(x+collum*14-4, y+23+line*30/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/stealthskill.png"),16,16,(button) -> {
-            this.selectSlot("Stealth",4,1);});
+        this.skillsbuttons[4] = new TexturedButtonWidget(x+collum*14-4, y+23+line*30/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/stealthskill.png"),16,16,(button) -> this.selectSlot("Stealth",4,1));
         this.addDrawableChild(skillsbuttons[4]);
-        this.skillsbuttons[5] = new TexturedButtonWidget(x+collum*16-4, y+23+line*30/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/stealingskill.png"),16,16,(button) -> {
-            this.selectSlot("Stealing",5,1);});
+        this.skillsbuttons[5] = new TexturedButtonWidget(x+collum*16-4, y+23+line*30/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/stealingskill.png"),16,16,(button) -> this.selectSlot("Stealing",5,1));
         this.addDrawableChild(skillsbuttons[5]);
-        this.skillsbuttons[6] = new TexturedButtonWidget(x+collum*18-4, y+23+line*30/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/lockpickskill.png"),16,16,(button) -> {
-            this.selectSlot("Lock pick",6,1);});
+        this.skillsbuttons[6] = new TexturedButtonWidget(x+collum*18-4, y+23+line*30/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/lockpickskill.png"),16,16,(button) -> this.selectSlot("Lock pick",6,1));
         this.addDrawableChild(skillsbuttons[6]);
-        this.skillsbuttons[7] = new TexturedButtonWidget(x+collum*20-4, y+23+line*30/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/craftingskill.png"),16,16,(button) -> {
-            this.selectSlot("Crafting",7,1);});
+        this.skillsbuttons[7] = new TexturedButtonWidget(x+collum*20-4, y+23+line*30/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/craftingskill.png"),16,16,(button) -> this.selectSlot("Crafting",7,1));
         this.addDrawableChild(skillsbuttons[7]);
-        this.skillsbuttons[8] = new TexturedButtonWidget(x+collum*12-4, y+23+line*40/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/concentrationskill.png"),16,16,(button) -> {
-            this.selectSlot("Concentration",8,2);});
+        this.skillsbuttons[8] = new TexturedButtonWidget(x+collum*12-4, y+23+line*40/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/concentrationskill.png"),16,16,(button) -> this.selectSlot("Concentration",8,2));
         this.addDrawableChild(skillsbuttons[8]);
-        this.skillsbuttons[9] = new TexturedButtonWidget(x+collum*14-4, y+23+line*40/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/enduranceskill.png"),16,16,(button) -> {
-            this.selectSlot("Endurance",9,2);});
+        this.skillsbuttons[9] = new TexturedButtonWidget(x+collum*14-4, y+23+line*40/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/enduranceskill.png"),16,16,(button) -> this.selectSlot("Endurance",9,2));
         this.addDrawableChild(skillsbuttons[9]);
-        this.skillsbuttons[10] = new TexturedButtonWidget(x+collum*12-4, y+23+line*50/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/lore_arcaneskill.png"),16,16,(button) -> {
-            this.selectSlot("Lore Arcane",10,3);});
+        this.skillsbuttons[10] = new TexturedButtonWidget(x+collum*12-4, y+23+line*50/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/lore_arcaneskill.png"),16,16,(button) -> this.selectSlot("Lore Arcane",10,3));
         this.addDrawableChild(skillsbuttons[10]);
-        this.skillsbuttons[11] = new TexturedButtonWidget(x+collum*14-4, y+23+line*50/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/lore_divineskill.png"),16,16,(button) -> {
-            this.selectSlot("Lore Divine",11,3);});
+        this.skillsbuttons[11] = new TexturedButtonWidget(x+collum*14-4, y+23+line*50/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/lore_divineskill.png"),16,16,(button) -> this.selectSlot("Lore Divine",11,3));
         this.addDrawableChild(skillsbuttons[11]);
-        this.skillsbuttons[12] = new TexturedButtonWidget(x+collum*16-4, y+23+line*50/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/lore_primalskill.png"),16,16,(button) -> {
-            this.selectSlot("Lore Primal",12,3);});
+        this.skillsbuttons[12] = new TexturedButtonWidget(x+collum*16-4, y+23+line*50/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/lore_primalskill.png"),16,16,(button) -> this.selectSlot("Lore Primal",12,3));
         this.addDrawableChild(skillsbuttons[12]);
-        this.skillsbuttons[13] = new TexturedButtonWidget(x+collum*18-4, y+23+line*50/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/investigationskill.png"),16,16,(button) -> {
-            this.selectSlot("Investigation",13,3);});
+        this.skillsbuttons[13] = new TexturedButtonWidget(x+collum*18-4, y+23+line*50/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/investigationskill.png"),16,16,(button) -> this.selectSlot("Investigation",13,3));
         this.addDrawableChild(skillsbuttons[13]);
-        this.skillsbuttons[14] = new TexturedButtonWidget(x+collum*20-4, y+23+line*50/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/medicineskill.png"),16,16,(button) -> {
-            this.selectSlot("Medicine",14,3);});
+        this.skillsbuttons[14] = new TexturedButtonWidget(x+collum*20-4, y+23+line*50/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/medicineskill.png"),16,16,(button) -> this.selectSlot("Medicine",14,3));
         this.addDrawableChild(skillsbuttons[14]);
-        this.skillsbuttons[15] = new TexturedButtonWidget(x+collum*22-4, y+23+line*50/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/craftingknowledgeskill.png"),16,16,(button) -> {
-            this.selectSlot("Craft Knowldege",15,3);});
+        this.skillsbuttons[15] = new TexturedButtonWidget(x+collum*22-4, y+23+line*50/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/craftingknowledgeskill.png"),16,16,(button) -> this.selectSlot("Craft Knowldege",15,3));
         this.addDrawableChild(skillsbuttons[15]);
-        this.skillsbuttons[16] = new TexturedButtonWidget(x+collum*12-4, y+23+line*60/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/healskill.png"),16,16,(button) -> {
-            this.selectSlot("Heal",16,4);});
+        this.skillsbuttons[16] = new TexturedButtonWidget(x+collum*12-4, y+23+line*60/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/healskill.png"),16,16,(button) -> this.selectSlot("Heal",16,4));
         this.addDrawableChild(skillsbuttons[16]);
-        this.skillsbuttons[17] = new TexturedButtonWidget(x+collum*14-4, y+23+line*60/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/perceptionskill.png"),16,16,(button) -> {
-            this.selectSlot("Perception",17,4);});
+        this.skillsbuttons[17] = new TexturedButtonWidget(x+collum*14-4, y+23+line*60/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/perceptionskill.png"),16,16,(button) -> this.selectSlot("Perception",17,4));
         this.addDrawableChild(skillsbuttons[17]);
-        this.skillsbuttons[18] = new TexturedButtonWidget(x+collum*16-4, y+23+line*60/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/appraiseskill.png"),16,16,(button) -> {
-            this.selectSlot("Appraise",18,4);});
+        this.skillsbuttons[18] = new TexturedButtonWidget(x+collum*16-4, y+23+line*60/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/appraiseskill.png"),16,16,(button) -> this.selectSlot("Appraise",18,4));
         this.addDrawableChild(skillsbuttons[18]);
-        this.skillsbuttons[19] = new TexturedButtonWidget(x+collum*18-4, y+23+line*60/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/insightskill.png"),16,16,(button) -> {
-            this.selectSlot("Insight",19,4);});
+        this.skillsbuttons[19] = new TexturedButtonWidget(x+collum*18-4, y+23+line*60/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/insightskill.png"),16,16,(button) -> this.selectSlot("Insight",19,4));
         this.addDrawableChild(skillsbuttons[19]);
-        this.skillsbuttons[20] = new TexturedButtonWidget(x+collum*20-4, y+23+line*60/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/meditationskill.png"),16,16,(button) -> {
-            this.selectSlot("Meditation",20,4);});
+        this.skillsbuttons[20] = new TexturedButtonWidget(x+collum*20-4, y+23+line*60/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/meditationskill.png"),16,16,(button) -> this.selectSlot("Meditation",20,4));
         this.addDrawableChild(skillsbuttons[20]);
-        this.skillsbuttons[21] = new TexturedButtonWidget(x+collum*12-4, y+23+line*70/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/magicaldeviceskill.png"),16,16,(button) -> {
-            this.selectSlot("Magical Device",21,5);});
+        this.skillsbuttons[21] = new TexturedButtonWidget(x+collum*12-4, y+23+line*70/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/magicaldeviceskill.png"),16,16,(button) -> this.selectSlot("Magical Device",21,5));
         this.addDrawableChild(skillsbuttons[21]);
-        this.skillsbuttons[22] = new TexturedButtonWidget(x+collum*14-4, y+23+line*70/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/persuasionskill.png"),16,16,(button) -> {
-            this.selectSlot("Persuasion",22,5);});
+        this.skillsbuttons[22] = new TexturedButtonWidget(x+collum*14-4, y+23+line*70/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/persuasionskill.png"),16,16,(button) -> this.selectSlot("Persuasion",22,5));
         this.addDrawableChild(skillsbuttons[22]);
-        this.skillsbuttons[23] = new TexturedButtonWidget(x+collum*16-4, y+23+line*70/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/deceptionskill.png"),16,16,(button) -> {
-            this.selectSlot("Deception",23,5);});
+        this.skillsbuttons[23] = new TexturedButtonWidget(x+collum*16-4, y+23+line*70/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/deceptionskill.png"),16,16,(button) -> this.selectSlot("Deception",23,5));
         this.addDrawableChild(skillsbuttons[23]);
-        this.skillsbuttons[24] = new TexturedButtonWidget(x+collum*18-4, y+23+line*70/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/intimidationskill.png"),16,16,(button) -> {
-            this.selectSlot("Intimidation",24,5);});
+        this.skillsbuttons[24] = new TexturedButtonWidget(x+collum*18-4, y+23+line*70/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/intimidationskill.png"),16,16,(button) -> this.selectSlot("Intimidation",24,5));
         this.addDrawableChild(skillsbuttons[24]);
-        this.skillsbuttons[25] = new TexturedButtonWidget(x+collum*20-4, y+23+line*70/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/performanceskill.png"),16,16,(button) -> {
-            this.selectSlot("Performance",25,5);});
+        this.skillsbuttons[25] = new TexturedButtonWidget(x+collum*20-4, y+23+line*70/4+line,16,16,0,0,16,new Identifier(DNCMod.MOD_ID,"textures/gui/performanceskill.png"),16,16,(button) -> this.selectSlot("Performance",25,5));
         this.addDrawableChild(skillsbuttons[25]);
         this.error_window = new TexturedButtonWidget(x+collum*8+4, y+20+line*3,194,160,0,0,0,new Identifier(DNCMod.MOD_ID,"textures/gui/uialarm.png"),194,160,(button) -> {
             this.error_window.active = false;
@@ -292,7 +244,6 @@ public class CharCreationScreen5 extends Screen {
         this.allSlotsTaken= false;
     }
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        renderBackground(matrices);
         int backgroundWidth = 412;
         int backgroundHeight = 256;
         int x = (width - backgroundWidth) / 2;
@@ -300,6 +251,11 @@ public class CharCreationScreen5 extends Screen {
         int line = backgroundHeight/30;
         int collum = backgroundWidth/30;
         //texture drawing
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
+        renderBackground(matrices);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
         RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
@@ -317,25 +273,19 @@ public class CharCreationScreen5 extends Screen {
         textRendererMatrixStack.scale(1.0F, 1.0F, 1.0F);
         textRenderer.draw(textRendererMatrixStack, "Character Creation", x+collum*12, y+20+line*2/3, 	15859709);
         textRenderer.draw(textRendererMatrixStack, Text.literal("Select your future skills:").styled(style -> style.withBold(false).withItalic(false)).append("").styled(style -> style.withBold(true).withItalic(true)).append("").append("").styled(style -> style.withBold(true).withItalic(true)).append(" "), x+collum*4, y+20+line*2+line, 	15859709);
-        switch (this.classname){
-            case "Fighter":
-                textRenderer.draw(textRendererMatrixStack, Text.literal("(1 Strength, 1 Dexterity, 2 of any)"), x+collum*4, y+20+line*4+line-3, 	15859709);
-                break;
-            case "Wizard":
-                textRenderer.draw(textRendererMatrixStack, Text.literal("(2 Intelligence, 1 Wisdom, 1 of any)"), x+collum*4, y+20+line*4+line-3, 	15859709);
-                break;
-            case "Druid":
-                textRenderer.draw(textRendererMatrixStack, Text.literal("(1 Strength, 1 Dexterity, 1 Wisdom, 1 of any)"), x+collum*4, y+20+line*4+line-3, 	15859709);
-                break;
-            case "Cleric":
-                textRenderer.draw(textRendererMatrixStack, Text.literal("(2 Wisdom, 1 Intelligence, 1 of any)"), x+collum*4, y+20+line*4+line-3, 	15859709);
-                break;
-            case "Sorcerer":
-                textRenderer.draw(textRendererMatrixStack, Text.literal("(2 Charisma, 1 Wisdom, 1 of any)"), x+collum*4, y+20+line*4+line-3, 	15859709);
-                break;
-            case "Monk":
-                textRenderer.draw(textRendererMatrixStack, Text.literal("(2 Wisdom, 1 Dexterity, 1 of any)"), x+collum*4, y+20+line*4+line-3, 	15859709);
-                break;
+        switch (this.classname) {
+            case "Fighter" ->
+                    textRenderer.draw(textRendererMatrixStack, Text.literal("(1 Strength, 1 Dexterity, 2 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709);
+            case "Wizard" ->
+                    textRenderer.draw(textRendererMatrixStack, Text.literal("(2 Intelligence, 1 Wisdom, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709);
+            case "Druid" ->
+                    textRenderer.draw(textRendererMatrixStack, Text.literal("(1 Strength, 1 Dexterity, 1 Wisdom, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709);
+            case "Cleric" ->
+                    textRenderer.draw(textRendererMatrixStack, Text.literal("(2 Wisdom, 1 Intelligence, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709);
+            case "Sorcerer" ->
+                    textRenderer.draw(textRendererMatrixStack, Text.literal("(2 Charisma, 1 Wisdom, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709);
+            case "Monk" ->
+                    textRenderer.draw(textRendererMatrixStack, Text.literal("(2 Wisdom, 1 Dexterity, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709);
         }
         RenderSystem.setShaderColor(1.00f, 1.00f, 1.00f, 1.00f);
 
@@ -416,7 +366,7 @@ public class CharCreationScreen5 extends Screen {
             this.complete_button.render(matrices,mouseX,mouseY,delta);
             this.complete_window.active = true;
             String[] extravalue = {"","","","","","",""};
-            extravalue[this.extrastat+1] = this.race == "Elf"? " +2":"";
+            extravalue[this.extrastat+1] = Objects.equals(this.race, "Elf") ? " +2":"";
             textRenderer.draw(textRendererMatrixStack, Text.literal("Complete?").formatted(Formatting.BOLD), x + collum * 14-6, y + 24 + line, 16121850);
             textRenderer.draw(textRendererMatrixStack, "[Name: "+this.firstName+" "+this.lastName+"]", x + collum * 10 +6, y + 25 + line * 3, 16121850);
             textRenderer.draw(textRendererMatrixStack, "["+this.race+" "+this.classname+" Lv.0]", x + collum * 10 +6, y + 20 + line * 6, 16121850);
@@ -431,7 +381,7 @@ public class CharCreationScreen5 extends Screen {
         }
     }
     private void renderSkillTooltips(MatrixStack matrices,Boolean active,int mouseX,int mouseY, int x, int y, List<Text> arr){
-        if(this.allSlotsTaken? false:active){
+        if(!this.allSlotsTaken && active){
             if(mouseX >= x && mouseX< x +15 && mouseY >= y && mouseY<y+15){
                 renderTooltip(matrices, arr,x,y);
 

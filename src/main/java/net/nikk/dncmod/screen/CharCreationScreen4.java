@@ -10,7 +10,6 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -21,10 +20,10 @@ import net.nikk.dncmod.util.IEntityDataSaver;
 import java.util.Arrays;
 
 public class CharCreationScreen4 extends Screen {
-    private String race;
-    private String firstName;
-    private String lastName;
-    private String classname;
+    private final String race;
+    private final String firstName;
+    private final String lastName;
+    private final String classname;
     private ButtonWidget next;
     private ButtonWidget previous_page;
     private ButtonWidget B1;
@@ -42,17 +41,16 @@ public class CharCreationScreen4 extends Screen {
     private TexturedButtonWidget error_window;
     private boolean E1 = false;
     private int[] stats;
-    private int[] stat_ind = {0,1,2,3,4,5};
+    private int[] stat_ind;
     int extra_stat;
     private ButtonWidget rollstats;
-    NbtCompound nbt_stats = ((IEntityDataSaver)MinecraftClient.getInstance().player).getCharacterData().getCompound("dncmod.chart");
     protected CharCreationScreen4(String name1, String name2, String classname, String race, int[] stats,int extra_stat,int[] stat_index) {
         super(Text.literal("Stat2"));
         this.firstName = name1;
         this.lastName = name2;
         this.classname = classname;
         this.race = race;
-        this.stats = Arrays.stream(nbt_stats.getIntArray("stats")).sum()==0?nbt_stats.getIntArray("stats"):stats;
+        this.stats = Arrays.stream(((IEntityDataSaver)MinecraftClient.getInstance().player).getPersistentData().getIntArray("stats")).sum()==0?stats:((IEntityDataSaver)MinecraftClient.getInstance().player).getPersistentData().getIntArray("stats");
         this.extra_stat = extra_stat;
         this.stat_ind = stat_index;
     }
@@ -67,34 +65,20 @@ public class CharCreationScreen4 extends Screen {
         this.next = new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
             switch(this.classname){
                 case "Fighter":
-                    if(this.stats[stat_ind[0]]>=15 || this.stats[stat_ind[1]] >= 15)
-                        this.E1 = false;
-                    else this.E1 = true;
+                    this.E1 = this.stats[stat_ind[0]] < 15 && this.stats[stat_ind[1]] < 15;
                     break;
                 case "Wizard":
-                    if(this.stats[stat_ind[3]]>=15)
-                        this.E1 = false;
-                    else this.E1 = true;
-                    break;
                 case "Druid":
-                    if(this.stats[stat_ind[3]]>=15)
-                        this.E1 = false;
-                    else this.E1 = true;
+                    this.E1 = this.stats[stat_ind[3]] < 15;
                     break;
                 case "Cleric":
-                    if(this.stats[stat_ind[4]]>=15)
-                        this.E1 = false;
-                    else this.E1 = true;
+                    this.E1 = this.stats[stat_ind[4]] < 15;
                     break;
                 case "Sorcerer":
-                    if(this.stats[stat_ind[5]]>=15)
-                        this.E1 = false;
-                    else this.E1 = true;
+                    this.E1 = this.stats[stat_ind[5]] < 15;
                     break;
                 case "Monk":
-                    if(this.stats[stat_ind[4]]>=15 && this.stats[stat_ind[1]] >= 15)
-                        this.E1 = false;
-                    else this.E1 = true;
+                    this.E1 = this.stats[stat_ind[4]] < 15 || this.stats[stat_ind[1]] < 15;
                     break;
             }
             if(!E1){
@@ -104,46 +88,33 @@ public class CharCreationScreen4 extends Screen {
         this.previous_page = new ButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> {
             this.client.setScreen(new CharCreationScreen3(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extra_stat,this.stat_ind));});
         this.addDrawableChild(this.previous_page);
-        this.rollstats = new ButtonWidget(x+collum*19, y+20+line*5/2+line, 25, 20, Text.literal("Roll"), (button) -> {
-            this.RollStats();});
+        this.rollstats = new ButtonWidget(x+collum*19, y+20+line*5/2+line, 25, 20, Text.literal("Roll"), (button) -> this.RollStats());
         rollstats.active = Arrays.stream(this.stats).sum() == 0;
         this.addDrawableChild(this.rollstats);
         //12 buttons for up down
-        this.B1 = new ButtonWidget(x+collum*5-4, y+23+line*11/2+line, 5, 4, Text.literal(""), (button) -> {
-            this.moveStats(0,-1);});
+        this.B1 = new ButtonWidget(x+collum*5-4, y+23+line*11/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(0,-1));
         this.addDrawableChild(this.B1);
-        this.B2 = new ButtonWidget(x+collum*5-4, y+23+line*12/2+line, 5, 4, Text.literal(""), (button) -> {
-            this.moveStats(0,1);});
+        this.B2 = new ButtonWidget(x+collum*5-4, y+23+line*12/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(0,1));
         this.addDrawableChild(this.B2);
-        this.B3 = new ButtonWidget(x+collum*5-4, y+23+line*16/2+line, 5, 4, Text.literal(""), (button) -> {
-            this.moveStats(1,-1);});
+        this.B3 = new ButtonWidget(x+collum*5-4, y+23+line*16/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(1,-1));
         this.addDrawableChild(this.B3);
-        this.B4 = new ButtonWidget(x+collum*5-4, y+23+line*17/2+line, 5, 4, Text.literal(""), (button) -> {
-            this.moveStats(1,1);});
+        this.B4 = new ButtonWidget(x+collum*5-4, y+23+line*17/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(1,1));
         this.addDrawableChild(this.B4);
-        this.B5 = new ButtonWidget(x+collum*5-4, y+23+line*21/2+line, 5, 4, Text.literal(""), (button) -> {
-            this.moveStats(2,-1);});
+        this.B5 = new ButtonWidget(x+collum*5-4, y+23+line*21/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(2,-1));
         this.addDrawableChild(this.B5);
-        this.B6 = new ButtonWidget(x+collum*5-4, y+23+line*22/2+line, 5, 4, Text.literal(""), (button) -> {
-            this.moveStats(2,1);});
+        this.B6 = new ButtonWidget(x+collum*5-4, y+23+line*22/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(2,1));
         this.addDrawableChild(this.B6);
-        this.B7 = new ButtonWidget(x+collum*5-4, y+23+line*26/2+line, 5, 4, Text.literal(""), (button) -> {
-            this.moveStats(3,-1);});
+        this.B7 = new ButtonWidget(x+collum*5-4, y+23+line*26/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(3,-1));
         this.addDrawableChild(this.B7);
-        this.B8 = new ButtonWidget(x+collum*5-4, y+23+line*27/2+line, 5, 4, Text.literal(""), (button) -> {
-            this.moveStats(3,1);});
+        this.B8 = new ButtonWidget(x+collum*5-4, y+23+line*27/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(3,1));
         this.addDrawableChild(this.B8);
-        this.B9 = new ButtonWidget(x+collum*5-4, y+23+line*31/2+line, 5, 4, Text.literal(""), (button) -> {
-            this.moveStats(4,-1);});
+        this.B9 = new ButtonWidget(x+collum*5-4, y+23+line*31/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(4,-1));
         this.addDrawableChild(this.B9);
-        this.B10 = new ButtonWidget(x+collum*5-4, y+23+line*32/2+line, 5, 4, Text.literal(""), (button) -> {
-            this.moveStats(4,1);});
+        this.B10 = new ButtonWidget(x+collum*5-4, y+23+line*32/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(4,1));
         this.addDrawableChild(this.B10);
-        this.B11 = new ButtonWidget(x+collum*5-4, y+23+line*36/2+line, 5, 4, Text.literal(""), (button) -> {
-            this.moveStats(5,-1);});
+        this.B11 = new ButtonWidget(x+collum*5-4, y+23+line*36/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(5,-1));
         this.addDrawableChild(this.B11);
-        this.B12 = new ButtonWidget(x+collum*5-4, y+23+line*37/2+line, 5, 4, Text.literal(""), (button) -> {
-            this.moveStats(5,1);});
+        this.B12 = new ButtonWidget(x+collum*5-4, y+23+line*37/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(5,1));
         this.addDrawableChild(this.B12);
         this.error_window = new TexturedButtonWidget(x+collum*8+4, y+20+line*3,194,160,0,0,0,new Identifier(DNCMod.MOD_ID,"textures/gui/uialarm.png"),194,160,(button) -> {
             this.error_window.active = false;
@@ -187,14 +158,18 @@ public class CharCreationScreen4 extends Screen {
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        renderBackground(matrices);
-        if(!(Arrays.equals(nbt_stats.getIntArray("stats"), this.stats)))
-            this.stats = nbt_stats.getIntArray("stats");
+        if(!(Arrays.equals(((IEntityDataSaver) MinecraftClient.getInstance().player).getPersistentData().getIntArray("stats"), this.stats)))
+            this.stats = ((IEntityDataSaver)MinecraftClient.getInstance().player).getPersistentData().getIntArray("stats").length == 0? new int[]{0,0,0,0,0,0}:((IEntityDataSaver)MinecraftClient.getInstance().player).getPersistentData().getIntArray("stats");
         int backgroundWidth = 412;
         int backgroundHeight = 256;
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         //texture drawing
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
+        renderBackground(matrices);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
         RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));

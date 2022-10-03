@@ -3,34 +3,22 @@ package net.nikk.dncmod.networking.packet;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.nikk.dncmod.networking.Networking;
+import net.nikk.dncmod.util.AttributeData;
 import net.nikk.dncmod.util.IEntityDataSaver;
-
-import java.util.UUID;
 
 public class FinishCreationC2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
         // Everything here happens ONLY on the Server!
-        NbtCompound nbt = ((IEntityDataSaver) player).getCharacterData().getCompound("dncmod.chart");
+        NbtCompound nbt = ((IEntityDataSaver) player).getPersistentData();
         if(!nbt.getBoolean("created")){
-            ServerWorld world = player.getWorld();
             NbtCompound res_nbt = buf.readNbt();
-        // Notify the player
-            player.sendMessage(Text.literal("Created A Character")
-                .fillStyle(Style.EMPTY.withColor(Formatting.AQUA)), false);
         // Play the ding sound
         // actually add stats to the player
             nbt.putString("first_name",res_nbt.getString("first_name"));
@@ -69,11 +57,11 @@ public class FinishCreationC2SPacket {
             nbt.putInt("proficiency_modifier",0);
             nbt.putString("gender", "Male");
             nbt.putBoolean("created",true);
+            nbt.putIntArray("hit_dices", new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+            int con_health = race.equals("Dwarf")?(new_stats[2])*3/2-4:new_stats[2]-4;
+            nbt.putInt("con_health_boost",con_health);
+            AttributeData.addHealth(player,con_health,"con_health_boost","80b3a28a-42cd-4926-8327-91e75ab0191f");
         }
-        EntityAttributeModifier STAT_HEALTH_BOOST = new EntityAttributeModifier(UUID.fromString("80b3a28a-42cd-4926-8327-91e75ab0191f"),
-                "dnsmod:stat_health_boost", 10, EntityAttributeModifier.Operation.ADDITION);
-        EntityAttributeInstance health = player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
-        health.addPersistentModifier(STAT_HEALTH_BOOST);
         ServerPlayNetworking.send(player, Networking.CREATION_SYNC_ID, PacketByteBufs.create().writeNbt(nbt));
     }
 }

@@ -20,10 +20,10 @@ import net.nikk.dncmod.DNCMod;
 
 public class CharCreationScreen3 extends Screen {
     private String race;
-    private String firstName;
-    private String lastName;
-    private String classname;
-    private int stats[];
+    private final String firstName;
+    private final String lastName;
+    private final String classname;
+    private final int[] stats;
     private final int[] stat_index;
     int extrastat;
     private ButtonWidget classeswheel;
@@ -42,33 +42,29 @@ public class CharCreationScreen3 extends Screen {
     @Override
     protected void init() {
         int backgroundWidth = 412;
-        int backgroundHeight = 256;
-        int line = backgroundHeight/30;
         int collum = backgroundWidth/30;
-        int y = (height - backgroundHeight) / 2;
         int x = (width - backgroundWidth) / 2;
-        this.addDrawableChild(new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
-            this.client.setScreen(new CharCreationScreen4(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index));}));
-        this.addDrawableChild(new ButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> {
-            this.client.setScreen(new CharCreationScreen2(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index));}));
-        this.classeswheel = new ButtonWidget(x+collum*25/2, height/2+30, 90, 20, Text.literal("Next Page"), (button) -> {
-            this.switchRace();});
+        this.addDrawableChild(new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> this.client.setScreen(new CharCreationScreen4(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index))));
+        this.addDrawableChild(new ButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> this.client.setScreen(new CharCreationScreen2(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index))));
+        this.classeswheel = new ButtonWidget(x+collum*25/2, height/2+30, 90, 20, Text.literal("Next Page"), (button) -> this.switchRace());
         this.addDrawableChild(this.classeswheel);
-        this.statswheel = new ButtonWidget(width/2+85, height/2, 75, 20, Text.literal("Strength"), (button) -> {
-            this.extrastat = this.extrastat==5?0:this.extrastat+1;
-        });
+        this.statswheel = new ButtonWidget(width/2+85, height/2, 75, 20, Text.literal("Strength"), (button) -> this.extrastat = this.extrastat==5?0:this.extrastat+1);
         this.addDrawableChild(this.statswheel);
         this.statswheel.visible= false;
     }
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        renderBackground(matrices);
         int backgroundWidth = 412;
         int backgroundHeight = 256;
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         //texture drawing
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
+        renderBackground(matrices);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
         RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
@@ -88,49 +84,41 @@ public class CharCreationScreen3 extends Screen {
         loadClass(matrices,x,collum,y,line);
         Text[] stat_names = {Text.literal("Strength"),Text.literal("Dexterity"),Text.literal("Constitution"),Text.literal("Intelligence"),Text.literal("Wisdom"),Text.literal("Charisma")};
         this.statswheel.setMessage(stat_names[this.extrastat]);
-        switch(this.race){
-            case "Human":
+        switch (this.race) {
+            case "Human" -> {
                 this.statswheel.visible = false;
-                textRenderer.draw(textRendererMatrixStack, "This race will grant", x+collum*23/2+3, y+20+line*19+line, 	15859709);
-                textRenderer.draw(textRendererMatrixStack, "the player a bonus Feat.", x+collum*21/2+3, y+20+line*21+line, 	15859709);
-                drawEntity(x+collum*32/2-4, y+20+line*14+line, 30, x+collum*32/2-4-mouseX, y+20+line*14+line-mouseY, this.client.player);
+                textRenderer.draw(textRendererMatrixStack, "This race will grant", x + collum * 23 / 2 + 3, y + 20 + line * 19 + line, 15859709);
+                textRenderer.draw(textRendererMatrixStack, "the player a bonus Feat.", x + collum * 21 / 2 + 3, y + 20 + line * 21 + line, 15859709);
+                drawEntity(x + collum * 32 / 2 - 4, y + 20 + line * 14 + line, 30, x + collum * 32 / 2 - 4 - mouseX, y + 20 + line * 14 + line - mouseY, this.client.player);
                 this.classeswheel.setMessage(Text.literal("Human Race"));
-                break;
-            case "Elf":
+            }
+            case "Elf" -> {
                 this.statswheel.visible = true;
-                textRenderer.draw(textRendererMatrixStack, "Select A Stat", x+collum*22+8, y+20+line*11+line, 	15859709);
-                textRenderer.draw(textRendererMatrixStack, "This race will grant the player", x+collum*20/2+3, y+20+line*19+line, 	15859709);
-                textRenderer.draw(textRendererMatrixStack, "a +2 bonus to one", x+collum*24/2+3, y+20+line*21+line, 	15859709);
-                textRenderer.draw(textRendererMatrixStack, "Stat of their choice.", x+collum*23/2+6, y+20+line*23+line, 	15859709);
-                drawEntity(x+collum*32/2-4, y+20+line*14+line, 30, x+collum*32/2-4-mouseX, y+20+line*14+line-mouseY, EntityType.ENDERMAN.create(MinecraftClient.getInstance().world));
+                textRenderer.draw(textRendererMatrixStack, "Select A Stat", x + collum * 22 + 8, y + 20 + line * 11 + line, 15859709);
+                textRenderer.draw(textRendererMatrixStack, "This race will grant the player", x + collum * 20 / 2 + 3, y + 20 + line * 19 + line, 15859709);
+                textRenderer.draw(textRendererMatrixStack, "a +2 bonus to one", x + collum * 24 / 2 + 3, y + 20 + line * 21 + line, 15859709);
+                textRenderer.draw(textRendererMatrixStack, "Stat of their choice.", x + collum * 23 / 2 + 6, y + 20 + line * 23 + line, 15859709);
+                drawEntity(x + collum * 32 / 2 - 4, y + 20 + line * 14 + line, 30, x + collum * 32 / 2 - 4 - mouseX, y + 20 + line * 14 + line - mouseY, EntityType.ENDERMAN.create(MinecraftClient.getInstance().world));
                 this.classeswheel.setMessage(Text.literal("Elven Race"));
-                break;
-            case "Dwarf":
+            }
+            case "Dwarf" -> {
                 this.statswheel.visible = false;
-                textRenderer.draw(textRendererMatrixStack, "This race will grant the player", x+collum*20/2+3, y+20+line*19+line, 	15859709);
-                textRenderer.draw(textRendererMatrixStack, "bonus hit points equal to half", x+collum*20/2+3, y+20+line*21+line, 	15859709);
-                textRenderer.draw(textRendererMatrixStack, "your con modifier rounded down.", x+collum*19/2+3, y+20+line*23+line, 	15859709);
-                drawEntity(x+collum*32/2-4, y+20+line*14+line, 30, x+collum*32/2-4-mouseX, y+20+line*14+line-mouseY, EntityType.CREEPER.create(MinecraftClient.getInstance().world));
+                textRenderer.draw(textRendererMatrixStack, "This race will grant the player", x + collum * 20 / 2 + 3, y + 20 + line * 19 + line, 15859709);
+                textRenderer.draw(textRendererMatrixStack, "bonus hit points equal to half", x + collum * 20 / 2 + 3, y + 20 + line * 21 + line, 15859709);
+                textRenderer.draw(textRendererMatrixStack, "your con modifier rounded down.", x + collum * 19 / 2 + 3, y + 20 + line * 23 + line, 15859709);
+                drawEntity(x + collum * 32 / 2 - 4, y + 20 + line * 14 + line, 30, x + collum * 32 / 2 - 4 - mouseX, y + 20 + line * 14 + line - mouseY, EntityType.CREEPER.create(MinecraftClient.getInstance().world));
                 this.classeswheel.setMessage(Text.literal("Dwarf Race"));
-                break;
-            default:
-                this.race= "Human";
-                break;
+            }
+            default -> this.race = "Human";
         }
         super.render(matrices, mouseX, mouseY, delta);
     }
 
     private void switchRace(){
-        switch(this.race){
-            case "Human":
-                this.race = "Elf";
-                break;
-            case "Elf":
-                this.race = "Dwarf";
-                break;
-            case "Dwarf":
-                this.race = "Human";
-                break;
+        switch (this.race) {
+            case "Human" -> this.race = "Elf";
+            case "Elf" -> this.race = "Dwarf";
+            case "Dwarf" -> this.race = "Human";
         }
     }
 
@@ -139,7 +127,7 @@ public class CharCreationScreen3 extends Screen {
         float g = (float)Math.atan((double)(mouseY / 40.0F));
         MatrixStack matrixStack = RenderSystem.getModelViewStack();
         matrixStack.push();
-        matrixStack.translate((double)x, (double)y, 1050.0);
+        matrixStack.translate(x, y, 1050.0);
         matrixStack.scale(1.0F, 1.0F, -1.0F);
         RenderSystem.applyModelViewMatrix();
         MatrixStack matrixStack2 = new MatrixStack();
@@ -165,9 +153,7 @@ public class CharCreationScreen3 extends Screen {
         entityRenderDispatcher.setRotation(quaternion2);
         entityRenderDispatcher.setRenderShadows(false);
         VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-        RenderSystem.runAsFancy(() -> {
-            entityRenderDispatcher.render(entity, 0.0, 0.0, 0.0, 0.0F, 1.0F, matrixStack2, immediate, 15728880);
-        });
+        RenderSystem.runAsFancy(() -> entityRenderDispatcher.render(entity, 0.0, 0.0, 0.0, 0.0F, 1.0F, matrixStack2, immediate, 15728880));
         immediate.draw();
         entityRenderDispatcher.setRenderShadows(true);
         entity.bodyYaw = h;
@@ -180,31 +166,31 @@ public class CharCreationScreen3 extends Screen {
         DiffuseLighting.enableGuiDepthLighting();
     }
     private void loadClass(MatrixStack matrices,int x, int collum, int y, int line){
-        switch(this.classname){
-            case "Fighter":
+        switch (this.classname) {
+            case "Fighter" -> {
                 RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/fighter.png"));
-                drawTexture(matrices, x+collum*25/2, y+20+line*5+line, 0, 0, 90, 90,90,90);
-                break;
-            case "Wizard":
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/wizard.png"));
-                drawTexture(matrices, x+collum*25/2, y+20+line*5+line, 0, 0, 90, 90,90,90);
-                break;
-            case "Druid":
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/druid.png"));
-                drawTexture(matrices, x+collum*25/2, y+20+line*5+line, 0, 0, 90, 90,90,90);
-                break;
-            case "Cleric":
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/cleric.png"));
-                drawTexture(matrices, x+collum*25/2, y+20+line*5+line, 0, 0, 90, 90,90,90);
-                break;
-            case "Sorcerer":
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/sorcerer.png"));
-                drawTexture(matrices, x+collum*25/2, y+20+line*5+line, 0, 0, 90, 90,90,90);
-                break;
-            case "Monk":
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/monk.png"));
-                drawTexture(matrices, x+collum*25/2, y+20+line*5+line, 0, 0, 90, 90,90,90);
-                break;
+                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
             }
+            case "Wizard" -> {
+                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/wizard.png"));
+                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
+            }
+            case "Druid" -> {
+                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/druid.png"));
+                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
+            }
+            case "Cleric" -> {
+                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/cleric.png"));
+                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
+            }
+            case "Sorcerer" -> {
+                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/sorcerer.png"));
+                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
+            }
+            case "Monk" -> {
+                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/monk.png"));
+                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
+            }
+        }
     }
 }
