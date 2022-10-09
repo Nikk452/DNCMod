@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "dncmod:block/tin_ore" }
+  }
+}

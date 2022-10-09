@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "dncmod:block/white_iron_cluster",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "dncmod:block/white_iron_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "dncmod:block/white_iron_cluster",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "dncmod:block/white_iron_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "dncmod:block/white_iron_cluster"
+    },
+    "facing=west": {
+      "model": "dncmod:block/white_iron_cluster",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

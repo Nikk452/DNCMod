@@ -15,10 +15,27 @@
   "item.dncmod.shadowthrall": "Shadow Thrall",
   "item.dncmod.silver_ingot": "Silver Ingot",
   "item.dncmod.titanium_ingot": "Titanium Ingot",
+  "item.dncmod.tin_ingot": "Tin Ingot",
+
+  "item.dncmod.spear": "Spear",
+  "item.dncmod.short_sword": "Short Sword",
+  "item.dncmod.dagger": "Dagger",
+  "item.dncmod.club": "Club",
+  "item.dncmod.dart": "Dart",
+  "item.dncmod.short_bow": "Short Bow",
+  "item.dncmod.sling": "Sling",
+  "item.dncmod.quarterstaff": "Quarterstaff",
 
   "block.dncmod.silver_ore": "Silver Ore",
+  "block.dncmod.platinum_ore": "Platinum Ore",
+  "block.dncmod.tin_ore": "Tin Ore",
+  "block.dncmod.dark_stone_ore": "Dark Stone Ore",
+  "block.dncmod.lead_ore": "Lead Ore",
+  "block.dncmod.titanium_ore": "Titanium Ore",
+  "block.dncmod.arcane_wood": "Arcane Wood",
 
-  "itemGroup.dncmod.dnctab": "Dungeons & Crafting Tab",
+  "itemGroup.dncmod.dnctab_items": "Dungeons & Crafting Items Tab",
+  "itemGroup.dncmod.dnctab_blocks": "Dungeons & Crafting Items Tab",
   "key.category.dncmod.dnc": "Dungeons & Crafting Mod",
   "key.dncmod.openmenu": "Open A Menu"
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "dncmod:item/sling",
+  "textures": {
+    "layer0": "dncmod:item/sling_pulling_0"
+  }
+}

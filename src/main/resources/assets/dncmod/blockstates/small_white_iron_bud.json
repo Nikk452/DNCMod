@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "dncmod:block/small_white_iron_bud",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "dncmod:block/small_white_iron_bud",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "dncmod:block/small_white_iron_bud",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "dncmod:block/small_white_iron_bud",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "dncmod:block/small_white_iron_bud"
+    },
+    "facing=west": {
+      "model": "dncmod:block/small_white_iron_bud",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

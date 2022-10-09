@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "dncmod:block/small_white_iron_bud"
+  }
+}
