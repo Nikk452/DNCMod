@@ -41,6 +41,28 @@ public class ModItems {
             new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item ASTRAL_CRYSTAL = registerItem("astral_crystal",
             new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+
+    public static final Item RAW_ADAMANTINE = registerItem("raw_adamantine",
+            new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item RAW_TITANIUM = registerItem("raw_titanium",
+            new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item RAW_TIN = registerItem("raw_tin",
+            new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item RAW_SILVER = registerItem("raw_silver",
+            new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item RAW_BRONZE = registerItem("raw_bronze",
+            new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item RAW_PLATINUM = registerItem("raw_platinum",
+            new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item RAW_OBSIDIAN = registerItem("raw_obsidian",
+            new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item RAW_LEAD = registerItem("raw_lead",
+            new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item RAW_MITHRIL = registerItem("raw_mithril",
+            new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item RAW_ELECTRUM = registerItem("raw_electrum",
+            new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+
     public static final Item CLUB = registerItem("club",
             new SwordItem(ToolMaterials.WOOD,3,5,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item QUARTERSTAFF = registerItem("quarterstaff",

@@ -8,10 +8,18 @@
     "InGameHudMixin",
     "PlayerEntityMixin",
     "EntityRendererMixin",
-    "LivingEntityRendererMixin"
+    "LivingEntityRendererMixin",
+    "ServerWorldMixin",
+    "DimensionTypeMixin",
+    "PlayerManagerMixin",
+    "TimeCommandMixin",
+    "SleepManagerMixin",
+    "ServerPlayerEntityMixin"
   ],
   "client": [
-    "ExampleMixin"
+    "ExampleMixin",
+    "ClientWorldMixin",
+    "IntegratedServerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

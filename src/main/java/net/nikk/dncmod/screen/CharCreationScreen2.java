@@ -141,5 +141,9 @@ public class CharCreationScreen2 extends Screen {
             case "Monk" -> this.classname = "Fighter";
         }
     }
+    @Override
+    public boolean shouldCloseOnEsc() {
+        return false;
+    }
 }
 

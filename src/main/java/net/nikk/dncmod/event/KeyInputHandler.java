@@ -30,7 +30,11 @@ public class KeyInputHandler {
     public static void registerKeyInputs() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(menukey.wasPressed()) {
-                if(!(client.currentScreen instanceof CharCreationScreen1)) ClientPlayNetworking.send(Networking.REFRESH_STATS_ID, PacketByteBufs.create());
+                if(!(client.currentScreen instanceof CharCreationScreen1)) {
+                    PacketByteBuf buf = PacketByteBufs.create();
+                    buf.writeBoolean(false);
+                    ClientPlayNetworking.send(Networking.REFRESH_STATS_ID, buf);
+                }
             }
         });
     }

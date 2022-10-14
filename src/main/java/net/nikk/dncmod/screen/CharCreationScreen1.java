@@ -147,6 +147,12 @@ public class CharCreationScreen1 extends Screen {
             }
         }
     }
+
+    @Override
+    public boolean shouldCloseOnEsc() {
+        return false;
+    }
+
     private void confirmName(){
         this.firstName = textField1.getText();
         this.lastName = textField2.getText();

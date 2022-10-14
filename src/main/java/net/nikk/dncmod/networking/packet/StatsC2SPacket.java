@@ -8,6 +8,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.util.IEntityDataSaver;
 import net.nikk.dncmod.util.StatData;
@@ -17,6 +18,7 @@ public class StatsC2SPacket {
                                PacketByteBuf buf, PacketSender responseSender) {
         NbtCompound nbt = ((IEntityDataSaver)player).getPersistentData();
         PacketByteBuf buffer = PacketByteBufs.create().writeNbt(nbt);
+        buffer.writeBoolean(buf.readBoolean());
         ServerPlayNetworking.send(player, Networking.REFRESH_CLIENT_ID, buffer);
     }
 }

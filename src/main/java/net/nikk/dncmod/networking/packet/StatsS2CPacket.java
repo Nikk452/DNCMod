@@ -17,6 +17,7 @@ public class StatsS2CPacket {
                                PacketByteBuf buf, PacketSender responseSender) {
         NbtCompound res_nbt = buf.readNbt();
         boolean b1 = res_nbt.getBoolean("created");
+        boolean b2 = buf.readBoolean();
         client.execute(() -> {
             NbtCompound nbtCompound = ((IEntityDataSaver) client.player).getPersistentData();
             nbtCompound.putString("first_name", res_nbt.getString("first_name"));
@@ -40,8 +41,8 @@ public class StatsS2CPacket {
             nbtCompound.putInt("proficiency_modifier", res_nbt.getInt("proficiency_modifier"));
             nbtCompound.putString("gender", res_nbt.getString("gender"));
             nbtCompound.putBoolean("created", b1);
-            if(b1) client.setScreen(new StatScreen1(true));
-            else client.setScreen(new CharCreationScreen1("","", "fighter","",nbtCompound.getIntArray("stats").length==6?nbtCompound.getIntArray("stats"): new int[]{0, 0, 0, 0, 0, 0},0,new int[]{0,1,2,3,4,5},true));
+            if(b1 && !b2) client.setScreen(new StatScreen1(true));
+            else if(!b1) client.setScreen(new CharCreationScreen1("","", "fighter","",nbtCompound.getIntArray("stats").length==6?nbtCompound.getIntArray("stats"): new int[]{0, 0, 0, 0, 0, 0},0,new int[]{0,1,2,3,4,5},true));
         });
     }
 }

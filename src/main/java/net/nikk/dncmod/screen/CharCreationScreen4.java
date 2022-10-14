@@ -17,7 +17,10 @@ import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.util.IEntityDataSaver;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+
+import static net.minecraft.util.math.MathHelper.floor;
 
 public class CharCreationScreen4 extends Screen {
     private final String race;
@@ -26,18 +29,7 @@ public class CharCreationScreen4 extends Screen {
     private final String classname;
     private ButtonWidget next;
     private ButtonWidget previous_page;
-    private ButtonWidget B1;
-    private ButtonWidget B2;
-    private ButtonWidget B3;
-    private ButtonWidget B4;
-    private ButtonWidget B5;
-    private ButtonWidget B6;
-    private ButtonWidget B7;
-    private ButtonWidget B8;
-    private ButtonWidget B9;
-    private ButtonWidget B10;
-    private ButtonWidget B11;
-    private ButtonWidget B12;
+    private ArrayList<ButtonWidget> MyButtons = new ArrayList<ButtonWidget>();
     private TexturedButtonWidget error_window;
     private boolean E1 = false;
     private int[] stats;
@@ -92,47 +84,19 @@ public class CharCreationScreen4 extends Screen {
         rollstats.active = Arrays.stream(this.stats).sum() == 0;
         this.addDrawableChild(this.rollstats);
         //12 buttons for up down
-        this.B1 = new ButtonWidget(x+collum*5-4, y+23+line*11/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(0,-1));
-        this.addDrawableChild(this.B1);
-        this.B2 = new ButtonWidget(x+collum*5-4, y+23+line*12/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(0,1));
-        this.addDrawableChild(this.B2);
-        this.B3 = new ButtonWidget(x+collum*5-4, y+23+line*16/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(1,-1));
-        this.addDrawableChild(this.B3);
-        this.B4 = new ButtonWidget(x+collum*5-4, y+23+line*17/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(1,1));
-        this.addDrawableChild(this.B4);
-        this.B5 = new ButtonWidget(x+collum*5-4, y+23+line*21/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(2,-1));
-        this.addDrawableChild(this.B5);
-        this.B6 = new ButtonWidget(x+collum*5-4, y+23+line*22/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(2,1));
-        this.addDrawableChild(this.B6);
-        this.B7 = new ButtonWidget(x+collum*5-4, y+23+line*26/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(3,-1));
-        this.addDrawableChild(this.B7);
-        this.B8 = new ButtonWidget(x+collum*5-4, y+23+line*27/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(3,1));
-        this.addDrawableChild(this.B8);
-        this.B9 = new ButtonWidget(x+collum*5-4, y+23+line*31/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(4,-1));
-        this.addDrawableChild(this.B9);
-        this.B10 = new ButtonWidget(x+collum*5-4, y+23+line*32/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(4,1));
-        this.addDrawableChild(this.B10);
-        this.B11 = new ButtonWidget(x+collum*5-4, y+23+line*36/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(5,-1));
-        this.addDrawableChild(this.B11);
-        this.B12 = new ButtonWidget(x+collum*5-4, y+23+line*37/2+line, 5, 4, Text.literal(""), (button) -> this.moveStats(5,1));
-        this.addDrawableChild(this.B12);
+        int[] BY = {11,12,16,17,21,22,26,27,31,32,36,37};
+        for(int i = 0;i<12;i++){
+            int dir = (i+2)%2==0?-1:1;
+            int idx = floor(i/2);
+            this.MyButtons.add(new ButtonWidget(x+collum*5-4, y + 23 + line * BY[i]/2 + line,5,4,Text.literal(""),(button) -> this.moveStats(idx,dir)));
+            this.addDrawableChild(this.MyButtons.get(i));
+        }
         this.error_window = new TexturedButtonWidget(x+collum*8+4, y+20+line*3,194,160,0,0,0,new Identifier(DNCMod.MOD_ID,"textures/gui/uialarm.png"),194,160,(button) -> {
             this.error_window.active = false;
             this.E1 = false;
             this.next.active = true;
             this.previous_page.active = true;
-            this.B1.active = true;
-            this.B2.active = true;
-            this.B3.active = true;
-            this.B4.active = true;
-            this.B5.active = true;
-            this.B6.active = true;
-            this.B7.active = true;
-            this.B8.active = true;
-            this.B9.active = true;
-            this.B10.active = true;
-            this.B11.active = true;
-            this.B12.active = true;
+            for(int i = 0;i<12;i++) this.MyButtons.get(i).active = true;
         });
         this.addDrawableChild(this.error_window);
     }
@@ -179,19 +143,7 @@ public class CharCreationScreen4 extends Screen {
         this.rollstats.render(matrices,mouseX,mouseY,delta);
         this.next.render(matrices,mouseX,mouseY,delta);
         this.previous_page.render(matrices,mouseX,mouseY,delta);
-        this.B1.render(matrices,mouseX,mouseY,delta);
-        this.B2.render(matrices,mouseX,mouseY,delta);
-        this.B3.render(matrices,mouseX,mouseY,delta);
-        this.B4.render(matrices,mouseX,mouseY,delta);
-        this.B5.render(matrices,mouseX,mouseY,delta);
-        this.B6.render(matrices,mouseX,mouseY,delta);
-        this.B7.render(matrices,mouseX,mouseY,delta);
-        this.B8.render(matrices,mouseX,mouseY,delta);
-        this.B9.render(matrices,mouseX,mouseY,delta);
-        this.B10.render(matrices,mouseX,mouseY,delta);
-        this.B11.render(matrices,mouseX,mouseY,delta);
-        this.B12.render(matrices,mouseX,mouseY,delta);
-        //drawTexture(matrices, LocationX, LocationY, Z?... 1 , u is 0, v is 0,ActualImageWidth,ActualImageHeight,texturewidthScaled,textureheightScaled);
+        for(int i = 0;i<12;i++) this.MyButtons.get(i).render(matrices,mouseX,mouseY,delta);
         //text drawing
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         MatrixStack textRendererMatrixStack = new MatrixStack();
@@ -225,22 +177,15 @@ public class CharCreationScreen4 extends Screen {
             RenderSystem.defaultBlendFunc();
             this.next.active = false;
             this.previous_page.active = false;
-            this.B1.active = false;
-            this.B2.active = false;
-            this.B3.active = false;
-            this.B4.active = false;
-            this.B5.active = false;
-            this.B6.active = false;
-            this.B7.active = false;
-            this.B8.active = false;
-            this.B9.active = false;
-            this.B10.active = false;
-            this.B11.active = false;
-            this.B12.active = false;
+            for(int i = 0;i<12;i++) this.MyButtons.get(i).active = false;
             this.error_window.render(matrices,mouseX,mouseY,delta);
             this.error_window.active = true;
             textRenderer.draw(textRendererMatrixStack, Text.literal("ERROR!").formatted(Formatting.BOLD), x + collum * 14 + 5, y + 28 + line * 8, 16121850);
             textRenderer.draw(textRendererMatrixStack, "WRONG STATS", x + collum * 13+4, y + 25 + line * 12, 16121850);textRenderer.draw(textRendererMatrixStack, "FOR YOUR CLASS", x + collum * 13-4, y + 20 + line * 14, 16121850);
         }
+    }
+    @Override
+    public boolean shouldCloseOnEsc() {
+        return false;
     }
 }

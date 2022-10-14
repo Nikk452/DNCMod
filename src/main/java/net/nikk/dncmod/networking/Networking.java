@@ -16,7 +16,9 @@ import net.nikk.dncmod.util.IEntityDataSaver;
 public class Networking {
     public static final Identifier CREATION_ID = new Identifier(DNCMod.MOD_ID,"creation");
     public static final Identifier CREATION_SYNC_ID = new Identifier(DNCMod.MOD_ID,"creation_sync");
-
+    public static final Identifier SYNC_CONFIG = new Identifier(DNCMod.MOD_ID,"sync_config");
+    public static final Identifier SETUP_TIME = new Identifier(DNCMod.MOD_ID,"setup_time");
+    public static final Identifier NIGHT_SKIP_INFO = new Identifier(DNCMod.MOD_ID,"setup_time");
     public static final Identifier ROLL_CREATION_ID = new Identifier(DNCMod.MOD_ID,"roll_creation");
     public static final Identifier REFRESH_STATS_ID = new Identifier(DNCMod.MOD_ID, "refresh_stats_id");
     public static final Identifier REFRESH_CLIENT_ID = new Identifier(DNCMod.MOD_ID, "refresh_stats_id");
@@ -37,5 +39,8 @@ public class Networking {
         ClientPlayNetworking.registerGlobalReceiver(EXAMPLE_S2C, ExampleS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(REFRESH_CLIENT_ID, StatsS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(LEVELUPS2C, LevelUpS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(SYNC_CONFIG,SyncConfigS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(SETUP_TIME,SetupTimeS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(NIGHT_SKIP_INFO,NightSkipInfoS2CPacket::receive);
     }
 }
