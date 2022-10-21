@@ -15,9 +15,7 @@ import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.util.IEntityDataSaver;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 public class StatScreen2 extends Screen {
     PlayerEntity player = MinecraftClient.getInstance().player;
     NbtCompound nbt = ((IEntityDataSaver)player).getPersistentData();
@@ -32,10 +30,8 @@ public class StatScreen2 extends Screen {
 
     @Override
     protected void init() {
-        this.addDrawableChild(new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
-            this.client.setScreen(new StatScreen3());}));
-        this.addDrawableChild(new ButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> {
-            this.client.setScreen(new StatScreen1(false));}));
+        this.addDrawableChild(new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> this.client.setScreen(new StatScreen3())));
+        this.addDrawableChild(new ButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> this.client.setScreen(new StatScreen1(false))));
     }
 
     @Override
@@ -65,15 +61,9 @@ public class StatScreen2 extends Screen {
         texts.add(Text.literal("   Trained   ").styled(style -> style.withUnderline(true)));
         texts.add(Text.literal("    Skills    ").styled(style -> style.withUnderline(true)));
         ArrayList<Integer> locsX = new ArrayList<>();
-        locsX.add(width/2-18);
-        locsX.add(x+collum*5);
-        locsX.add(x+collum*13);
-        locsX.add(x+collum*22);
+        locsX.add(width/2-18);locsX.add(x+collum*5);locsX.add(x+collum*13);locsX.add(x+collum*22);
         List<Integer> locsY = new ArrayList<>();
-        locsY.add(y+20+line*2/3);
-        locsY.add(y+20+line*2+line);
-        locsY.add(y+20+line*2+line);
-        locsY.add(y+20+line*2+line);
+        locsY.add(y+20+line*2/3);locsY.add(y+20+line*2+line);locsY.add(y+20+line*2+line);locsY.add(y+20+line*2+line);
         int[] skills = nbt.getIntArray("skills");
         int[] skill_type = new int[]{0,0,0,1,1,1,1,1,2,2,3,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5};
         String[] ids = {"grapleskill","mineskill","jumpskill","acrobaticsskill","stealthskill","stealingskill","lockpickskill","craftingskill","concentrationskill","enduranceskill","lore_arcaneskill","lore_divineskill","lore_primalskill","investigationskill","medicineskill","researchskill","healskill",
@@ -94,7 +84,7 @@ public class StatScreen2 extends Screen {
                 confirmed_skills+=1;
             }
         }
-        for(int i=0;i<texts.stream().count();i++){
+        for(int i = 0; i< (long) texts.size(); i++){
             textRendererMatrixStack.scale(1f,1f,1f);
             if(i==4) textRendererMatrixStack.scale(0.72f,0.72f,0.72f);
             if(i>=4){

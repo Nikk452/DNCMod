@@ -74,11 +74,10 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     private void mineSkill(BlockState state, CallbackInfoReturnable<Float> cir) {
         Random random = new Random();
         NbtCompound nbt = ((IEntityDataSaver)(PlayerEntity) (Object) this).getPersistentData();
-        float H = state.getBlock().getHardness();
+        float H = Math.min(state.getBlock().getHardness(), 5f);
         int DC = (int)(5*((Math.pow(H<1?1:H,2))/2f));
         int Jump_mod = nbt.getIntArray("skills")[1]+nbt.getIntArray("stat_mod")[0];
         int Roll = this.random.nextBetween(1,21)+Jump_mod;
-        ((PlayerEntity) (Object) this).sendMessage(Text.literal("Dc: "+DC+" Roll: "+Roll));
         if(this.successTimes>=4) {
             this.successTimes = 0;
             cir.setReturnValue(cir.getReturnValue() * random.nextFloat(0f,(Jump_mod>0?(float)Jump_mod:0.1f)/(Roll>DC*2?Roll>DC*4?1f:2f:4f)));

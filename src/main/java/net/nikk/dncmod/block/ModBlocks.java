@@ -58,7 +58,6 @@ public class ModBlocks {
     private static Block registerBlockWithoutItem(String name, Block block) {
         return Registry.register(Registry.BLOCK, new Identifier(DNCMod.MOD_ID, name), block);
     }
-
     private static Block registerBlock(String name, Block block, ItemGroup tab) {
         registerBlockItem(name, block, tab);
         return Registry.register(Registry.BLOCK, new Identifier(DNCMod.MOD_ID, name), block);
