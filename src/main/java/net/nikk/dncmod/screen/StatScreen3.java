@@ -29,7 +29,7 @@ public class StatScreen3 extends Screen {
     protected void init() {
         int stats[] = {0,0,0,0,0,0};
         this.addDrawableChild(new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
-            this.client.setScreen(new CharCreationScreen1("","","","", stats,0,new int[]{0,1,2,3,4,5},false));}));
+            this.client.setScreen(new StatScreen3());}));
         this.addDrawableChild(new ButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> {
             this.client.setScreen(new StatScreen2());}));
     }

@@ -72,64 +72,24 @@ public class CharCreationScreen2 extends Screen {
         textRenderer.draw(textRendererMatrixStack, Text.literal("Pick a ").styled(style -> style.withBold(false).withItalic(false)).append("class").styled(style -> style.withBold(true).withItalic(true)).append(", any ").append("class").styled(style -> style.withBold(true).withItalic(true)).append(" from the following options:"), x+collum*4, y+20+line*3+line, 	15859709);
         RenderSystem.setShaderColor(1.00f, 1.00f, 1.00f, 1.00f);
         switch (this.classname) {
-            case "Fighter" -> {
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/fighter.png"));
-                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
-                textRenderer.draw(textRendererMatrixStack, "This class will require ", x + collum * 23 / 2 + 3, y + 20 + line * 19 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "you to have either 15", x + collum * 23 / 2 + 3, y + 20 + line * 21 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "strength or dexterity.", x + collum * 23 / 2 + 3, y + 20 + line * 23 + line, 15859709);
-                this.classeswheel.setMessage(Text.literal("Fighter Class"));
-            }
-            case "Wizard" -> {
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/wizard.png"));
-                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
-                textRenderer.draw(textRendererMatrixStack, "This class will require", x + collum * 23 / 2 + 3, y + 20 + line * 19 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "you to have 15 Intelligence", x + collum * 21 / 2 + 3, y + 20 + line * 21 + line, 15859709);
-                this.classeswheel.setMessage(Text.literal("Wizard Class"));
-            }
-            case "Druid" -> {
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/druid.png"));
-                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
-                textRenderer.draw(textRendererMatrixStack, "This class will require ", x + collum * 23 / 2 + 3, y + 20 + line * 19 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "you to have 15 Intelligence", x + collum * 21 / 2 + 3, y + 20 + line * 21 + line, 15859709);
-                this.classeswheel.setMessage(Text.literal("Druid Class"));
-                this.classeswheel.setMessage(Text.literal("Druid Class"));
-            }
-            case "Cleric" -> {
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/cleric.png"));
-                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
-                textRenderer.draw(textRendererMatrixStack, "This class will require ", x + collum * 23 / 2 + 3, y + 20 + line * 19 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "you to have 15 Wisdom", x + collum * 23 / 2 + 3, y + 20 + line * 21 + line, 15859709);
-                this.classeswheel.setMessage(Text.literal("Cleric Class"));
-                this.classeswheel.setMessage(Text.literal("Cleric Class"));
-            }
-            case "Sorcerer" -> {
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/sorcerer.png"));
-                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
-                textRenderer.draw(textRendererMatrixStack, "This class will require ", x + collum * 23 / 2 + 3, y + 20 + line * 19 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "you to have 15 Charisma", x + collum * 22 / 2 + 3, y + 20 + line * 21 + line, 15859709);
-                this.classeswheel.setMessage(Text.literal("Cleric Class"));
-                this.classeswheel.setMessage(Text.literal("Sorcerer Class"));
-            }
-            case "Monk" -> {
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/monk.png"));
-                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
-                textRenderer.draw(textRendererMatrixStack, "This class will require ", x + collum * 23 / 2 + 3, y + 20 + line * 19 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "you to have either 15", x + collum * 23 / 2 + 3, y + 20 + line * 21 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "wisdom or dexterity.", x + collum * 23 / 2 + 3, y + 20 + line * 23 + line, 15859709);
-                this.classeswheel.setMessage(Text.literal("Monk Class"));
-            }
+            case "Fighter" -> DrawClass("fighter",matrices,textRendererMatrixStack,new int[]{x,collum,y,line},new int[]{23,23,23},new int[]{19,21,23},new Text[]{Text.literal("This class will require"),Text.literal("you to have either 15"),Text.literal("strength or dexterity.")},new int[]{0,1,2});
+            case "Wizard" -> DrawClass("wizard",matrices,textRendererMatrixStack,new int[]{x,collum,y,line},new int[]{23,21},new int[]{19,21},new Text[]{Text.literal("This class will require"),Text.literal("you to have 15 Intelligence")},new int[]{0,1});
+            case "Druid" -> DrawClass("druid",matrices,textRendererMatrixStack,new int[]{x,collum,y,line},new int[]{23,21},new int[]{19,21},new Text[]{Text.literal("This class will require"),Text.literal("you to have 15 Intelligence")},new int[]{0,1});
+            case "Cleric" -> DrawClass("cleric",matrices,textRendererMatrixStack,new int[]{x,collum,y,line},new int[]{23,23},new int[]{19,21},new Text[]{Text.literal("This class will require"),Text.literal("you to have 15 Wisdom")},new int[]{0,1});
+            case "Sorcerer" -> DrawClass("sorcerer",matrices,textRendererMatrixStack,new int[]{x,collum,y,line},new int[]{23,22},new int[]{19,21},new Text[]{Text.literal("This class will require"),Text.literal("you to have 15 Charisma")},new int[]{0,1});
+            case "Monk" -> DrawClass("monk",matrices,textRendererMatrixStack,new int[]{x,collum,y,line},new int[]{23,23,23},new int[]{19,21,23},new Text[]{Text.literal("This class will require"),Text.literal("you to have either 15"),Text.literal("wisdom or dexterity.")},new int[]{0,1,2});
             default -> {
                 this.classname = "Fighter";
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/fighter.png"));
-                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
-                textRenderer.draw(textRendererMatrixStack, "This class will require ", x + collum * 23 / 2 + 3, y + 20 + line * 19 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "you to have either 15", x + collum * 23 / 2 + 3, y + 20 + line * 21 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "strength or dexterity.", x + collum * 23 / 2 + 3, y + 20 + line * 23 + line, 15859709);
-                this.classeswheel.setMessage(Text.literal("Fighter Class"));
+                DrawClass("fighter",matrices,textRendererMatrixStack,new int[]{x,collum,y,line},new int[]{23,23,23},new int[]{19,21,23},new Text[]{Text.literal("This class will require"),Text.literal("you to have either 15"),Text.literal("strength or dexterity.")},new int[]{0,1,2});
             }
         }
         super.render(matrices, mouseX, mouseY, delta);
+    }
+    private void DrawClass(String id,MatrixStack matrices,MatrixStack textRendererMatrixStack,int[] pic,int[] textX,int[] textY,Text[] texts,int[] max){
+        RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/"+id+".png"));
+        drawTexture(matrices, pic[0] + pic[1] * 25 / 2, pic[2] + 20 + pic[3] * 5 + pic[3], 0, 0, 90, 90, 90, 90);
+        for (int i:max) textRenderer.draw(textRendererMatrixStack, texts[i], pic[0] + pic[1] * textX[i] / 2 + 3, pic[2] + 20 + pic[3] * textY[i] + pic[3], 15859709);
+        this.classeswheel.setMessage(Text.literal(id.substring(0,1).toUpperCase() + id.substring(1).toLowerCase()+" Class"));
     }
     private void switchClass(){
         switch (this.classname) {

@@ -50,7 +50,7 @@ public class FinishCreationC2SPacket {
             nbt.putIntArray("skills",skills);
             nbt.putIntArray("throws_proficiency",new int[]{0,0,0,0,0,0});
             int[] stat_mod = {0,0,0,0,0,0};
-            for(int x=0;x<6;x++) stat_mod[x] = (new_stats[x]-10)/2;
+            for(int x=0;x<6;x++) stat_mod[x] = ((Math.max(new_stats[x], 10))-10)/2;
             nbt.putIntArray("stat_mod",stat_mod);
             nbt.putIntArray("stat_throws",new int[]{stat_mod[0],stat_mod[1],stat_mod[2],stat_mod[3],stat_mod[4],stat_mod[5]});
             nbt.putInt("hit_dice",0);

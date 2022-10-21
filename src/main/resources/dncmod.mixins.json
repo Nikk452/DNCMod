@@ -9,6 +9,7 @@
     "PlayerEntityMixin",
     "EntityRendererMixin",
     "LivingEntityRendererMixin",
+    "LivingEntityMixin",
     "ServerWorldMixin",
     "DimensionTypeMixin",
     "PlayerManagerMixin",

@@ -15,10 +15,31 @@ import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.util.IEntityDataSaver;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class StatScreen2 extends Screen {
+public class StatScreen4 extends Screen {
+    /**
+     * Leatherworker
+     * Cartographer
+     * Woodworker
+     * Glassworker
+     * Calligrapher
+     * Carpenter
+     *
+     * Brewer
+     * Painter
+     * Alchemist
+     * Cobbler
+     * Tinkerer
+     * Weaver
+     *
+     * Potter
+     * Mason
+     * Jeweler
+     * Smith
+     * Miner
+     * Cook
+     */
     PlayerEntity player = MinecraftClient.getInstance().player;
     NbtCompound nbt = ((IEntityDataSaver)player).getPersistentData();
     int backgroundWidth = 412;
@@ -26,7 +47,7 @@ public class StatScreen2 extends Screen {
     int line = backgroundHeight/30;
     int collum = backgroundWidth/30;
 
-    public StatScreen2() {
+    public StatScreen4() {
         super(Text.literal("Stat2"));
     }
 
