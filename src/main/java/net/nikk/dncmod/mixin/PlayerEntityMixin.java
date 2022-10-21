@@ -73,15 +73,22 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     }
     int successTimes = 0;
     @Inject(method = "getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F", at = @At("RETURN"), cancellable = true)
-    private void blockBreak(BlockState state, CallbackInfoReturnable<Float> cir) {
+    private void mineSkill(BlockState state, CallbackInfoReturnable<Float> cir) {
         Random random = new Random();
         NbtCompound nbt = ((IEntityDataSaver)(PlayerEntity) (Object) this).getPersistentData();
         float H = state.getBlock().getHardness();
         int DC = (int)(5*((Math.pow(H<1?1:H,2))/2f));
         int Jump_mod = nbt.getIntArray("skills")[1]+nbt.getIntArray("stat_mod")[0];
-        int Roll = random.nextInt(0,20)+1+Jump_mod;
+        int Roll = this.random.nextBetween(1,21)+Jump_mod;
         ((PlayerEntity) (Object) this).sendMessage(Text.literal("Dc: "+DC+" Roll: "+Roll));
-        if(Roll>DC) cir.setReturnValue(cir.getReturnValue() * random.nextFloat(0f,(Jump_mod>0?(float)Jump_mod:0.1f)/(Roll>DC*2?Roll>DC*4?1f:2f:4f)));
+        if(this.successTimes>=4) {
+            this.successTimes = 0;
+            cir.setReturnValue(cir.getReturnValue() * random.nextFloat(0f,(Jump_mod>0?(float)Jump_mod:0.1f)/(Roll>DC*2?Roll>DC*4?1f:2f:4f)));
+        }
+        else if(Roll>DC){
+            this.successTimes +=Roll>DC*2?Roll>DC*4?1:2:4;
+            cir.setReturnValue(8.1E-4F*cir.getReturnValue());
+        }
         else cir.setReturnValue(8.1E-4F*cir.getReturnValue());
     }
 }
