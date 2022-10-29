@@ -24,6 +24,8 @@ public class LevelUpS2CPacket {
                 nbt.putInt("max_experience", nbt_res.getInt("max_experience"));
                 nbt.putInt("proficiency_modifier", nbt_res.getInt("proficiency_modifier"));
                 client.player.sendMessage(Text.literal("You have leveled up!"));
+                //test
+                nbt.putInt("d20",16);
             }
             nbt.putInt("experience", nbt_res.getInt("experience"));
         });

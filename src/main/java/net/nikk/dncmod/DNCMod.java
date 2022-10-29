@@ -79,7 +79,7 @@ public class DNCMod implements ModInitializer {
 	}
 
 	public static void sendConfigSyncPacket(ServerPlayerEntity player){
-		if(!player.getServer().isHost(player.getGameProfile())) {
+		if(false) if(!player.getServer().isHost(player.getGameProfile())) {
 			PacketByteBuf buf = PacketByteBufs.create();
 
 			ModConfig cfg = DNCMod.CONFIG;

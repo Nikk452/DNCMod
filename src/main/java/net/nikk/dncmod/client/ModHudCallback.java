@@ -19,6 +19,7 @@ import net.nikk.dncmod.screen.*;
 import net.nikk.dncmod.util.IEntityDataSaver;
 
 public class ModHudCallback implements HudRenderCallback{
+    int dice_time = 0;
     final Identifier EXP_BAR = new Identifier(DNCMod.MOD_ID,
             "textures/gui/xp_bar_ui.png");
     final Identifier FULL_EXP_BAR = new Identifier(DNCMod.MOD_ID,
@@ -27,6 +28,8 @@ public class ModHudCallback implements HudRenderCallback{
             "textures/gui/health_bar.png");
     final Identifier MANA_BAR = new Identifier(DNCMod.MOD_ID,
             "textures/gui/mana_bar_ui.png");
+    final Identifier DICE20 = new Identifier(DNCMod.MOD_ID,
+            "textures/gui/dice20.png");
     @Override
     public void onHudRender(MatrixStack matrices, float tickDelta) {
         MinecraftClient client = MinecraftClient.getInstance();
@@ -80,6 +83,47 @@ public class ModHudCallback implements HudRenderCallback{
                 DrawableHelper.drawTexture(matrices, x, l,80,9, 0, 0, 80, 9,80, 18);
                 if (k > 0) {
                     DrawableHelper.drawTexture(matrices, x, l,k,9, 0, 9, 80, 9,80, 18);
+                }
+            }
+            //dice rendering
+            if(nbt.getBoolean("created") && nbt.getInt("d20")>0){
+                this.dice_time++;
+                k = scaledWidth - 34;
+                l = scaledHeight - 34;
+                if(this.dice_time<=10){
+                    RenderSystem.setShaderColor(this.dice_time/10f, this.dice_time/10f, this.dice_time/10f, this.dice_time/10f);
+                    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                    RenderSystem.enableBlend();
+                    RenderSystem.defaultBlendFunc();
+                    RenderSystem.setShaderColor(this.dice_time/10f, this.dice_time/10f, this.dice_time/10f, this.dice_time/10f);
+                    RenderSystem.setShaderTexture(0,DICE20);
+                    DrawableHelper.drawTexture(matrices, k, l,32,32, 0, 0, 32, 32,32, 32);
+                } else if (this.dice_time<=40) {
+                    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                    RenderSystem.enableBlend();
+                    RenderSystem.defaultBlendFunc();
+                    RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+                    RenderSystem.setShaderTexture(0,DICE20);
+                    DrawableHelper.drawTexture(matrices, k, l,32,32, 0, 0, 32, 32,32, 32);
+                    textRenderer.draw(matrices, ""+nbt.getInt("d20"), k+14, l+13, 0);
+                }else if (this.dice_time<=70) {
+                    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                    RenderSystem.enableBlend();
+                    RenderSystem.defaultBlendFunc();
+                    RenderSystem.setShaderColor((90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f);
+                    RenderSystem.setShaderTexture(0,DICE20);
+                    DrawableHelper.drawTexture(matrices, k, l,32,32, 0, 0, 32, 32,32, 32);
+                    textRenderer.draw(matrices, ""+nbt.getInt("d20"), k+14, l+13, 0);
+                }else if (this.dice_time<=90) {
+                    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                    RenderSystem.enableBlend();
+                    RenderSystem.defaultBlendFunc();
+                    RenderSystem.setShaderColor((90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f);
+                    RenderSystem.setShaderTexture(0,DICE20);
+                    DrawableHelper.drawTexture(matrices, k, l,32,32, 0, 0, 32, 32,32, 32);
+                } else{
+                    nbt.putInt("d20",0);
+                    this.dice_time=0;
                 }
             }
         }

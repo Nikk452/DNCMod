@@ -56,7 +56,7 @@ public class StatScreen4 extends Screen {
         this.addDrawableChild(new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
             this.client.setScreen(new StatScreen3());}));
         this.addDrawableChild(new ButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> {
-            this.client.setScreen(new StatScreen1(false));}));
+            this.client.setScreen(new StatScreen4());}));
     }
 
     @Override
@@ -82,9 +82,9 @@ public class StatScreen4 extends Screen {
         textRendererMatrixStack.scale(1.0F, 1.0F, 1.0F);
         ArrayList<Text> texts = new ArrayList<>();
         texts.add(Text.literal("Status"));
-        texts.add(Text.literal("   Class   ").styled(style -> style.withUnderline(true)));
-        texts.add(Text.literal("   Trained   ").styled(style -> style.withUnderline(true)));
-        texts.add(Text.literal("    Skills    ").styled(style -> style.withUnderline(true)));
+        texts.add(Text.literal("").styled(style -> style.withUnderline(true)));
+        texts.add(Text.literal("  Tool Proficiencies  ").styled(style -> style.withUnderline(true)));
+        texts.add(Text.literal("").styled(style -> style.withUnderline(true)));
         ArrayList<Integer> locsX = new ArrayList<>();
         locsX.add(width/2-18);
         locsX.add(x+collum*5);

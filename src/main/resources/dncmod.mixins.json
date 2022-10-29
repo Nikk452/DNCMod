@@ -7,15 +7,16 @@
     "ModEntityDataSaverMixin",
     "InGameHudMixin",
     "PlayerEntityMixin",
-    "EntityRendererMixin",
-    "LivingEntityRendererMixin",
     "LivingEntityMixin",
     "ServerWorldMixin",
     "DimensionTypeMixin",
     "PlayerManagerMixin",
+    "EntityRendererMixin",
     "TimeCommandMixin",
     "SleepManagerMixin",
-    "ServerPlayerEntityMixin"
+    "ServerPlayerEntityMixin",
+    "PlayerListS2CPacketMixin",
+    "EntityMixin"
   ],
   "client": [
     "ExampleMixin",

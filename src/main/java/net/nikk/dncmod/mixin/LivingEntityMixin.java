@@ -1,15 +1,14 @@
 package net.nikk.dncmod.mixin;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.nikk.dncmod.block.ModBlocks;
 import net.nikk.dncmod.util.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -50,17 +49,28 @@ public abstract class LivingEntityMixin extends Entity {
 
     @ModifyArg(method = "jump()V", at =@At(value = "INVOKE",target="net/minecraft/entity/LivingEntity.setVelocity (DDD)V"),index=1)
     private double jumpSkill(double ci){
-            if(InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(),InputUtil.GLFW_KEY_LEFT_CONTROL)){
+            if(this.isSprinting()){
                 NbtCompound nbt = ((IEntityDataSaver)(LivingEntity)(Object)this).getPersistentData();
                 if(nbt.getBoolean("created")) if(nbt.getIntArray("skills")[2]>=0) {
                     double Roll = (this.random.nextBetween(1,21) + nbt.getIntArray("skills")[2] + nbt.getIntArray("stat_mod")[0])/4d;
                     Roll = (int)(Roll*10)/10d;
                     this.JumpSkillAmp = (float)Roll;
                     this.playSound(SoundEvents.BLOCK_WOOL_FALL, 1, 0.9F + this.random.nextFloat() * 0.2F);
+                    this.getWorld().addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian()* 0.02, this.random.nextGaussian()* 0.02, this.random.nextGaussian()* 0.02);
                     return Roll*0.1d<0.2d?ci+0.2d:ci+((Roll)*0.1d);
                 }
             }
             this.JumpSkillAmp = 0;
             return ci;
+    }
+    @ModifyVariable(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
+    private float swimSkill(float swimmingModifier) {
+        NbtCompound nbt = ((IEntityDataSaver)(LivingEntity)(Object)this).getPersistentData();
+        if(nbt.getBoolean("created")) if(nbt.getIntArray("skills")[0]>=0) {
+            int Roll = (this.random.nextBetween(1,21) + nbt.getIntArray("skills")[0] + nbt.getIntArray("stat_mod")[0]);
+            float swimMulti = Roll>=2f?Roll/200f:0.01f;
+            if(this.isSprinting() && this.isSwimming()) return swimmingModifier+swimMulti;
+        }
+        return swimmingModifier;
     }
 }
