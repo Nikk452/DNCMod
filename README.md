@@ -1,8 +1,7 @@
-# DNCMod
-<p style="text-align: center;"><strong><span style="font-size: 24px;">Dungeons and Crafting (Dev Phase 4)</span></strong></p>
+<p style="text-align: center;"><strong><span style="font-size: 30px;"><u>Dungeons and Crafting (Dev Phase 4)</u></span></strong></p>
 <hr>
-<p>Dungeons and crafting is a Minecraft mod inspired by a popular game named Dungeons and Dragons. Just like the game, the mod sets the game in a medieval fantasy world, in which players get to choose their races, classes, skills, et cetera and embark on an adventure with the other players.</p>
-<p>Of course the mod is going to allow you to level up, get hidden achievements, sub classes, kill unknown monsters and progress with your character&apos;s lore. However, currently the mod isn&apos;t finalized and has many more feature awaiting to be added.</p>
+<p><em><span style="font-size: 20px;">Dungeons and crafting is a Minecraft mod inspired by a popular game named Dungeons and Dragons. Just like the game, the mod sets the game in a medieval fantasy world, in which players get to choose their races, classes, skills, et cetera and embark on an adventure with the other players.</span></em></p>
+<p><em><span style="font-size: 20px;">Of course the mod is going to allow you to level up, get hidden achievements, sub classes, kill unknown monsters and progress with your character&apos;s lore. However, currently the mod isn&apos;t finalized and has many more feature awaiting to be added.</span></em></p>
 <hr>
 <p><strong>Current Feature List:</strong></p>
 <ul>
