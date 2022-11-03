@@ -11,6 +11,7 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.GameMode;
 import net.nikk.dncmod.DNCMod;
@@ -20,6 +21,7 @@ import net.nikk.dncmod.util.IEntityDataSaver;
 
 public class ModHudCallback implements HudRenderCallback{
     int dice_time = 0;
+    int current_dice = 0;
     final Identifier EXP_BAR = new Identifier(DNCMod.MOD_ID,
             "textures/gui/xp_bar_ui.png");
     final Identifier FULL_EXP_BAR = new Identifier(DNCMod.MOD_ID,
@@ -89,7 +91,12 @@ public class ModHudCallback implements HudRenderCallback{
             if(nbt.getBoolean("created") && nbt.getInt("d20")>0){
                 this.dice_time++;
                 k = scaledWidth - 34;
+                int t = (""+nbt.getInt("d20")).length()>1?k+11:k+13;
                 l = scaledHeight - 34;
+                if(this.current_dice!=nbt.getInt("d20")){
+                    if(this.current_dice>0) this.dice_time = 30;
+                    this.current_dice=nbt.getInt("d20");
+                }
                 if(this.dice_time<=10){
                     RenderSystem.setShaderColor(this.dice_time/10f, this.dice_time/10f, this.dice_time/10f, this.dice_time/10f);
                     RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -105,7 +112,7 @@ public class ModHudCallback implements HudRenderCallback{
                     RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
                     RenderSystem.setShaderTexture(0,DICE20);
                     DrawableHelper.drawTexture(matrices, k, l,32,32, 0, 0, 32, 32,32, 32);
-                    textRenderer.draw(matrices, ""+nbt.getInt("d20"), k+14, l+13, 0);
+                    textRenderer.draw(matrices, ""+this.current_dice, t, l+13, 0);
                 }else if (this.dice_time<=70) {
                     RenderSystem.setShader(GameRenderer::getPositionTexShader);
                     RenderSystem.enableBlend();
@@ -113,7 +120,7 @@ public class ModHudCallback implements HudRenderCallback{
                     RenderSystem.setShaderColor((90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f);
                     RenderSystem.setShaderTexture(0,DICE20);
                     DrawableHelper.drawTexture(matrices, k, l,32,32, 0, 0, 32, 32,32, 32);
-                    textRenderer.draw(matrices, ""+nbt.getInt("d20"), k+14, l+13, 0);
+                    textRenderer.draw(matrices, ""+this.current_dice, t, l+13, 0);
                 }else if (this.dice_time<=90) {
                     RenderSystem.setShader(GameRenderer::getPositionTexShader);
                     RenderSystem.enableBlend();
@@ -123,6 +130,7 @@ public class ModHudCallback implements HudRenderCallback{
                     DrawableHelper.drawTexture(matrices, k, l,32,32, 0, 0, 32, 32,32, 32);
                 } else{
                     nbt.putInt("d20",0);
+                    this.current_dice=0;
                     this.dice_time=0;
                 }
             }

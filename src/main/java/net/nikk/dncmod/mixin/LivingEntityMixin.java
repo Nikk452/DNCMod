@@ -1,14 +1,21 @@
 package net.nikk.dncmod.mixin;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.util.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,7 +39,13 @@ public abstract class LivingEntityMixin extends Entity {
         if(fallDistance>2) {
             NbtCompound nbt = ((IEntityDataSaver) (LivingEntity) (Object) this).getPersistentData();
             if (nbt.getBoolean("created")) if (nbt.getIntArray("skills")[3] >= 0) {
-                double Roll = (this.random.nextBetween(1, 21) + nbt.getIntArray("skills")[3] + nbt.getIntArray("stat_mod")[1]) / 4d;
+                int dice = this.random.nextBetween(1,21);
+                if(!this.getWorld().isClient()) {
+                    PacketByteBuf buf = PacketByteBufs.create();
+                    buf.writeInt(dice);
+                    ServerPlayNetworking.send((ServerPlayerEntity)livingEntity,Networking.DICE_ID, buf);
+                }
+                double Roll = (dice + nbt.getIntArray("skills")[3] + nbt.getIntArray("stat_mod")[1]) / 4d;
                 normal_damage -= MathHelper.ceil(Roll);
                 this.playSound(SoundEvents.BLOCK_WOOL_STEP, 1, 0.9F + this.random.nextFloat() * 0.2F);
                 return Math.max(normal_damage, 0);
@@ -52,8 +65,10 @@ public abstract class LivingEntityMixin extends Entity {
             if(this.isSprinting()){
                 NbtCompound nbt = ((IEntityDataSaver)(LivingEntity)(Object)this).getPersistentData();
                 if(nbt.getBoolean("created")) if(nbt.getIntArray("skills")[2]>=0) {
-                    double Roll = (this.random.nextBetween(1,21) + nbt.getIntArray("skills")[2] + nbt.getIntArray("stat_mod")[0])/4d;
+                    int dice = this.random.nextBetween(1,21);
+                    double Roll = (dice + nbt.getIntArray("skills")[2] + nbt.getIntArray("stat_mod")[0])/4d;
                     Roll = (int)(Roll*10)/10d;
+                    nbt.putInt("d20",dice);
                     this.JumpSkillAmp = (float)Roll;
                     this.playSound(SoundEvents.BLOCK_WOOL_FALL, 1, 0.9F + this.random.nextFloat() * 0.2F);
                     this.getWorld().addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian()* 0.02, this.random.nextGaussian()* 0.02, this.random.nextGaussian()* 0.02);

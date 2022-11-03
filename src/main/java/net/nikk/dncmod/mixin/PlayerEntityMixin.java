@@ -1,6 +1,9 @@
 package net.nikk.dncmod.mixin;
 
 import com.mojang.datafixers.util.Either;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -8,11 +11,14 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.nikk.dncmod.DNCMod;
+import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.util.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -77,8 +83,14 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         float H = Math.min(state.getBlock().getHardness(), 5f);
         int DC = (int)(5*((Math.pow(H<1?1:H,2))/2f));
         int Jump_mod = nbt.getIntArray("skills")[1]+nbt.getIntArray("stat_mod")[0];
-        int Roll = this.random.nextBetween(1,21)+Jump_mod;
+        int Dice = this.random.nextBetween(1,21);
+        int Roll = Dice+Jump_mod;
         if(this.successTimes>=4) {
+            if(!(this.getWorld().isClient())) {
+                PacketByteBuf buf = PacketByteBufs.create();
+                buf.writeInt(Dice);
+                ServerPlayNetworking.send((ServerPlayerEntity)(Object)this,Networking.DICE_ID, buf);
+            }
             this.successTimes = 0;
             cir.setReturnValue(cir.getReturnValue() * random.nextFloat(0f,(Jump_mod>0?(float)Jump_mod:0.1f)/(Roll>DC*2?Roll>DC*4?1f:2f:4f)));
         }

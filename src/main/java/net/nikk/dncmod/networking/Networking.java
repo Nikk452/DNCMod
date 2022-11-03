@@ -15,6 +15,7 @@ import net.nikk.dncmod.util.IEntityDataSaver;
 
 public class Networking {
     public static final Identifier CREATION_ID = new Identifier(DNCMod.MOD_ID,"creation");
+    public static final Identifier DICE_ID = new Identifier(DNCMod.MOD_ID,"dice");
     public static final Identifier CREATION_SYNC_ID = new Identifier(DNCMod.MOD_ID,"creation_sync");
     public static final Identifier SYNC_CONFIG = new Identifier(DNCMod.MOD_ID,"sync_config");
     public static final Identifier SETUP_TIME = new Identifier(DNCMod.MOD_ID,"setup_time");
@@ -34,6 +35,7 @@ public class Networking {
 
     }
     public static void RegisterS2CPackets(){
+        ClientPlayNetworking.registerGlobalReceiver(DICE_ID, diceS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(SYNC_STATS, syncS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(CREATION_SYNC_ID, CreatedCharacterS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(EXAMPLE_S2C, ExampleS2CPacket::receive);

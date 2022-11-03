@@ -42,7 +42,7 @@ public class KeyInputHandler {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(testkey.wasPressed()) {
                 PacketByteBuf bufs = PacketByteBufs.create();
-                bufs.writeInt(5);
+                bufs.writeInt(StatScreen1.getIndexOfLargest(((IEntityDataSaver)client.player).getPersistentData().getIntArray("classes")));
                 ClientPlayNetworking.send(Networking.EXAMPLE_C2S, bufs);
             }
         });

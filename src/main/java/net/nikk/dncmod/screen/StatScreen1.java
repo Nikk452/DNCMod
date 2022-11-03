@@ -107,7 +107,7 @@ public class StatScreen1 extends Screen {
             super.render(matrices, mouseX, mouseY, delta);
         }
     }
-    public int getIndexOfLargest( int[] array )
+    public static int getIndexOfLargest(int[] array)
     {
         if ( array == null || array.length == 0 ) return -1;
 

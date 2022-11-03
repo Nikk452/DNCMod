@@ -29,7 +29,7 @@ public class StatScreen3 extends Screen {
     protected void init() {
         int stats[] = {0,0,0,0,0,0};
         this.addDrawableChild(new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
-            this.client.setScreen(new StatScreen3());}));
+            this.client.setScreen(new StatScreen4());}));
         this.addDrawableChild(new ButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> {
             this.client.setScreen(new StatScreen2());}));
     }
@@ -56,12 +56,12 @@ public class StatScreen3 extends Screen {
         textRendererMatrixStack.scale(1.0F, 1.0F, 1.0F);
         textRenderer.draw(textRendererMatrixStack, "Status", width/2-18, y+20+line*2/3, 	15859709);
         textRenderer.draw(textRendererMatrixStack, Text.literal("Information".toUpperCase(Locale.ROOT)).styled(style -> style.withUnderline(true)), x+collum*4, y+20+line*2+line, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, Text.literal("[").append(Text.literal("NAME")).append(": "+player.getDisplayName().toString()+"]"), x+collum*4, y+20+line*4+line, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, "[HEALTH: "+(double) Math.round(player.getHealth()*10)/10+"/"+player.getMaxHealth()+"]", x+collum*4, y+20+line*6+line, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, "[LEVEL: "+player.experienceLevel+"/"+Math.round(player.experienceProgress*player.getNextLevelExperience())+"/"+player.getNextLevelExperience()+"]", x+collum*4, y+20+line*8+line, 15859709);
-        textRenderer.draw(textRendererMatrixStack, "[HIT DICE :"+playerD.getPersistentData().getInt("dice")+"]", x+collum*4, y+20+line*10+line, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, "[BONUS STATS: "+(int)Math.floor((player.experienceLevel+1)/5)+"]", x+collum*4, y+20+line*12+line, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, "[KI POINTS: "+playerD.getPersistentData().getInt("ki")+"]", x+collum*4, y+20+line*14+line, 	15859709);
+        textRenderer.draw(textRendererMatrixStack, Text.literal("]"), x+collum*4, y+20+line*4+line, 	15859709);
+        textRenderer.draw(textRendererMatrixStack, "[HEALTH: ", x+collum*4, y+20+line*6+line, 	15859709);
+        textRenderer.draw(textRendererMatrixStack, "[LEVEL: ", x+collum*4, y+20+line*8+line, 15859709);
+        textRenderer.draw(textRendererMatrixStack, "[HIT DICE :", x+collum*4, y+20+line*10+line, 	15859709);
+        textRenderer.draw(textRendererMatrixStack, "[BONUS STATS: ", x+collum*4, y+20+line*12+line, 	15859709);
+        textRenderer.draw(textRendererMatrixStack, "[KI POINTS: ", x+collum*4, y+20+line*14+line, 	15859709);
         super.render(matrices, mouseX, mouseY, delta);
     }
 }
