@@ -1,5 +1,5 @@
 # DNCMod
-<p style="text-align: center;"><strong><span style="font-size: 24px;">Dungeons and Crafting</span></strong></p>
+<p style="text-align: center;"><strong><span style="font-size: 24px;">Dungeons and Crafting (Dev Phase 4)</span></strong></p>
 <hr>
 <p>Dungeons and crafting is a Minecraft mod inspired by a popular game named Dungeons and Dragons. Just like the game, the mod sets the game in a medieval fantasy world, in which players get to choose their races, classes, skills, et cetera and embark on an adventure with the other players.</p>
 <p>Of course the mod is going to allow you to level up, get hidden achievements, sub classes, kill unknown monsters and progress with your character&apos;s lore. However, currently the mod isn&apos;t finalized and has many more feature awaiting to be added.</p>
@@ -10,5 +10,6 @@
     <li><strong>Skills:</strong> Currently the game has 27 skills(8 working ones) that are all available to you through character creation, the skills that are available for use are: Swim, Jump, Mine, Stealth, Acrobatics, Insight, Investigation, Perception</li>
     <li><strong>LVL UP!&nbsp;</strong>We replaced the normal leveling system and placed our own experience bar and level that indicate the character&apos;s total level, which is all classes levels combined. You are able to level up through killing certain mobs, however, currently only skeletons drop the custom experience that is used to level up your class, to level up the class you should press the key designed for it.</li>
     <li><strong>Ores and Resources:&nbsp;</strong>There are many resources and materials that were added to the game, of course currently they have no use but they are already able to generate in your world.</li>
-    <li><strong>Weapons:</strong> We added very few weapons, they gonna have a use very soon since the next update is about combat system.</li>
+    <li><strong>Weapons:</strong> We added very few weapons, currently they are not entirely functional but they gonna have a use very soon since the next update is about changing the combat system.</li>
+    <li><strong>Dice!&nbsp;</strong>A small dice is rolled in the right bottom corner of your screen when you perform a certain action, for example, perform a skill check or et cetera</li>
 </ul>
