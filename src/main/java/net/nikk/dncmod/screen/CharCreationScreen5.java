@@ -89,15 +89,15 @@ public class CharCreationScreen5 extends Screen {
             this.addDrawableChild(this.slots[i]);
             this.slots[i].active = false;
         }
-        int[] tx = {12,14,16,12,14,16,18,20,12,14,12,14,16,18,20,22,12,14,16,18,20,12,14,16,18,20};
-        int[] ts = {0,0,0,1,1,1,1,1,2,2,3,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5};
-        int[] ty = {20,20,20,30,30,30,30,30,40,40,50,50,50,50,50,50,60,60,60,60,60,70,70,70,70,70};
-        String[] ids = {"grapleskill","mineskill","jumpskill","acrobaticsskill","stealthskill","stealingskill","lockpickskill","craftingskill","concentrationskill","enduranceskill","lore_arcaneskill","lore_divineskill","lore_primalskill","investigationskill","medicineskill","researchskill","healskill",
+        int[] tx = {12,14,16,18,12,14,16,18,20,12,14,12,14,16,18,20,22,12,14,16,18,20,12,14,16,18,20};
+        int[] ts = {0,0,0,0,1,1,1,1,1,2,2,3,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5};
+        int[] ty = {20,20,20,20,30,30,30,30,30,40,40,50,50,50,50,50,50,60,60,60,60,60,70,70,70,70,70};
+        String[] ids = {"grapleskill","mineskill","jumpskill","swimskill","acrobaticsskill","stealthskill","stealingskill","lockpickskill","craftingskill","concentrationskill","enduranceskill","lore_arcaneskill","lore_divineskill","lore_primalskill","investigationskill","medicineskill","researchskill","healskill",
         "perceptionskill","appraiseskill","insightskill","meditationskill","magicaldeviceskill","persuasionskill","deceptionskill","intimidationskill","performanceskill"};
-        String[] names = {"skills.dncmod.grapple","skills.dncmod.mine","skills.dncmod.jump","skills.dncmod.acrobatics","skills.dncmod.stealth","skills.dncmod.stealing","skills.dncmod.lockpick","skills.dncmod.crafting","skills.dncmod.concentration","skills.dncmod.endurance","skills.dncmod.lore_arcane",
+        String[] names = {"skills.dncmod.grapple","skills.dncmod.mine","skills.dncmod.jump","skills.dncmod.swim","skills.dncmod.acrobatics","skills.dncmod.stealth","skills.dncmod.stealing","skills.dncmod.lockpick","skills.dncmod.crafting","skills.dncmod.concentration","skills.dncmod.endurance","skills.dncmod.lore_arcane",
                 "skills.dncmod.lore_divine","skills.dncmod.lore_primal","skills.dncmod.investigation","skills.dncmod.medicine","skills.dncmod.research","skills.dncmod.heal","skills.dncmod.perception","skills.dncmod.appraise","skills.dncmod.insight","skills.dncmod.meditation",
                 "skills.dncmod.magical_device","skills.dncmod.persuasion","skills.dncmod.deception","skills.dncmod.intimidation","skills.dncmod.performance"};
-        for(int i = 0;i<26;i++){
+        for(int i = 0;i<27;i++){
             int idx = i;
             int s_type = ts[i];
             String s_name = names[i];
@@ -109,7 +109,7 @@ public class CharCreationScreen5 extends Screen {
             this.E1 = false;
             this.next_button.active = true;
             this.previous_button.active = true;
-            for(int i = 0;i<26;i++) this.skillsbuttons.get(i).active = true;
+            for(int i = 0;i<27;i++) this.skillsbuttons.get(i).active = true;
         });
         this.addDrawableChild(this.error_window);
         this.complete_button = new ButtonWidget(x -12 + collum * 14, y + 22 + line * 24, 75, 20, Text.literal("Complete"), (button) -> {
@@ -131,7 +131,7 @@ public class CharCreationScreen5 extends Screen {
             this.next_button.active = true;
             this.previous_button.active = true;
             for(int i = 0;i<4;i++) this.slots[i].active = true;
-            for(int i = 0;i<26;i++) this.skillsbuttons.get(i).active = true;
+            for(int i = 0;i<27;i++) this.skillsbuttons.get(i).active = true;
         });
         this.addDrawableChild(this.complete_window);
 
@@ -187,7 +187,7 @@ public class CharCreationScreen5 extends Screen {
         this.previous_button.render(matrices,mouseX,mouseY,delta);
         this.next_button.render(matrices,mouseX,mouseY,delta);
         for(int i = 0;i<4;i++) this.slots[i].render(matrices,mouseX,mouseY,delta);
-        for(int i = 0;i<26;i++) this.skillsbuttons.get(i).render(matrices,mouseX,mouseY,delta);
+        for(int i = 0;i<27;i++) this.skillsbuttons.get(i).render(matrices,mouseX,mouseY,delta);
         //text drawing
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         MatrixStack textRendererMatrixStack = new MatrixStack();
@@ -203,10 +203,11 @@ public class CharCreationScreen5 extends Screen {
             case "Monk" -> textRenderer.draw(textRendererMatrixStack, Text.literal("(2 Wisdom, 1 Dexterity, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709);
         }
         RenderSystem.setShaderColor(1.00f, 1.00f, 1.00f, 1.00f);
-        ArrayList<List<Text>> arr = new ArrayList<>(26);
+        ArrayList<List<Text>> arr = new ArrayList<>(27);
         arr.add(List.of(new Text[]{Text.literal("[Strength] Skill: Grapple"), Text.literal("Grappling is a game mechanic that"),Text.literal("essentially means grabbing a dude")}));
         arr.add(List.of(new Text[]{Text.literal("[Strength] Skill: Mine"), Text.literal("Mine lets you mine"),Text.literal("faster and more effective")}));
         arr.add(List.of(new Text[]{Text.literal("[Strength] Skill: Jump"), Text.literal("Jump allows you to jump further"),Text.literal("and higher using your strength")}));
+        arr.add(List.of(new Text[]{Text.literal("[Strength] Skill: Swim"), Text.literal("Swim lets you to swim further"),Text.literal("away using your strength stat")}));
         arr.add(List.of(new Text[]{Text.literal("[Dexterity] Skill: Acrobatics"), Text.literal("Acrobatics covers your attempt to stay"),Text.literal("on your feet in a tricky situation")}));
         arr.add(List.of(new Text[]{Text.literal("[Dexterity] Skill: Stealth"), Text.literal("Stealth lets you conceal yourself from "),Text.literal("enemies, move unnoticed or spy on someone")}));
         arr.add(List.of(new Text[]{Text.literal("[Dexterity] Skill: Stealing"), Text.literal("By using the stealing skill you will be able to"),Text.literal("take an item from another players inventory")}));
@@ -230,7 +231,7 @@ public class CharCreationScreen5 extends Screen {
         arr.add(List.of(new Text[]{Text.literal("[Charisma] Skill: Deception"), Text.literal("Deception lets you"),Text.literal("convincingly hide the truth")}));
         arr.add(List.of(new Text[]{Text.literal("[Charisma] Skill: Intimidation"),Text.literal("When you attempt to influence"),Text.literal("someone through overt threats,"),Text.literal("hostile actions, and physical violence")}));
         arr.add(List.of(new Text[]{Text.literal("[Charisma] Skill: Performance"), Text.literal("Performance determines how well"),Text.literal("you can delight an audience with"),Text.literal("music, dance, acting, storytelling"),Text.literal("or some other form of entertainment")}));
-        for(int i=0;i<26;i++){
+        for(int i=0;i<27;i++){
             renderSkillTooltips(matrices,this.skillsbuttons.get(i).active,mouseX,mouseY,this.skillsbuttons.get(i).x,this.skillsbuttons.get(i).y,arr.get(i));
         }
         RenderSystem.setShaderColor(1.00f, 1.00f, 1.00f, 1.00f);
@@ -240,7 +241,7 @@ public class CharCreationScreen5 extends Screen {
             RenderSystem.defaultBlendFunc();
             this.next_button.active = false;
             this.previous_button.active = false;
-            for(int i = 0;i<26;i++) this.skillsbuttons.get(i).active = false;
+            for(int i = 0;i<27;i++) this.skillsbuttons.get(i).active = false;
             this.error_window.render(matrices,mouseX,mouseY,delta);
             this.error_window.active = true;
             textRenderer.draw(textRendererMatrixStack, Text.literal("ERROR!").formatted(Formatting.BOLD), x + collum * 14 + 5, y + 28 + line * 8, 16121850);
@@ -252,7 +253,7 @@ public class CharCreationScreen5 extends Screen {
             RenderSystem.defaultBlendFunc();
             this.next_button.active = false;
             this.previous_button.active = false;
-            for(int i = 0;i<26;i++) this.skillsbuttons.get(i).active = false;
+            for(int i = 0;i<27;i++) this.skillsbuttons.get(i).active = false;
             for(int i = 0;i<4;i++) this.slots[i].active = false;
             this.complete_window.render(matrices,mouseX,mouseY,delta);
             this.complete_button.render(matrices,mouseX,mouseY,delta);

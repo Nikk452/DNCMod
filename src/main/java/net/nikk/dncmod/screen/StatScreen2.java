@@ -65,10 +65,10 @@ public class StatScreen2 extends Screen {
         List<Integer> locsY = new ArrayList<>();
         locsY.add(y+20+line*2/3);locsY.add(y+20+line*2+line);locsY.add(y+20+line*2+line);locsY.add(y+20+line*2+line);
         int[] skills = nbt.getIntArray("skills");
-        int[] skill_type = new int[]{0,0,0,1,1,1,1,1,2,2,3,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5};
-        String[] ids = {"grapleskill","mineskill","jumpskill","acrobaticsskill","stealthskill","stealingskill","lockpickskill","craftingskill","concentrationskill","enduranceskill","lore_arcaneskill","lore_divineskill","lore_primalskill","investigationskill","medicineskill","researchskill","healskill",
+        int[] skill_type = new int[]{0,0,0,0,1,1,1,1,1,2,2,3,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5};
+        String[] ids = {"grapleskill","mineskill","jumpskill","swimskill","acrobaticsskill","stealthskill","stealingskill","lockpickskill","craftingskill","concentrationskill","enduranceskill","lore_arcaneskill","lore_divineskill","lore_primalskill","investigationskill","medicineskill","researchskill","healskill",
                 "perceptionskill","appraiseskill","insightskill","meditationskill","magicaldeviceskill","persuasionskill","deceptionskill","intimidationskill","performanceskill"};
-        String[] names = {"skills.dncmod.grapple","skills.dncmod.mine","skills.dncmod.jump","skills.dncmod.acrobatics","skills.dncmod.stealth","skills.dncmod.stealing","skills.dncmod.lockpick","skills.dncmod.crafting","skills.dncmod.concentration","skills.dncmod.endurance","skills.dncmod.lore_arcane",
+        String[] names = {"skills.dncmod.grapple","skills.dncmod.mine","skills.dncmod.jump","skills.dncmod.swim","skills.dncmod.acrobatics","skills.dncmod.stealth","skills.dncmod.stealing","skills.dncmod.lockpick","skills.dncmod.crafting","skills.dncmod.concentration","skills.dncmod.endurance","skills.dncmod.lore_arcane",
                 "skills.dncmod.lore_divine","skills.dncmod.lore_primal","skills.dncmod.investigation","skills.dncmod.medicine","skills.dncmod.research","skills.dncmod.heal","skills.dncmod.perception","skills.dncmod.appraise","skills.dncmod.insight","skills.dncmod.meditation",
                 "skills.dncmod.magical_device","skills.dncmod.persuasion","skills.dncmod.deception","skills.dncmod.intimidation","skills.dncmod.performance"};
         int confirmed_skills = 0;

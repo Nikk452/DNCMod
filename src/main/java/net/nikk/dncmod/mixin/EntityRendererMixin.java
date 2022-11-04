@@ -38,11 +38,11 @@ public abstract class EntityRendererMixin<T extends Entity> {
         if(entity instanceof PlayerEntity){
             NbtCompound viewer = ((IEntityDataSaver)minecraft.player).getPersistentData();
             if(viewer.getBoolean("created")){
-                if(viewer.getIntArray("skills")[13]>=0){
-                    int p_invest = viewer.getIntArray("skills")[13]+viewer.getIntArray("stat_mod")[3]+8;
+                if(viewer.getIntArray("skills")[14]>=0){
+                    int p_invest = viewer.getIntArray("skills")[14]+viewer.getIntArray("stat_mod")[3]+8;
                     if(10>=p_invest) callbackInfo.cancel();
-                } else if (viewer.getIntArray("skills")[19]>=0) {
-                    int p_insight = viewer.getIntArray("skills")[19]+viewer.getIntArray("stat_mod")[4]+8;
+                } else if (viewer.getIntArray("skills")[20]>=0) {
+                    int p_insight = viewer.getIntArray("skills")[20]+viewer.getIntArray("stat_mod")[4]+8;
                     if(10>=p_insight) callbackInfo.cancel();
                 } else callbackInfo.cancel();
             }

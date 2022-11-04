@@ -51,7 +51,8 @@
 
   "skills.dncmod.grapple" : "Grapple",
   "skills.dncmod.mine" : "Mine",
-  "skills.dncmod.jump" : "jump",
+  "skills.dncmod.jump" : "Jump",
+  "skills.dncmod.swim" : "Swim",
   "skills.dncmod.endurance" : "Endurance",
   "skills.dncmod.concentration" : "Concentration",
   "skills.dncmod.lore_divine" : "Lore Divine",

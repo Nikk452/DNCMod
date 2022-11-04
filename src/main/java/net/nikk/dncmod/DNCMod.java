@@ -2,6 +2,7 @@ package net.nikk.dncmod;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
@@ -10,6 +11,7 @@ import net.nikk.dncmod.block.ModBlocks;
 import net.nikk.dncmod.config.ModConfig;
 import net.nikk.dncmod.config.SystemTimeConfig;
 import net.nikk.dncmod.config.TimeDataStorage;
+import net.nikk.dncmod.event.ExclusiveServer;
 import net.nikk.dncmod.event.KillEntityHandler;
 import net.nikk.dncmod.item.ModItems;
 import net.nikk.dncmod.networking.Networking;
@@ -39,6 +41,7 @@ public class DNCMod implements ModInitializer {
 		ModBlocks.registerModBlocks();
 		Networking.RegisterC2SPackets();
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new KillEntityHandler());
+		ServerLifecycleEvents.SERVER_STARTED.register(new ExclusiveServer());
 		}
 	public void craftPaths(){
 		try{
@@ -81,7 +84,6 @@ public class DNCMod implements ModInitializer {
 	public static void sendConfigSyncPacket(ServerPlayerEntity player){
 		if(false) if(!player.getServer().isHost(player.getGameProfile())) {
 			PacketByteBuf buf = PacketByteBufs.create();
-
 			ModConfig cfg = DNCMod.CONFIG;
 			SystemTimeConfig cfgs = DNCMod.systemTimeConfig;
 			buf.writeBoolean(cfg.patchSkyAngle);

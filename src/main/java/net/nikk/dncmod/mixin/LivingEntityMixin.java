@@ -38,14 +38,14 @@ public abstract class LivingEntityMixin extends Entity {
         int normal_damage = this.computeFallDamage(fallDistance, damageMultiplier);
         if(fallDistance>2) {
             NbtCompound nbt = ((IEntityDataSaver) (LivingEntity) (Object) this).getPersistentData();
-            if (nbt.getBoolean("created")) if (nbt.getIntArray("skills")[3] >= 0) {
+            if (nbt.getBoolean("created")) if (nbt.getIntArray("skills")[4] >= 0) {
                 int dice = this.random.nextBetween(1,21);
                 if(!this.getWorld().isClient()) {
                     PacketByteBuf buf = PacketByteBufs.create();
                     buf.writeInt(dice);
                     ServerPlayNetworking.send((ServerPlayerEntity)livingEntity,Networking.DICE_ID, buf);
                 }
-                double Roll = (dice + nbt.getIntArray("skills")[3] + nbt.getIntArray("stat_mod")[1]) / 4d;
+                double Roll = (dice + nbt.getIntArray("skills")[4] + nbt.getIntArray("stat_mod")[1]) / 4d;
                 normal_damage -= MathHelper.ceil(Roll);
                 this.playSound(SoundEvents.BLOCK_WOOL_STEP, 1, 0.9F + this.random.nextFloat() * 0.2F);
                 return Math.max(normal_damage, 0);
@@ -81,8 +81,8 @@ public abstract class LivingEntityMixin extends Entity {
     @ModifyVariable(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
     private float swimSkill(float swimmingModifier) {
         NbtCompound nbt = ((IEntityDataSaver)(LivingEntity)(Object)this).getPersistentData();
-        if(nbt.getBoolean("created")) if(nbt.getIntArray("skills")[0]>=0) {
-            int Roll = (this.random.nextBetween(1,21) + nbt.getIntArray("skills")[0] + nbt.getIntArray("stat_mod")[0]);
+        if(nbt.getBoolean("created")) if(nbt.getIntArray("skills")[3]>=0) {
+            int Roll = (this.random.nextBetween(1,21) + nbt.getIntArray("skills")[3] + nbt.getIntArray("stat_mod")[0]);
             float swimMulti = Roll>=2f?Roll/200f:0.01f;
             if(this.isSprinting() && this.isSwimming()) return swimmingModifier+swimMulti;
         }
