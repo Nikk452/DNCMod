@@ -15,32 +15,20 @@ import net.minecraft.world.WorldSaveHandler;
 import net.nikk.dncmod.mixin.PlayerManagerAccess;
 import net.nikk.dncmod.mixin.SaveHandlerAccess;
 import net.nikk.dncmod.networking.Networking;
-import net.nikk.dncmod.util.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.Arrays;
 
 import static net.nikk.dncmod.DNCMod.LOGGER;
 
 public class NewNameC2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
-        NbtCompound nbt = ((IEntityDataSaver)player).getPersistentData();
         String name = buf.readString();
-        String[] ids = ((PlayerManagerAccess)server.getPlayerManager()).getSaveHandler().getSavedPlayerIds();
-        ArrayList<String> names = new ArrayList<>();
-        player.server.getPlayerNames();
-        for (String id: ids) {
-            NbtCompound nbtCompound = getNbtFromUUID(player,id);
-            if(nbtCompound!=null) if(nbtCompound.contains("dncmod.chart",10)){
-                NbtCompound test = nbtCompound.getCompound("dncmod.chart");
-                names.add(test.getString("first_name") + " " + test.getString("last_name"));
-            }
-        }
+        String[] ids = player.server.getPlayerNames();
         PacketByteBuf buffer = PacketByteBufs.create();
-        buffer.writeBoolean(!(names.contains(name)));
+        buffer.writeBoolean(!(Arrays.stream(ids).toList().contains(name)));
         ServerPlayNetworking.send(player, Networking.NEWNAMES2C, buffer);
     }
     @Nullable
