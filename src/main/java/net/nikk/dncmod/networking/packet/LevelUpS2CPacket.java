@@ -24,6 +24,12 @@ public class LevelUpS2CPacket {
                 nbt.putInt("max_experience", nbt_res.getInt("max_experience"));
                 nbt.putInt("proficiency_modifier", nbt_res.getInt("proficiency_modifier"));
                 client.player.sendMessage(Text.literal("You have leveled up!"));
+            } else if (nbt_res.getBoolean("down")) {
+                nbt.putIntArray("classes",nbt_res.getIntArray("classes"));
+                nbt.putIntArray("hit_dices",nbt_res.getIntArray("hit_dices"));
+                nbt.putInt("total_level", nbt_res.getInt("total_level"));
+                nbt.putInt("max_experience", nbt_res.getInt("max_experience"));
+                nbt.putInt("proficiency_modifier", nbt_res.getInt("proficiency_modifier"));
             }
             nbt.putInt("experience", nbt_res.getInt("experience"));
         });

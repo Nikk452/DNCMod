@@ -1,7 +1,5 @@
 package net.nikk.dncmod.mixin;
 
-import com.mojang.datafixers.util.Either;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
@@ -14,18 +12,12 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Unit;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.util.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Random;
@@ -36,9 +28,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
     }
-    @Shadow public abstract boolean canResetTimeBySleeping();
-
-    @Shadow public abstract void wakeUp(boolean bl, boolean bl2);
     @Inject(method = "createPlayerAttributes", at = @At("RETURN"), cancellable = true)
     private static void setMaxHealthAttribute(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir){
         DefaultAttributeContainer.Builder builder = cir.getReturnValue();
@@ -52,29 +41,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             return Text.literal(((IEntityDataSaver)(PlayerEntity) (Object) this).getPersistentData().getString("first_name")+" "+((IEntityDataSaver)(PlayerEntity) (Object) this).getPersistentData().getString("last_name"));
         return cir.getReturnValue();
     }
-
-    @Redirect(method = "tick", at =@At(value = "INVOKE", target = "net/minecraft/entity/player/PlayerEntity.wakeUp (ZZ)V"))
-    private void disableDayCheck(PlayerEntity playerEntity, boolean bl, boolean updateSleepingPlayers){
-        if(!DNCMod.CONFIG.syncWithSystemTime){
-            this.wakeUp(false, true);
-        }
-    }
-
-    @Inject(method = "trySleep", at =@At("HEAD"))
-    private void onPlayerStartedSleeping(BlockPos pos, CallbackInfoReturnable<Either<PlayerEntity.SleepFailureReason, Unit>> cir){
-        this.restTimer = 0;
-    }
-
-    @Inject(method = "tick", at =@At("TAIL"))
-    private void onPlayerTick(CallbackInfo ci){
-        if(DNCMod.CONFIG.syncWithSystemTime && this.canResetTimeBySleeping()){
-            ++restTimer;
-            if(restTimer > 60){
-                this.heal(1.0F);
-                restTimer = 0;
-            }
-        }
-    }
     int successTimes = 0;
     @Inject(method = "getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F", at = @At("RETURN"), cancellable = true)
     private void mineSkill(BlockState state, CallbackInfoReturnable<Float> cir) {
@@ -83,7 +49,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         float H = Math.min(state.getBlock().getHardness(), 5f);
         int DC = (int)(5*((Math.pow(H<1?1:H,2))/2f));
         int Jump_mod = nbt.getIntArray("skills")[1]+nbt.getIntArray("stat_mod")[0];
-        int Dice = this.random.nextBetween(1,21);
+        int Dice = this.random.nextBetween(1,20);
         int Roll = Dice+Jump_mod;
         if(this.successTimes>=4) {
             if(!(this.getWorld().isClient())) {

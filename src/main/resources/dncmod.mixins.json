@@ -8,20 +8,15 @@
     "InGameHudMixin",
     "PlayerEntityMixin",
     "LivingEntityMixin",
-    "ServerWorldMixin",
-    "DimensionTypeMixin",
     "PlayerManagerMixin",
     "EntityRendererMixin",
-    "TimeCommandMixin",
-    "SleepManagerMixin",
-    "ServerPlayerEntityMixin",
     "PlayerListS2CPacketMixin",
-    "EntityMixin"
+    "EntityMixin",
+    "PlayerManagerAccess",
+    "SaveHandlerAccess"
   ],
   "client": [
-    "ExampleMixin",
-    "ClientWorldMixin",
-    "IntegratedServerMixin"
+    "ExampleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

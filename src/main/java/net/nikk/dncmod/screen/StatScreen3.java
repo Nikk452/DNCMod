@@ -55,13 +55,6 @@ public class StatScreen3 extends Screen {
         MatrixStack textRendererMatrixStack = new MatrixStack();
         textRendererMatrixStack.scale(1.0F, 1.0F, 1.0F);
         textRenderer.draw(textRendererMatrixStack, "Status", width/2-18, y+20+line*2/3, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, Text.literal("Information".toUpperCase(Locale.ROOT)).styled(style -> style.withUnderline(true)), x+collum*4, y+20+line*2+line, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, Text.literal("]"), x+collum*4, y+20+line*4+line, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, "[HEALTH: ", x+collum*4, y+20+line*6+line, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, "[LEVEL: ", x+collum*4, y+20+line*8+line, 15859709);
-        textRenderer.draw(textRendererMatrixStack, "[HIT DICE :", x+collum*4, y+20+line*10+line, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, "[BONUS STATS: ", x+collum*4, y+20+line*12+line, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, "[KI POINTS: ", x+collum*4, y+20+line*14+line, 	15859709);
         super.render(matrices, mouseX, mouseY, delta);
     }
 }

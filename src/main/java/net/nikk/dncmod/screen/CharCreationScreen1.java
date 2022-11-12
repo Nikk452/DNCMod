@@ -1,6 +1,8 @@
 package net.nikk.dncmod.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
@@ -9,10 +11,17 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.WorldSavePath;
 import net.nikk.dncmod.DNCMod;
+import net.nikk.dncmod.networking.Networking;
+import net.nikk.dncmod.util.IEntityDataSaver;
+
+import java.io.File;
 
 public class CharCreationScreen1 extends Screen {
     private TextFieldWidget textField1;
@@ -32,7 +41,8 @@ public class CharCreationScreen1 extends Screen {
     private double anime;
     private float shade_color;
     private Boolean animate;
-
+    private boolean waiting = false;
+    private String allowed_name = "";
     public CharCreationScreen1(String name1,String name2,String classname,String race, int[] stats,int extrastat,int[] stat_index,boolean animate) {
         super(Text.literal("Stat2"));
         this.firstName = name1;
@@ -64,7 +74,15 @@ public class CharCreationScreen1 extends Screen {
         this.textField2.setMaxLength(12);
         this.addDrawableChild(this.textField2);
         this.textField2.setText(this.lastName);
-        this.createCharButton = new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> this.confirmName());
+        this.createCharButton = new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
+            this.createCharButton.active = false;
+            this.textField1.setFocusUnlocked(false);
+            this.textField2.setFocusUnlocked(false);
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeString(this.firstName+" "+this.lastName);
+            this.waiting = true;
+            ClientPlayNetworking.send(Networking.NEWNAMEC2S,buf);
+        });
         this.addDrawableChild(this.createCharButton);
         //error pannel
         this.errorwindow = new TexturedButtonWidget(x+collum*8+4, y+20+line*3,194,160,0,0,0,new Identifier(DNCMod.MOD_ID,"textures/gui/uialarm.png"),194,160,(button) -> {
@@ -81,7 +99,13 @@ public class CharCreationScreen1 extends Screen {
     }
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-
+        if(this.waiting){
+            this.allowed_name = ((IEntityDataSaver)client.player).getPersistentData().getString("allowed_name");
+            if(this.allowed_name.length()>1){
+                this.waiting = false;
+                this.confirmName();
+            }
+        }
         int backgroundWidth = 412;
         int backgroundHeight = 256;
         int x = (width - backgroundWidth) / 2;
@@ -159,9 +183,7 @@ public class CharCreationScreen1 extends Screen {
         String fullname = this.firstName +" "+ this.lastName;
         if(!this.firstName.equals("") && !this.lastName.equals("")){
             if (this.firstName != null && this.firstName.matches("^[a-zA-Z]*$") && this.lastName != null && this.lastName.matches("^[a-zA-Z]*$")){
-                if(!fullname.equals("Test Test")){
-                    MinecraftClient.getInstance().player.getDisplayName();
-                    MinecraftClient.getInstance().player.setCustomNameVisible(true);
+                if(this.allowed_name.equals("true")){
                     this.client.setScreen(new CharCreationScreen2(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index));
                 }else {this.E1=true;this.E2=false;this.E3=false;}
             }else {this.E2 = true;this.E3=false;this.E1=false;}

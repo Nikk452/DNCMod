@@ -1,6 +1,7 @@
 package net.nikk.dncmod.item;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -79,6 +80,12 @@ public class ModItems {
             new BowItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item DART = registerItem("dart",
             new SnowballItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item ARRIVAL_JACKET = registerItem("arrival_jacket",
+            new ArmorItem(ModArmorMaterials.ARRIVAL, EquipmentSlot.CHEST ,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item ARRIVAL_PANTS = registerItem("arrival_pants",
+            new ArmorItem(ModArmorMaterials.ARRIVAL, EquipmentSlot.LEGS ,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item ARRIVAL_BOOTS = registerItem("arrival_boots",
+            new ArmorItem(ModArmorMaterials.ARRIVAL, EquipmentSlot.FEET ,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(DNCMod.MOD_ID, name), item);
     }

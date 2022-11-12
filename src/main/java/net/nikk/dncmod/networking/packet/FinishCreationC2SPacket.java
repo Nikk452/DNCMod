@@ -61,6 +61,7 @@ public class FinishCreationC2SPacket {
             int con_health = race.equals("Dwarf")?(new_stats[2])*3/2-4:new_stats[2]-4;
             nbt.putInt("con_health_boost",con_health);
             AttributeData.addHealth(player,con_health,"con_health_boost","80b3a28a-42cd-4926-8327-91e75ab0191f");
+            nbt.putBoolean("celestial",true);
         }
         ServerPlayNetworking.send(player, Networking.CREATION_SYNC_ID, PacketByteBufs.create().writeNbt(nbt));
     }

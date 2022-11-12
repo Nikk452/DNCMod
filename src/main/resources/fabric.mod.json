@@ -23,6 +23,9 @@
     ],
     "client": [
       "net.nikk.dncmod.DNCModClient"
+    ],
+    "fabric-datagen": [
+      "net.nikk.dncmod.datagen.ModDataGeneration"
     ]
   },
   "mixins": [

@@ -35,6 +35,7 @@ public class CreatedCharacterS2CPacket {
         nbt.putBoolean("created", res_nbt.getBoolean("created"));
         nbt.putIntArray("hit_dices", res_nbt.getIntArray("hit_dices"));
         nbt.putInt("con_health_boost",res_nbt.getInt("con_health_boost"));
+        nbt.putBoolean("celestial",res_nbt.getBoolean("celestial"));
         client.execute(() -> {
             NbtCompound nbtCompound = ((IEntityDataSaver) client.player).getPersistentData();
             nbtCompound.putString("first_name", res_nbt.getString("first_name"));
@@ -60,6 +61,7 @@ public class CreatedCharacterS2CPacket {
             nbtCompound.putBoolean("created", res_nbt.getBoolean("created"));
             nbtCompound.putIntArray("hit_dices", res_nbt.getIntArray("hit_dices"));
             nbtCompound.putInt("con_health_boost",res_nbt.getInt("con_health_boost"));
+            nbtCompound.putBoolean("celestial",res_nbt.getBoolean("celestial"));
         });
     }
 }

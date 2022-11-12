@@ -11,9 +11,11 @@ import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.nikk.dncmod.DNCMod;
+import net.nikk.dncmod.util.AttributeData;
 import net.nikk.dncmod.util.IEntityDataSaver;
 
 import java.util.Arrays;
@@ -81,7 +83,7 @@ public class StatScreen1 extends Screen {
             int collum = backgroundWidth/30;
             String[] class_names = {"Fighter","Wizard","Druid","Cleric","Sorcerer","Monk"};
             int[] classes = nbt.getIntArray("classes");
-            int idx = getIndexOfLargest(classes);
+            int idx = AttributeData.getIndexOfLargest(classes);
             Text[] texts = {
                     Text.literal("Status "),
                     Text.literal(" Information ").styled(style -> style.withUnderline(true)),
@@ -106,16 +108,5 @@ public class StatScreen1 extends Screen {
             for(int i=0;i<18;i++) textRenderer.draw(textRendererMatrixStack, texts[i], locsX[i], locsY[i], 	15859709);
             super.render(matrices, mouseX, mouseY, delta);
         }
-    }
-    public static int getIndexOfLargest(int[] array)
-    {
-        if ( array == null || array.length == 0 ) return -1;
-
-        int largest = 0;
-        for ( int i = 1; i < array.length; i++ )
-        {
-            if ( array[i] > array[largest] ) largest = i;
-        }
-        return largest;
     }
 }

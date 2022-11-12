@@ -4,17 +4,12 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.*;
-import net.minecraft.util.Formatting;
 import net.nikk.dncmod.networking.Networking;
-import net.nikk.dncmod.networking.packet.ExampleS2CPacket;
 import net.nikk.dncmod.screen.CharCreationScreen1;
-import net.nikk.dncmod.screen.StatScreen1;
+import net.nikk.dncmod.util.AttributeData;
 import net.nikk.dncmod.util.IEntityDataSaver;
 import org.lwjgl.glfw.GLFW;
 
@@ -42,7 +37,7 @@ public class KeyInputHandler {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(testkey.wasPressed()) {
                 PacketByteBuf bufs = PacketByteBufs.create();
-                bufs.writeInt(StatScreen1.getIndexOfLargest(((IEntityDataSaver)client.player).getPersistentData().getIntArray("classes")));
+                bufs.writeInt(AttributeData.getIndexOfLargest(((IEntityDataSaver)client.player).getPersistentData().getIntArray("classes")));
                 ClientPlayNetworking.send(Networking.EXAMPLE_C2S, bufs);
             }
         });

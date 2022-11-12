@@ -1,18 +1,15 @@
 package net.nikk.dncmod.mixin;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.nikk.dncmod.networking.Networking;
@@ -39,7 +36,7 @@ public abstract class LivingEntityMixin extends Entity {
         if(fallDistance>2) {
             NbtCompound nbt = ((IEntityDataSaver) (LivingEntity) (Object) this).getPersistentData();
             if (nbt.getBoolean("created")) if (nbt.getIntArray("skills")[4] >= 0) {
-                int dice = this.random.nextBetween(1,21);
+                int dice = this.random.nextBetween(1,20);
                 if(!this.getWorld().isClient()) {
                     PacketByteBuf buf = PacketByteBufs.create();
                     buf.writeInt(dice);
@@ -65,7 +62,7 @@ public abstract class LivingEntityMixin extends Entity {
             if(this.isSprinting()){
                 NbtCompound nbt = ((IEntityDataSaver)(LivingEntity)(Object)this).getPersistentData();
                 if(nbt.getBoolean("created")) if(nbt.getIntArray("skills")[2]>=0) {
-                    int dice = this.random.nextBetween(1,21);
+                    int dice = this.random.nextBetween(1,20);
                     double Roll = (dice + nbt.getIntArray("skills")[2] + nbt.getIntArray("stat_mod")[0])/4d;
                     Roll = (int)(Roll*10)/10d;
                     nbt.putInt("d20",dice);
@@ -82,7 +79,7 @@ public abstract class LivingEntityMixin extends Entity {
     private float swimSkill(float swimmingModifier) {
         NbtCompound nbt = ((IEntityDataSaver)(LivingEntity)(Object)this).getPersistentData();
         if(nbt.getBoolean("created")) if(nbt.getIntArray("skills")[3]>=0) {
-            int Roll = (this.random.nextBetween(1,21) + nbt.getIntArray("skills")[3] + nbt.getIntArray("stat_mod")[0]);
+            int Roll = (this.random.nextBetween(1,20) + nbt.getIntArray("skills")[3] + nbt.getIntArray("stat_mod")[0]);
             float swimMulti = Roll>=2f?Roll/200f:0.01f;
             if(this.isSprinting() && this.isSwimming()) return swimmingModifier+swimMulti;
         }
