@@ -1,6 +1,0 @@
-{
-  "parent": "block/cross",
-  "textures": {
-    "cross": "dncmod:block/large_white_iron_bud"
-  }
-}

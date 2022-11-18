@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "dncmod:block/electrum_block"
+    }
+  }
+}

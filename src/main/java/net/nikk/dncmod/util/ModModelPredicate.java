@@ -9,6 +9,7 @@ public class ModModelPredicate {
     public static void registerModModels() {
         registerBow(ModItems.SHORT_BOW);
         registerBow(ModItems.SLING);
+        registerBow(ModItems.LONG_BOW);
     }
 
     private static void registerBow(Item bow) {

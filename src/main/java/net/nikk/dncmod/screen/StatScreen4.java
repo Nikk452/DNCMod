@@ -55,8 +55,6 @@ public class StatScreen4 extends Screen {
     protected void init() {
         this.addDrawableChild(new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
             this.client.setScreen(new StatScreen3());}));
-        this.addDrawableChild(new ButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> {
-            this.client.setScreen(new StatScreen3());}));
     }
 
     @Override

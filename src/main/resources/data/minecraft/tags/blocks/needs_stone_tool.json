@@ -4,12 +4,6 @@
     "dncmod:titanium_ore",
     "dncmod:silver_ore",
     "dncmod:tin_ore",
-    "dncmod:lead_ore",
-    "dncmod:dark_stone_ore",
-    "dncmod:platinum_ore",
-    "dncmod:white_iron_cluster",
-    "dncmod:large_white_iron_bud",
-    "dncmod:medium_white_iron_bud",
-    "dncmod:small_white_iron_bud"
+    "dncmod:lead_ore"
   ]
 }

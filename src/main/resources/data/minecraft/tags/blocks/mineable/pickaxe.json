@@ -10,6 +10,18 @@
     "dncmod:white_iron_cluster",
     "dncmod:large_white_iron_bud",
     "dncmod:medium_white_iron_bud",
-    "dncmod:small_white_iron_bud"
+    "dncmod:small_white_iron_bud",
+    "dncmod:adamantine_block",
+    "dncmod:arcanum_block",
+    "dncmod:electrum_block",
+    "dncmod:mithril_block",
+    "dncmod:dark_stone_block",
+    "dncmod:dark_steel_block",
+    "dncmod:lead_block",
+    "dncmod:tin_block",
+    "dncmod:titanium_block",
+    "dncmod:silver_block",
+    "dncmod:bronze_block",
+    "dncmod:platinum_block"
   ]
 }

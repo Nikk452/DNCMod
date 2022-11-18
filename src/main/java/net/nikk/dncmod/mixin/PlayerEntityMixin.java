@@ -18,6 +18,7 @@ import net.nikk.dncmod.util.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Random;
@@ -66,4 +67,15 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         }
         else cir.setReturnValue(8.1E-4F*cir.getReturnValue());
     }
+    /**
+    @ModifyVariable(method = "attack(Lnet/minecraft/entity/Entity;)V", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
+    private float myDamage(float damage) {
+        NbtCompound nbt = ((IEntityDataSaver)(PlayerEntity)(Object)this).getPersistentData();
+        if(nbt.getBoolean("created")) {
+            int Roll = this.random.nextBetween(1,20);
+            float swimMulti = Roll>=2f?Roll/200f:0.01f;
+            if(this.isSprinting() && this.isSwimming()) return damage+swimMulti;
+        }
+        return damage;
+    }*/
 }

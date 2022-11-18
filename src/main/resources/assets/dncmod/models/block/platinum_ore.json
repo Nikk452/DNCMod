@@ -1,6 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "dncmod:block/platinum_ore"
-  }
-}

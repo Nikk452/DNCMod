@@ -1,1 +1,14 @@
-// 1.19.2	2022-11-05T13:07:18.6741689	minecraft:block Loot Table
+// 1.19.2	2022-11-18T22:38:46.0137898	minecraft:block Loot Table
+a51b75e3f020a9aa45ab11e363912326f205bba1 data\dncmod\loot_tables\blocks\electrum_block.json
+b905de830ae3d2f0a5bcef63f90837379e11618b data\dncmod\loot_tables\blocks\arcanum_block.json
+ea7612a65e1c275961861ed2e836ad97bb775bd1 data\dncmod\loot_tables\blocks\silver_block.json
+08db38ad08a66e7e9988f2e0ec2c2b085fb87dd8 data\dncmod\loot_tables\blocks\titanium_block.json
+2f3c61dd379243e159977f23fd851c3704e39a22 data\dncmod\loot_tables\blocks\dark_steel_block.json
+b80be3b5340a2bd25a272d7bccab55e8efa2e8e8 data\dncmod\loot_tables\blocks\tin_block.json
+b72225e7d594b8856e6cf3bc643625f16752d4ac data\dncmod\loot_tables\blocks\mithril_block.json
+986ff9068671dc2e0ea581900be468956c48f9b1 data\dncmod\loot_tables\blocks\platinum_block.json
+4b418fc7e83141bc329efe15fc6262b17dadc90c data\dncmod\loot_tables\blocks\lead_block.json
+927e23396d8a96a737a76280457e62d4d8c7ee9a data\dncmod\loot_tables\blocks\bronze_block.json
+4a809c8c2ff522e5a39ceba21d9c5aa97830c6f2 data\dncmod\loot_tables\blocks\adamantine_block.json
+41145c46b5178a710a433af6c0be8fa5d6dda5ab data\dncmod\loot_tables\blocks\arcane_wood.json
+bbccb488f51f7e718abd4fdc9357e3e0bb86cd4a data\dncmod\loot_tables\blocks\dark_stone_block.json

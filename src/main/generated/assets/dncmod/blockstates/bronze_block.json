@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "dncmod:block/bronze_block"
+    }
+  }
+}

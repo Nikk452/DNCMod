@@ -26,7 +26,19 @@ public class ModRecipeGenerator extends FabricRecipeProvider {
         offerBlasting(exporter, List.of(ModItems.RAW_SILVER), ModItems.SILVER_INGOT,
                 0.7f, 200, "silver_ingot");
 
-        //offerReversibleCompactingRecipes(exporter, ModItems.TANZANITE, ModBlocks.TANZANITE_BLOCK);
+        offerReversibleCompactingRecipes(exporter, ModItems.ADAMANTINE_INGOT, ModBlocks.ADAMANTINE_BLOCK);
+        offerReversibleCompactingRecipes(exporter, ModItems.ARCANUM_INGOT, ModBlocks.ARCANUM_BLOCK);
+        offerReversibleCompactingRecipes(exporter, ModItems.TIN_INGOT, ModBlocks.TIN_BLOCK);
+        offerReversibleCompactingRecipes(exporter, ModItems.BRONZE_INGOT, ModBlocks.BRONZE_BLOCK);
+        offerReversibleCompactingRecipes(exporter, ModItems.SILVER_INGOT, ModBlocks.SILVER_BLOCK);
+        offerReversibleCompactingRecipes(exporter, ModItems.LEAD_INGOT, ModBlocks.LEAD_BLOCK);
+        offerReversibleCompactingRecipes(exporter, ModItems.MITHRIL_INGOT, ModBlocks.MITHRIL_BLOCK);
+        offerReversibleCompactingRecipes(exporter, ModItems.TITANIUM_INGOT, ModBlocks.TITANIUM_BLOCK);
+        offerReversibleCompactingRecipes(exporter, ModItems.ELECTRUM_INGOT, ModBlocks.ELECTRUM_BLOCK);
+        offerReversibleCompactingRecipes(exporter, ModItems.PLATINUM_INGOT, ModBlocks.PLATINUM_BLOCK);
+        offerReversibleCompactingRecipes(exporter, ModItems.DARK_STONE, ModBlocks.DARK_STONE_BLOCK);
+        offerReversibleCompactingRecipes(exporter, ModItems.DARK_STEEL_INGOT, ModBlocks.DARK_STEEL_BLOCK);
+
 
         /*ShapedRecipeJsonBuilder.create(ModItems.EIGHT_BALL)
                 .pattern("###")

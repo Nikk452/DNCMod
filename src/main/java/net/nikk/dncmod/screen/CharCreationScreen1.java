@@ -29,6 +29,7 @@ public class CharCreationScreen1 extends Screen {
     private boolean E1 = false;
     private boolean E2 = false;
     private boolean E3 = false;
+    private boolean E4 = false;
     private String firstName;
     private String lastName;
     final private String classname;
@@ -90,6 +91,7 @@ public class CharCreationScreen1 extends Screen {
             this.E1 = false;
             this.E2 = false;
             this.E3 = false;
+            this.E4 = false;
             this.textField1.setFocusUnlocked(true);
             this.textField2.setFocusUnlocked(true);
             this.createCharButton.active = true;
@@ -148,7 +150,7 @@ public class CharCreationScreen1 extends Screen {
             textRenderer.draw(textRendererMatrixStack, Text.literal("you will be seen as this name while on the server.").styled(style -> style.withItalic(true).withBold(true)), x + collum * 4, y + 20 + line * 5 + line, 15859709);
             textRenderer.draw(textRendererMatrixStack, "Pick a first name: ", x + collum * 4, y + 20 + line * 8 + line, 15859709);
             textRenderer.draw(textRendererMatrixStack, "Pick a last name: ", x + collum * 4, y + 20 + line * 11 + line, 15859709);
-            if (this.E1 || this.E2 || this.E3) {
+            if (this.E1 || this.E2 || this.E3 || this.E4) {
                 RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
@@ -167,6 +169,9 @@ public class CharCreationScreen1 extends Screen {
                 } else if (this.E3) {
                     textRenderer.draw(textRendererMatrixStack, "ONE OF THE", x + collum * 13 + 7, y + 25 + line * 12, 16121850);
                     textRenderer.draw(textRendererMatrixStack, "FIELDS ARE EMPTY!", x + collum * 13 - 7, y + 20 + line * 14, 16121850);
+                }else if (this.E4) {
+                    textRenderer.draw(textRendererMatrixStack, "THE NAME IS", x + collum * 13 + 4, y + 25 + line * 12, 16121850);
+                    textRenderer.draw(textRendererMatrixStack, "WAY TOO LONG!", x + collum * 13, y + 20 + line * 14, 16121850);
                 }
             }
         }
@@ -181,12 +186,14 @@ public class CharCreationScreen1 extends Screen {
         this.firstName = textField1.getText();
         this.lastName = textField2.getText();
         String fullname = this.firstName +" "+ this.lastName;
-        if(!this.firstName.equals("") && !this.lastName.equals("")){
-            if (this.firstName != null && this.firstName.matches("^[a-zA-Z]*$") && this.lastName != null && this.lastName.matches("^[a-zA-Z]*$")){
-                if(this.allowed_name.equals("true")){
-                    this.client.setScreen(new CharCreationScreen2(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index));
-                }else {this.E1=true;this.E2=false;this.E3=false;}
-            }else {this.E2 = true;this.E3=false;this.E1=false;}
-        }else {this.E3 = true;this.E2 = false;this.E1=false;}
+        if((this.firstName+" "+this.lastName).length()<17){
+            if(!this.firstName.equals("") && !this.lastName.equals("")){
+                if (this.firstName != null && this.firstName.matches("^[a-zA-Z]*$") && this.lastName != null && this.lastName.matches("^[a-zA-Z]*$")){
+                    if(this.allowed_name.equals("true")){
+                        this.client.setScreen(new CharCreationScreen2(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index));
+                    }else {this.E4 = false;this.E1=true;this.E2=false;this.E3=false;}
+                }else {this.E4 = false;this.E2 = true;this.E3=false;this.E1=false;}
+            }else {this.E4 = false;this.E3 = true;this.E2 = false;this.E1=false;}
+        }else {this.E4 = true;this.E3 = false;this.E2=false;this.E1=false;}
     }
 }

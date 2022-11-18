@@ -1,0 +1,6 @@
+{
+  "parent": "dncmod:item/long_bow",
+  "textures": {
+    "layer0": "dncmod:item/long_bow_pulling_2"
+  }
+}

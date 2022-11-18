@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
@@ -11,10 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.nikk.dncmod.block.ModBlocks;
 import net.nikk.dncmod.config.ModConfig;
-import net.nikk.dncmod.event.AfterRespawnEvent;
-import net.nikk.dncmod.event.CopyFromEvent;
-import net.nikk.dncmod.event.ExclusiveServer;
-import net.nikk.dncmod.event.KillEntityHandler;
+import net.nikk.dncmod.event.*;
 import net.nikk.dncmod.item.ModItems;
 import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.world.feature.ModConfiguredFeatures;
@@ -42,6 +40,7 @@ public class DNCMod implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STARTED.register(new ExclusiveServer());
 		ServerPlayerEvents.COPY_FROM.register(new CopyFromEvent());
 		ServerPlayerEvents.AFTER_RESPAWN.register(new AfterRespawnEvent());
+		AttackEntityCallback.EVENT.register(new AttackEntityEvent());
 		}
 	public void craftPaths(){
 		try{

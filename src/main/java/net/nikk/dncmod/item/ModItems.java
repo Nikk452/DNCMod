@@ -6,6 +6,7 @@ import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.nikk.dncmod.DNCMod;
+import net.nikk.dncmod.item.custom.LongBowItem;
 
 public class ModItems {
     public static final Item WHITE_IRON_CRYSTAL = registerItem("white_iron_crystal",
@@ -63,21 +64,27 @@ public class ModItems {
             new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item RAW_ELECTRUM = registerItem("raw_electrum",
             new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item LONG_ARROW = registerItem("long_arrow",
+            new ArrowItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
 
     public static final Item CLUB = registerItem("club",
-            new SwordItem(ToolMaterials.WOOD,3,5,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+            new SwordItem(ToolMaterials.WOOD,4,5,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item QUARTERSTAFF = registerItem("quarterstaff",
-            new SwordItem(ToolMaterials.WOOD,3,2,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+            new SwordItem(ToolMaterials.WOOD,8,2,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item DAGGER = registerItem("dagger",
-            new SwordItem(ToolMaterials.IRON,3,3,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+            new SwordItem(ToolMaterials.IRON,4,3,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item SHORT_SWORD = registerItem("short_sword",
-            new SwordItem(ToolMaterials.IRON,3,3,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+            new SwordItem(ToolMaterials.IRON,6,3,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item GREAT_SWORD = registerItem("great_sword",
+            new SwordItem(ToolMaterials.IRON,8,3,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item SPEAR = registerItem("spear",
-            new TridentItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+            new SwordItem(ToolMaterials.IRON,6,3,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item SHORT_BOW = registerItem("short_bow",
-            new BowItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+            new BowItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS).maxCount(1)));
+    public static final Item LONG_BOW = registerItem("long_bow",
+            new LongBowItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS).maxCount(1)));
     public static final Item SLING = registerItem("sling",
-            new BowItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+            new BowItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS).maxCount(1)));
     public static final Item DART = registerItem("dart",
             new SnowballItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item ARRIVAL_JACKET = registerItem("arrival_jacket",
