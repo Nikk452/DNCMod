@@ -9,7 +9,7 @@ import net.nikk.dncmod.util.IEntityDataSaver;
 public class diceS2CPacket {
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
-        int dice = buf.readInt();
-        client.execute(() -> ((IEntityDataSaver) client.player).getPersistentData().putInt("d20", dice));
+        int[] dice = buf.readIntArray();
+        client.execute(() -> ((IEntityDataSaver) client.player).getPersistentData().putIntArray("dice", dice));
     }
 }

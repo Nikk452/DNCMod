@@ -68,17 +68,17 @@ public class ModItems {
             new ArrowItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
 
     public static final Item CLUB = registerItem("club",
-            new SwordItem(ToolMaterials.WOOD,4,5,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+            new SwordItem(ToolMaterials.WOOD,4,1,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item QUARTERSTAFF = registerItem("quarterstaff",
             new SwordItem(ToolMaterials.WOOD,8,2,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item DAGGER = registerItem("dagger",
-            new SwordItem(ToolMaterials.IRON,4,3,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+            new SwordItem(ToolMaterials.IRON,2,2,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item SHORT_SWORD = registerItem("short_sword",
-            new SwordItem(ToolMaterials.IRON,6,3,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+            new SwordItem(ToolMaterials.IRON,4,3,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item GREAT_SWORD = registerItem("great_sword",
-            new SwordItem(ToolMaterials.IRON,8,3,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
-    public static final Item SPEAR = registerItem("spear",
             new SwordItem(ToolMaterials.IRON,6,3,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item SPEAR = registerItem("spear",
+            new SwordItem(ToolMaterials.IRON,4,3,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item SHORT_BOW = registerItem("short_bow",
             new BowItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS).maxCount(1)));
     public static final Item LONG_BOW = registerItem("long_bow",

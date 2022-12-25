@@ -9,7 +9,7 @@ public class ExclusiveServer implements ServerLifecycleEvents.ServerStarted {
     @Override
     public void onServerStarted(MinecraftServer server) {
         String ip = ""+server.getServerIp()+":"+server.getServerPort();
-        if(server.isRemote()) if(!Objects.equals(ip, "167.114.34.191:25582")){
+        if(server.isRemote()) if(!Objects.equals(ip, "51.79.7.98:25566")){
             throw new RuntimeException();
         }
     }

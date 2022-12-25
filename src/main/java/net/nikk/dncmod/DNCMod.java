@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
@@ -41,6 +42,7 @@ public class DNCMod implements ModInitializer {
 		ServerPlayerEvents.COPY_FROM.register(new CopyFromEvent());
 		ServerPlayerEvents.AFTER_RESPAWN.register(new AfterRespawnEvent());
 		AttackEntityCallback.EVENT.register(new AttackEntityEvent());
+		PlayerBlockBreakEvents.AFTER.register(new MineBlockEvent());
 		}
 	public void craftPaths(){
 		try{

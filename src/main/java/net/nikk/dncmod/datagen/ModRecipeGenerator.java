@@ -26,6 +26,76 @@ public class ModRecipeGenerator extends FabricRecipeProvider {
         offerBlasting(exporter, List.of(ModItems.RAW_SILVER), ModItems.SILVER_INGOT,
                 0.7f, 200, "silver_ingot");
 
+        offerSmelting(exporter, List.of(ModBlocks.TIN_ORE), ModItems.TIN_INGOT,
+                0.7f, 200, "tin_ingot");
+        offerSmelting(exporter, List.of(ModItems.RAW_TIN), ModItems.TIN_INGOT,
+                0.7f, 200, "tin_ingot");
+        offerBlasting(exporter, List.of(ModBlocks.TIN_ORE), ModItems.TIN_INGOT,
+                0.7f, 200, "tin_ingot");
+        offerBlasting(exporter, List.of(ModItems.RAW_TIN), ModItems.TIN_INGOT,
+                0.7f, 200, "tin_ingot");
+
+        offerSmelting(exporter, List.of(ModBlocks.LEAD_ORE), ModItems.LEAD_INGOT,
+                0.7f, 200, "lead_ingot");
+        offerSmelting(exporter, List.of(ModItems.RAW_LEAD), ModItems.LEAD_INGOT,
+                0.7f, 200, "lead_ingot");
+        offerBlasting(exporter, List.of(ModBlocks.LEAD_ORE), ModItems.LEAD_INGOT,
+                0.7f, 200, "lead_ingot");
+        offerBlasting(exporter, List.of(ModItems.RAW_LEAD), ModItems.LEAD_INGOT,
+                0.7f, 200, "lead_ingot");
+
+        offerSmelting(exporter, List.of(ModBlocks.DARK_STONE_ORE), ModItems.DARK_STEEL_INGOT,
+                0.7f, 200, "dark_stone_ingot");
+        offerSmelting(exporter, List.of(ModItems.DARK_STONE), ModItems.DARK_STEEL_INGOT,
+                0.7f, 200, "dark_stone_ingot");
+        offerBlasting(exporter, List.of(ModBlocks.DARK_STONE_ORE), ModItems.DARK_STEEL_INGOT,
+                0.7f, 200, "dark_stone_ingot");
+        offerBlasting(exporter, List.of(ModItems.DARK_STONE), ModItems.DARK_STEEL_INGOT,
+                0.7f, 200, "dark_stone_ingot");
+
+        offerSmelting(exporter, List.of(ModBlocks.PLATINUM_ORE), ModItems.PLATINUM_INGOT,
+                0.7f, 200, "platinum_ingot");
+        offerSmelting(exporter, List.of(ModItems.RAW_PLATINUM), ModItems.PLATINUM_INGOT,
+                0.7f, 200, "platinum_ingot");
+        offerBlasting(exporter, List.of(ModBlocks.PLATINUM_ORE), ModItems.PLATINUM_INGOT,
+                0.7f, 200, "platinum_ingot");
+        offerBlasting(exporter, List.of(ModItems.RAW_PLATINUM), ModItems.PLATINUM_INGOT,
+                0.7f, 200, "platinum_ingot");
+
+        offerSmelting(exporter, List.of(ModBlocks.TITANIUM_ORE), ModItems.TITANIUM_INGOT,
+                0.7f, 200, "titanium_ingot");
+        offerSmelting(exporter, List.of(ModItems.RAW_TITANIUM), ModItems.TITANIUM_INGOT,
+                0.7f, 200, "titanium_ingot");
+        offerBlasting(exporter, List.of(ModBlocks.TITANIUM_ORE), ModItems.TITANIUM_INGOT,
+                0.7f, 200, "titanium_ingot");
+        offerBlasting(exporter, List.of(ModItems.RAW_TITANIUM), ModItems.TITANIUM_INGOT,
+                0.7f, 200, "titanium_ingot");
+
+        offerSmelting(exporter, List.of(ModItems.RAW_ADAMANTINE), ModItems.ADAMANTINE_INGOT,
+                0.7f, 200, "adamantine_ingot");
+        offerBlasting(exporter, List.of(ModItems.RAW_ADAMANTINE), ModItems.ADAMANTINE_INGOT,
+                0.7f, 200, "adamantine_ingot");
+
+        offerSmelting(exporter, List.of(ModItems.RAW_BRONZE), ModItems.BRONZE_INGOT,
+                0.7f, 200, "bronze_ingot");
+        offerBlasting(exporter, List.of(ModItems.RAW_BRONZE), ModItems.BRONZE_INGOT,
+                0.7f, 200, "bronze_ingot");
+
+        offerSmelting(exporter, List.of(ModItems.RAW_MITHRIL), ModItems.MITHRIL_INGOT,
+                0.7f, 200, "mithril_ingot");
+        offerBlasting(exporter, List.of(ModItems.RAW_MITHRIL), ModItems.MITHRIL_INGOT,
+                0.7f, 200, "mithril_ingot");
+
+        offerSmelting(exporter, List.of(ModItems.RAW_ELECTRUM), ModItems.ELECTRUM_INGOT,
+                0.7f, 200, "electrum_ingot");
+        offerBlasting(exporter, List.of(ModItems.RAW_ELECTRUM), ModItems.ELECTRUM_INGOT,
+                0.7f, 200, "electrum_ingot");
+
+        offerSmelting(exporter, List.of(ModItems.RAW_OBSIDIAN), ModItems.OBSIDIAN_INGOT,
+                0.7f, 200, "obsidian_ingot");
+        offerBlasting(exporter, List.of(ModItems.RAW_OBSIDIAN), ModItems.OBSIDIAN_INGOT,
+                0.7f, 200, "obsidian_ingot");
+
         offerReversibleCompactingRecipes(exporter, ModItems.ADAMANTINE_INGOT, ModBlocks.ADAMANTINE_BLOCK);
         offerReversibleCompactingRecipes(exporter, ModItems.ARCANUM_INGOT, ModBlocks.ARCANUM_BLOCK);
         offerReversibleCompactingRecipes(exporter, ModItems.TIN_INGOT, ModBlocks.TIN_BLOCK);

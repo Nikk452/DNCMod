@@ -36,23 +36,43 @@ public class AttackEntityEvent implements AttackEntityCallback {
                     if (nbt.getBoolean("created")){
                         Item item = player.getStackInHand(hand).getItem();
                         float Damage = (float) nbt.getIntArray("stat_mod")[0]>nbt.getIntArray("stat_mod")[1]?nbt.getIntArray("stat_mod")[0]:nbt.getIntArray("stat_mod")[1];
+                        int StatMod = (int)Damage;
                         if(item != Items.AIR){
                             List<EntityAttributeModifier> attr = item.getAttributeModifiers(EquipmentSlot.MAINHAND).get(EntityAttributes.GENERIC_ATTACK_DAMAGE).stream().toList();
                             if(attr.size()>0) {
                                 int Roll = player.getRandom().nextBetween(1,(int)attr.get(0).getValue());
                                 Damage+=Roll;
                                 PacketByteBuf buf = PacketByteBufs.create();
-                                buf.writeInt(Roll);
+                                buf.writeIntArray(new int[]{Roll,StatMod,chooseDice((int)attr.get(0).getValue())});
                                 ServerPlayNetworking.send((ServerPlayerEntity)player, Networking.DICE_ID, buf);
                             }
                             else Damage*=0.50;
                         }else Damage*=0.75;
+                        int weapon_mod = 0;
+                        float AfterDot = player.getRandom().nextBetween(1, 20) + weapon_mod + StatMod;
+                        Damage += chooseCrit(item)*0.01 + (float) (AfterDot / Math.pow(10,(""+AfterDot).length()));
                         ((LivingEntity)entity).damage(DamageSource.player(player), Damage);
                         return ActionResult.SUCCESS;
                     }
                 }
             }
         }
+
         return ActionResult.PASS;
+    }
+    private static int chooseDice(int x){
+        if(x>12) return 20;
+        else if (x % 2 == 0 && x != 0) return x;
+        else if (x==0) return 2;
+        else return x+1;
+    }
+    private static int chooseCrit(Item X){
+        if (Items.AIR.equals(X)) {
+            return 1;
+        } else if (Items.BEDROCK.equals(X)) {
+            return 10;
+        } else {
+            return 2;
+        }
     }
 }

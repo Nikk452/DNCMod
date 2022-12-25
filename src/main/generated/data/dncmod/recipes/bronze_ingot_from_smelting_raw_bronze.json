@@ -2,9 +2,9 @@
   "type": "minecraft:smelting",
   "cookingtime": 200,
   "experience": 0.7,
-  "group": "copper_ingot",
+  "group": "bronze_ingot",
   "ingredient": {
-    "item": "minecraft:raw_copper"
+    "item": "dncmod:raw_bronze"
   },
-  "result": "minecraft:copper_ingot"
+  "result": "dncmod:bronze_ingot"
 }

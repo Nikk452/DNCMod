@@ -55,7 +55,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         if(this.successTimes>=4) {
             if(!(this.getWorld().isClient())) {
                 PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeInt(Dice);
+                buf.writeIntArray(new int[]{Dice,nbt.getIntArray("skills")[1],20});
                 ServerPlayNetworking.send((ServerPlayerEntity)(Object)this,Networking.DICE_ID, buf);
             }
             this.successTimes = 0;

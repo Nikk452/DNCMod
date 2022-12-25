@@ -18,4 +18,6 @@ public abstract class InGameHudMixin
     private void renderNoExperienceBar(CallbackInfo ci){
         ci.cancel();
     }
+    @Inject(at = @At("HEAD"), method = "renderStatusBars", cancellable = true)
+    private void renderNoArmorBar(CallbackInfo ci){ ci.cancel();}
 }

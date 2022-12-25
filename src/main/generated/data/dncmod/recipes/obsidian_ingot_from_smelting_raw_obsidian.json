@@ -2,9 +2,9 @@
   "type": "minecraft:smelting",
   "cookingtime": 200,
   "experience": 0.7,
-  "group": "copper_ingot",
+  "group": "obsidian_ingot",
   "ingredient": {
-    "item": "minecraft:copper_ore"
+    "item": "dncmod:raw_obsidian"
   },
-  "result": "minecraft:copper_ingot"
+  "result": "dncmod:obsidian_ingot"
 }

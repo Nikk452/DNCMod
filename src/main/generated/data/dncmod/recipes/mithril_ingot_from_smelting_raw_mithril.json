@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "mithril_ingot",
+  "ingredient": {
+    "item": "dncmod:raw_mithril"
+  },
+  "result": "dncmod:mithril_ingot"
+}
