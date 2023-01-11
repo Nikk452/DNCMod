@@ -27,12 +27,15 @@ public class Networking {
     public static final Identifier LEVELUPS2C = new Identifier(DNCMod.MOD_ID, "levelups2c");
     public static final Identifier NEWNAMEC2S = new Identifier(DNCMod.MOD_ID, "new_name_c2s");
     public static final Identifier NEWNAMES2C = new Identifier(DNCMod.MOD_ID, "new_name_s2c");
+    public static final Identifier SPELL_MENU_C2S = new Identifier(DNCMod.MOD_ID, "spell_menu_c2s");
+    public static final Identifier SPELL_MENU_S2C = new Identifier(DNCMod.MOD_ID, "spell_menu_s2c");
     public static void RegisterC2SPackets(){
         ServerPlayNetworking.registerGlobalReceiver(CREATION_ID, FinishCreationC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(ROLL_CREATION_ID, RollStatsC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(REFRESH_STATS_ID, StatsC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(EXAMPLE_C2S, ExampleC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(NEWNAMEC2S,NewNameC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(SPELL_MENU_C2S,SpellMenuC2SPacket::receive);
     }
     public static void RegisterS2CPackets(){
         ClientPlayNetworking.registerGlobalReceiver(DICE_ID, diceS2CPacket::receive);
@@ -43,5 +46,6 @@ public class Networking {
         ClientPlayNetworking.registerGlobalReceiver(LEVELUPS2C, LevelUpS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(SYNC_CONFIG,SyncConfigS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(NEWNAMES2C,NewNameS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(SPELL_MENU_S2C,SpellMenuS2CPacket::receive);
     }
 }

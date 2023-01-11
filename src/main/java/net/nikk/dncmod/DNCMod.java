@@ -1,6 +1,7 @@
 package net.nikk.dncmod;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -43,7 +44,7 @@ public class DNCMod implements ModInitializer {
 		ServerPlayerEvents.AFTER_RESPAWN.register(new AfterRespawnEvent());
 		AttackEntityCallback.EVENT.register(new AttackEntityEvent());
 		PlayerBlockBreakEvents.AFTER.register(new MineBlockEvent());
-		}
+	}
 	public void craftPaths(){
 		try{
 			if(!Files.isDirectory(Paths.get("./config"))){

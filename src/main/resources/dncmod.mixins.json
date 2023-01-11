@@ -14,10 +14,11 @@
     "EntityMixin",
     "PlayerManagerAccess",
     "SaveHandlerAccess",
-    "ItemStackMixin"
+    "PlayerInventoryMixin"
   ],
   "client": [
-    "ExampleMixin"
+    "ExampleMixin",
+    "ServerListMixin"
   ],
   "injectors": {
     "defaultRequire": 1

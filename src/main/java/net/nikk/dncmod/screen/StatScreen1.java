@@ -1,23 +1,34 @@
 package net.nikk.dncmod.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.PressableTextWidget;
+import net.minecraft.client.gui.widget.PressableWidget;
+import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.nikk.dncmod.DNCMod;
+import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.util.AttributeData;
 import net.nikk.dncmod.util.IEntityDataSaver;
 
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -30,10 +41,12 @@ public class StatScreen1 extends Screen {
     private float shade_color;
     private double anime;
     private boolean animate;
+    private boolean level_menu;
 
     public StatScreen1(boolean animate) {
         super(Text.literal("Stat"));
         this.animate = animate;
+        this.level_menu = false;
     }
 
     @Override
@@ -43,6 +56,11 @@ public class StatScreen1 extends Screen {
             this.shade_color = 0f;
         }else{this.anime = -40;}
         this.addDrawableChild(new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> this.client.setScreen(new StatScreen2())));
+        this.addDrawableChild(new PressableTextWidget(((width - backgroundWidth) / 2)+(backgroundWidth/30)*4, ((height - backgroundHeight) / 2)+17+(backgroundHeight/30)*10+(backgroundHeight/30),90,13, Text.of(""),(button) -> {
+            PacketByteBuf bufs = PacketByteBufs.create();
+            bufs.writeInt(AttributeData.getIndexOfLargest(((IEntityDataSaver)client.player).getPersistentData().getIntArray("classes")));
+            ClientPlayNetworking.send(Networking.EXAMPLE_C2S, bufs);
+        }, textRenderer));
     }
 
     @Override

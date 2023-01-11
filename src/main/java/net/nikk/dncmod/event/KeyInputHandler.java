@@ -31,14 +31,9 @@ public class KeyInputHandler {
                     ClientPlayNetworking.send(Networking.REFRESH_STATS_ID, buf);
                 }
             }
-        });
-    }
-    public static void registerKeyInputs2() {
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(testkey.wasPressed()) {
                 PacketByteBuf bufs = PacketByteBufs.create();
-                bufs.writeInt(AttributeData.getIndexOfLargest(((IEntityDataSaver)client.player).getPersistentData().getIntArray("classes")));
-                ClientPlayNetworking.send(Networking.EXAMPLE_C2S, bufs);
+                ClientPlayNetworking.send(Networking.SPELL_MENU_C2S, bufs);
             }
         });
     }
@@ -50,13 +45,12 @@ public class KeyInputHandler {
                 GLFW.GLFW_KEY_C,
                 KEY_CATEGORY_DNC
         ));
-        registerKeyInputs();
         testkey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 KEY_TEST,
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_M,
                 KEY_CATEGORY_DNC
         ));
-        registerKeyInputs2();
+        registerKeyInputs();
     }
 }
