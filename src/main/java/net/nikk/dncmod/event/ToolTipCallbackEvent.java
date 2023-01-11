@@ -1,12 +1,13 @@
 package net.nikk.dncmod.event;
 
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.MutableText;
@@ -14,13 +15,17 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Rarity;
+
 import java.util.List;
 
 public class ToolTipCallbackEvent implements ItemTooltipCallback{
     @Override
     public void getTooltip(ItemStack stack, TooltipContext context, List<Text> lines) {
         lines.clear();
-        lines.add(stack.getName());
+        lines.add(Text.literal("[Item: ").append(stack.getName()).append("]").setStyle(Style.EMPTY.withColor(stack.getRarity().formatting)));
+        lines.add(Text.literal("Item Class: None").setStyle(Style.EMPTY.withColor(stack.getRarity().formatting)));
+        getItemType(stack.getItem(),lines, stack.getRarity());
         lines.add(Text.literal(""));
         lines.add(Text.literal("Item Description:").setStyle(Style.EMPTY.withColor(Formatting.GRAY)));
         personalLines(stack, lines, EquipmentSlot.MAINHAND, EntityAttributes.GENERIC_ATTACK_DAMAGE, 0);
@@ -72,5 +77,24 @@ public class ToolTipCallbackEvent implements ItemTooltipCallback{
                 lines.add(Text.literal( "  "+(int)(value.get(0).getValue())+" Armor Class").setStyle(Style.EMPTY.withColor(Formatting.BLUE)));
             }
         }
+    }
+    private static void getItemType(Item item, List<Text> text, Rarity rarity){
+        if(item instanceof SwordItem){
+            text.add(Text.literal("Type: Sword").setStyle(Style.EMPTY.withColor(rarity.formatting)));
+        }else if(item instanceof ArmorItem){
+            text.add(Text.literal("Type: Armor").setStyle(Style.EMPTY.withColor(rarity.formatting)));
+        }else if(item instanceof AxeItem){
+            text.add(Text.literal("Type: Axe").setStyle(Style.EMPTY.withColor(rarity.formatting)));
+        }else if(item instanceof ToolItem){
+            text.add(Text.literal("Type: Tool").setStyle(Style.EMPTY.withColor(rarity.formatting)));
+        }else if(item instanceof PotionItem){
+            text.add(Text.literal("Type: Potion").setStyle(Style.EMPTY.withColor(rarity.formatting)));
+        }else if(item instanceof BowItem){
+            text.add(Text.literal("Type: Bow").setStyle(Style.EMPTY.withColor(rarity.formatting)));
+        }else if(item instanceof ShieldItem){
+            text.add(Text.literal("Type: Shield").setStyle(Style.EMPTY.withColor(rarity.formatting)));
+        }else if(item.isFood()){
+            text.add(Text.literal("Type: Food").setStyle(Style.EMPTY.withColor(rarity.formatting)));
+        }else text.add(Text.literal("Type: Junk").setStyle(Style.EMPTY.withColor(rarity.formatting)));
     }
 }
