@@ -1,0 +1,53 @@
+{
+  "screens" : [{
+    "class" : "net.nikk.dncmod.screen.StatScreen1",
+    "texture" : "dncmod:textures/gui/uifrag.png",
+    "size" : [276, 166],
+    "texSize" : [512, 512]
+  },{
+    "class" : "net.nikk.dncmod.screen.StatScreen2",
+    "texture" : "dncmod:textures/gui/uifrag.png",
+    "size" : [276, 166],
+    "texSize" : [512, 512]
+  },{
+    "class" : "net.nikk.dncmod.screen.StatScreen3",
+    "texture" : "dncmod:textures/gui/uifrag.png",
+    "size" : [276, 166],
+    "texSize" : [512, 512]
+  },{
+    "class" : "net.nikk.dncmod.screen.StatScreen4",
+    "texture" : "dncmod:textures/gui/uifrag.png",
+    "size" : [276, 166],
+    "texSize" : [512, 512]
+  },{
+    "class" : "net.nikk.dncmod.screen.CharCreationScreen1",
+    "texture" : "dncmod:textures/gui/uifrag.png",
+    "size" : [276, 166],
+    "texSize" : [512, 512]
+  },{
+    "class" : "net.nikk.dncmod.screen.CharCreationScreen2",
+    "texture" : "dncmod:textures/gui/uifrag.png",
+    "size" : [276, 166],
+    "texSize" : [512, 512]
+  },{
+    "class" : "net.nikk.dncmod.screen.CharCreationScreen3",
+    "texture" : "dncmod:textures/gui/uifrag.png",
+    "size" : [276, 166],
+    "texSize" : [512, 512]
+  },{
+    "class" : "net.nikk.dncmod.screen.CharCreationScreen4",
+    "texture" : "dncmod:textures/gui/uifrag.png",
+    "size" : [276, 166],
+    "texSize" : [512, 512]
+  },{
+    "class" : "net.nikk.dncmod.screen.CharCreationScreen5",
+    "texture" : "dncmod:textures/gui/uifrag.png",
+    "size" : [276, 166],
+    "texSize" : [512, 512]
+  },{
+    "class" : "net.nikk.dncmod.screen.SpellCreationScreen",
+    "texture" : "dncmod:textures/gui/uifrag.png",
+    "size" : [276, 166],
+    "texSize" : [512, 512]
+  }]
+}

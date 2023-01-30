@@ -6,6 +6,7 @@ import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.nikk.dncmod.DNCMod;
+import net.nikk.dncmod.entity.ModEntities;
 import net.nikk.dncmod.item.custom.LongBowItem;
 
 public class ModItems {
@@ -87,6 +88,8 @@ public class ModItems {
             new BowItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS).maxCount(1)));
     public static final Item DART = registerItem("dart",
             new SnowballItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item GOBLIN_SPAWN_EGG = registerItem("goblin_spawn_egg",
+            new SpawnEggItem(ModEntities.GOBLIN,0x799C65,0x315234,new FabricItemSettings().group(ItemGroup.MISC)));
     public static final Item ARRIVAL_JACKET = registerItem("arrival_jacket",
             new ArmorItem(ModArmorMaterials.ARRIVAL, EquipmentSlot.CHEST ,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item ARRIVAL_PANTS = registerItem("arrival_pants",

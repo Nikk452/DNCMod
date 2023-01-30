@@ -19,12 +19,14 @@ import net.minecraft.util.Rarity;
 
 import java.util.List;
 
+import static net.minecraft.util.Rarity.*;
+
 public class ToolTipCallbackEvent implements ItemTooltipCallback{
     @Override
     public void getTooltip(ItemStack stack, TooltipContext context, List<Text> lines) {
         lines.clear();
         lines.add(Text.literal("[Item: ").append(stack.getName()).append("]").setStyle(Style.EMPTY.withColor(stack.getRarity().formatting)));
-        lines.add(Text.literal("Item Class: None").setStyle(Style.EMPTY.withColor(stack.getRarity().formatting)));
+        lines.add(Text.literal("Item Class: "+(stack.getRarity()==EPIC?"Rare":(stack.getRarity()==RARE?"Uncommon":(stack.getRarity()==UNCOMMON?"Common":"None")))).setStyle(Style.EMPTY.withColor(stack.getRarity().formatting)));
         getItemType(stack.getItem(),lines, stack.getRarity());
         lines.add(Text.literal(""));
         lines.add(Text.literal("Item Description:").setStyle(Style.EMPTY.withColor(Formatting.GRAY)));
@@ -87,14 +89,12 @@ public class ToolTipCallbackEvent implements ItemTooltipCallback{
             text.add(Text.literal("Type: Axe").setStyle(Style.EMPTY.withColor(rarity.formatting)));
         }else if(item instanceof ToolItem){
             text.add(Text.literal("Type: Tool").setStyle(Style.EMPTY.withColor(rarity.formatting)));
-        }else if(item instanceof PotionItem){
-            text.add(Text.literal("Type: Potion").setStyle(Style.EMPTY.withColor(rarity.formatting)));
+        }else if(item instanceof PotionItem || item.isFood()){
+            text.add(Text.literal("Type: Consumable").setStyle(Style.EMPTY.withColor(rarity.formatting)));
         }else if(item instanceof BowItem){
             text.add(Text.literal("Type: Bow").setStyle(Style.EMPTY.withColor(rarity.formatting)));
         }else if(item instanceof ShieldItem){
             text.add(Text.literal("Type: Shield").setStyle(Style.EMPTY.withColor(rarity.formatting)));
-        }else if(item.isFood()){
-            text.add(Text.literal("Type: Food").setStyle(Style.EMPTY.withColor(rarity.formatting)));
         }else text.add(Text.literal("Type: Junk").setStyle(Style.EMPTY.withColor(rarity.formatting)));
     }
 }

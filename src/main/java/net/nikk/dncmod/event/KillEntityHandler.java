@@ -17,7 +17,7 @@ public class KillEntityHandler implements ServerEntityCombatEvents.AfterKilledOt
         if(entity instanceof PlayerEntity && killedEntity instanceof HostileEntity){
             if(!world.isClient){
                 //((PlayerEntity)entity).sendMessage(Text.literal(((PlayerEntity)entity).getName().getString()+" has killed a sheep"));
-                ExperienceData.addExperience((ServerPlayerEntity)entity,entity.world.random.nextBetween(5,10));
+                ExperienceData.addExperience((ServerPlayerEntity)entity,killedEntity.defaultMaxHealth/2);
             }
         }else if(entity instanceof PlayerEntity && killedEntity instanceof PlayerEntity){
             int level = ((IEntityDataSaver)killedEntity).getPersistentData().getInt("total_level");

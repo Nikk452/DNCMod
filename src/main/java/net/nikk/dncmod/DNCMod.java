@@ -9,18 +9,23 @@ import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.nikk.dncmod.block.ModBlocks;
 import net.nikk.dncmod.config.ModConfig;
+import net.nikk.dncmod.entity.ModEntities;
+import net.nikk.dncmod.entity.custom.GoblinEntity;
 import net.nikk.dncmod.event.*;
 import net.nikk.dncmod.item.ModItems;
 import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.world.feature.ModConfiguredFeatures;
 import net.nikk.dncmod.world.gen.ModOreGeneration;
+import net.nikk.dncmod.world.gen.ModWorldGen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import software.bernie.geckolib3.GeckoLib;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,7 +40,7 @@ public class DNCMod implements ModInitializer {
 		craftPaths();
 		ModConfiguredFeatures.registerConfiguredFeatures();
 		ModItems.registerModItems();
-		ModOreGeneration.generateOres();
+		ModWorldGen.generateWorldGen();
 		ModBlocks.registerModBlocks();
 		Networking.RegisterC2SPackets();
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new KillEntityHandler());
@@ -44,6 +49,8 @@ public class DNCMod implements ModInitializer {
 		ServerPlayerEvents.AFTER_RESPAWN.register(new AfterRespawnEvent());
 		AttackEntityCallback.EVENT.register(new AttackEntityEvent());
 		PlayerBlockBreakEvents.AFTER.register(new MineBlockEvent());
+		GeckoLib.initialize();
+		FabricDefaultAttributeRegistry.register(ModEntities.GOBLIN, GoblinEntity.setAttributes());
 	}
 	public void craftPaths(){
 		try{

@@ -1,4 +1,5 @@
 {
+  "item.dncmod.goblin_spawn_egg": "Goblin Spawn Egg",
   "item.dncmod.white_iron_crystal": "White Iron Crystal",
   "item.dncmod.arcanum_ingot": "Arcanum Ingot",
   "item.dncmod.astral_crystal": "Astral Crystal",
@@ -98,5 +99,7 @@
   "item.dncmod.arrival_jacket" : "Arrival Jacket",
   "item.dncmod.long_bow" : "Longbow",
   "item.dncmod.great_sword" : "Great Sword",
-  "item.dncmod.long_arrow" : "Long arrow"
+  "item.dncmod.long_arrow" : "Long arrow",
+
+  "entity.dncmod.goblin": "Goblin"
 }
