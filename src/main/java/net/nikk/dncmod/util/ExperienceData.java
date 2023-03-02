@@ -14,7 +14,7 @@ public class ExperienceData {
         NbtCompound nbt = ((IEntityDataSaver)player).getPersistentData();
         NbtCompound nbt_res = new NbtCompound();
         nbt_res.putInt("experience",nbt.getInt("experience"));
-        if(nbt.getInt("experience")>=nbt.getInt("max_experience")){
+        if(nbt.getInt("level")<5) if(nbt.getInt("experience")>=nbt.getInt("max_experience")){
             int[] classes = nbt.getIntArray("classes");
             int[] dices = nbt.getIntArray("hit_dices");
             classes[class_type]= classes[class_type]>=0?classes[class_type]+1:-1;

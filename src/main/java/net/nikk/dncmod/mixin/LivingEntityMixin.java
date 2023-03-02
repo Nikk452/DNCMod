@@ -48,6 +48,11 @@ public abstract class LivingEntityMixin extends Entity {
                     PacketByteBuf buf = PacketByteBufs.create();
                     buf.writeIntArray(new int[]{dice,nbt.getIntArray("skills")[4], 20});
                     ServerPlayNetworking.send((ServerPlayerEntity)livingEntity,Networking.DICE_ID, buf);
+                }else{
+                    nbt.putString("label0","textures/gui/uifrag.png");
+                    nbt.putString("label1","Acrobatics Lv."+nbt.getIntArray("skills")[4]);
+                    nbt.putString("label2","Has Been Used!");
+                    nbt.putInt("label",3);
                 }
                 double Roll = (dice + nbt.getIntArray("skills")[4] + nbt.getIntArray("stat_mod")[1]) / 4d;
                 normal_damage -= MathHelper.ceil(Roll);
@@ -73,6 +78,10 @@ public abstract class LivingEntityMixin extends Entity {
                     double Roll = (dice + nbt.getIntArray("skills")[2] + nbt.getIntArray("stat_mod")[0])/4d;
                     Roll = (int)(Roll*10)/10d;
                     nbt.putIntArray("dice",new int[]{dice,nbt.getIntArray("skills")[2],20});
+                    nbt.putString("label0","textures/gui/uifrag.png");
+                    nbt.putString("label1","Using");
+                    nbt.putString("label2","Jump Lv."+nbt.getIntArray("skills")[2]+"!");
+                    nbt.putInt("label",3);
                     this.JumpSkillAmp = (float)Roll;
                     this.playSound(SoundEvents.BLOCK_WOOL_FALL, 1, 0.9F + this.random.nextFloat() * 0.2F);
                     this.getWorld().addParticle(ParticleTypes.POOF, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian()* 0.02, this.random.nextGaussian()* 0.02, this.random.nextGaussian()* 0.02);

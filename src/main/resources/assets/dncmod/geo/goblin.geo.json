@@ -64,6 +64,14 @@
 					]
 				},
 				{
+					"name": "armorHead",
+					"parent": "head",
+					"pivot": [0, 16.86, -0.224],
+					"cubes": [
+						{"origin": [-3, 13.36, -2.974], "size": [6, 6, 7.25], "uv": [38, 40]}
+					]
+				},
+				{
 					"name": "accesories",
 					"parent": "head",
 					"pivot": [0, 14.892, -1.224],
@@ -210,11 +218,43 @@
 					]
 				},
 				{
+					"name": "armorRightArm",
+					"parent": "armR",
+					"pivot": [2.45, 13.056, 0],
+					"cubes": [
+						{"origin": [1.95, 6.056, -1.5], "size": [3.25, 8, 3.25], "uv": [52, 40]}
+					]
+				},
+				{
+					"name": "itemHandRight",
+					"parent": "armR",
+					"pivot": [3.45, 7.056, 0],
+					"cubes": [
+						{"origin": [3.7, 7.306, 0], "size": [0, 0, 0], "uv": [0, 0]}
+					]
+				},
+				{
 					"name": "armL",
 					"parent": "body",
-					"pivot": [2.55, 13.056, 0],
+					"pivot": [-2.45, 13.056, 0],
 					"cubes": [
 						{"origin": [2.448, 6.324, -1.122], "size": [2.448, 7.344, 2.448], "uv": [12, 10]}
+					]
+				},
+				{
+					"name": "armorLeftArm",
+					"parent": "armL",
+					"pivot": [-2.45, 13.056, 0],
+					"cubes": [
+						{"origin": [-5.3, 6.056, -1.5], "size": [3.25, 8, 3.25], "uv": [26, 40]}
+					]
+				},
+				{
+					"name": "itemHandLeft",
+					"parent": "armL",
+					"pivot": [-3.55, 7.056, 0],
+					"cubes": [
+						{"origin": [-3.7, 7.306, 0], "size": [0, 0, 0], "uv": [0, 0]}
 					]
 				},
 				{
@@ -226,11 +266,35 @@
 					]
 				},
 				{
+					"name": "armorLeftLeg",
+					"parent": "legR",
+					"pivot": [-1.53, 5.916, 0],
+					"cubes": [
+						{"origin": [-2.78, -0.084, -1.5], "size": [2.75, 6.5, 3.25], "uv": [42, 40]}
+					]
+				},
+				{
 					"name": "legL",
 					"parent": "body",
 					"pivot": [1.53, 5.916, 0],
 					"cubes": [
 						{"origin": [0, 0.204, -1.224], "size": [2.448, 6.12, 2.448], "uv": [0, 28]}
+					]
+				},
+				{
+					"name": "armorRightLeg",
+					"parent": "legL",
+					"pivot": [1.53, 5.916, 0],
+					"cubes": [
+						{"origin": [-0.03, -0.084, -1.5], "size": [2.75, 6.5, 3.25], "uv": [49, 40]}
+					]
+				},
+				{
+					"name": "armorBippedBody",
+					"parent": "body",
+					"pivot": [0, 11.22, 0],
+					"cubes": [
+						{"origin": [-3, 5.72, -1.75], "size": [6, 8, 3.75], "uv": [33, 40]}
 					]
 				}
 			]

@@ -152,6 +152,10 @@ public class GoblinEntity extends HostileEntity implements IAnimatable, RangedAt
 
     protected void initEquipment(Random random, LocalDifficulty localDifficulty) {
         this.equipStack(EquipmentSlot.MAINHAND, new ItemStack(random.nextBetween(0,4)==1?ModItems.SHORT_BOW:ModItems.DAGGER));
+        this.equipStack(EquipmentSlot.HEAD,new ItemStack(Items.IRON_HELMET));
+        this.equipStack(EquipmentSlot.CHEST,new ItemStack(Items.IRON_CHESTPLATE));
+        this.equipStack(EquipmentSlot.LEGS,new ItemStack(Items.IRON_LEGGINGS));
+        this.equipStack(EquipmentSlot.FEET,new ItemStack(Items.IRON_BOOTS));
     }
     public void updateAttackType() {
         if (this.world != null && !this.world.isClient) {
