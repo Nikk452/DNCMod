@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.entity.ModEntities;
@@ -65,6 +66,8 @@ public class ModItems {
             new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item RAW_ELECTRUM = registerItem("raw_electrum",
             new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item SCROLL = registerItem("scroll",
+            new Item(new FabricItemSettings().rarity(Rarity.COMMON).group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item LONG_ARROW = registerItem("long_arrow",
             new ArrowItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
 

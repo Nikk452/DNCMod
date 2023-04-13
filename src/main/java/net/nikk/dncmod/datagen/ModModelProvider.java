@@ -78,5 +78,6 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.TIN_INGOT,Models.GENERATED);
         itemModelGenerator.register(ModItems.TITANIUM_INGOT,Models.GENERATED);
         itemModelGenerator.register(ModItems.WHITE_IRON_CRYSTAL,Models.GENERATED);
+        itemModelGenerator.register(ModItems.SCROLL,Models.GENERATED);
     }
 }

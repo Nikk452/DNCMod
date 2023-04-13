@@ -1,4 +1,4 @@
-// 1.19.2	2022-11-19T10:51:54.237212	Models
+// 1.19.2	2023-04-12T19:25:56.6642722	Models
 82e953da0cb381e23851e941222409635c5dc1d5 assets\dncmod\models\item\great_sword.json
 98194ad679d1ab3ee531b8e5875edcf1de4bf033 assets\dncmod\models\item\shadowthrall.json
 273c08f0ecb8a876575cf79bd431d926637a1e54 assets\dncmod\models\block\large_white_iron_bud.json
@@ -71,6 +71,7 @@ c2c291210a9dad5ea304e15126f8481430a0094f assets\dncmod\models\item\redstone_ingo
 038353f5326e0efd8e17a5660fded42586e8514f assets\dncmod\models\item\silver_ore.json
 9aa02407d09e0994e19911761e944ebc009d9995 assets\dncmod\blockstates\dark_stone_block.json
 a22ee3af5ba433a2e6ac98cdfe6344ea081a7a0c assets\dncmod\models\item\tin_block.json
+900cd524cac0b6674c6d271916a6f546582a414c assets\dncmod\models\item\scroll.json
 80a2aaa22c34b218f1863e67654f78ce29847273 assets\dncmod\blockstates\titanium_ore.json
 82dbe10e8ed7d6a83c8c67336d9c24eef78b2474 assets\dncmod\models\block\lead_block.json
 10b6b7d6ef411cfd261ba5edee116d1228a4b834 assets\dncmod\models\item\dark_stone_ore.json
