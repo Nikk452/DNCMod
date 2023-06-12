@@ -1,14 +1,11 @@
 package net.nikk.dncmod.event;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.nikk.dncmod.util.AttributeData;
 import net.nikk.dncmod.util.ExperienceData;
 import net.nikk.dncmod.util.IEntityDataSaver;
-
-import java.util.UUID;
 
 public class CopyFromEvent implements ServerPlayerEvents.CopyFrom{
     @Override

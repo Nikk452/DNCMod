@@ -5,14 +5,19 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.nikk.dncmod.block.ModBlocks;
 import net.nikk.dncmod.client.ModHudCallback;
 import net.nikk.dncmod.entity.ModEntities;
 import net.nikk.dncmod.entity.client.GoblinRenderer;
+import net.nikk.dncmod.entity.client.SpellEntityRenderer;
 import net.nikk.dncmod.event.KeyInputHandler;
 import net.nikk.dncmod.event.ToolTipCallbackEvent;
 import net.nikk.dncmod.networking.Networking;
+import net.nikk.dncmod.screen.ModScreenHandlers;
+import net.nikk.dncmod.screen.SpellBookScreen;
+import net.nikk.dncmod.screen.SpellBookScreenHandler;
 import net.nikk.dncmod.util.ModModelPredicate;
 
 public class DNCModClient implements ClientModInitializer {
@@ -28,5 +33,7 @@ public class DNCModClient implements ClientModInitializer {
         HudRenderCallback.EVENT.register(new ModHudCallback());
         ItemTooltipCallback.EVENT.register(new ToolTipCallbackEvent());
         EntityRendererRegistry.register(ModEntities.GOBLIN, GoblinRenderer::new);
+        EntityRendererRegistry.register(ModEntities.SPELL, SpellEntityRenderer::new);
+        HandledScreens.register(ModScreenHandlers.SPELL_BOOK_SCREEN_HANDLER, SpellBookScreen::new);
     }
 }

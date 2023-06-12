@@ -9,8 +9,6 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.network.PacketByteBuf;
 import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.screen.CharCreationScreen1;
-import net.nikk.dncmod.util.AttributeData;
-import net.nikk.dncmod.util.IEntityDataSaver;
 import org.lwjgl.glfw.GLFW;
 
 public class KeyInputHandler {

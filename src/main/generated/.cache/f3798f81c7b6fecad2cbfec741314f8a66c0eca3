@@ -1,4 +1,4 @@
-// 1.19.2	2023-04-12T19:25:56.6642722	Models
+// 1.19.2	2023-04-29T23:38:46.6241916	Models
 82e953da0cb381e23851e941222409635c5dc1d5 assets\dncmod\models\item\great_sword.json
 98194ad679d1ab3ee531b8e5875edcf1de4bf033 assets\dncmod\models\item\shadowthrall.json
 273c08f0ecb8a876575cf79bd431d926637a1e54 assets\dncmod\models\block\large_white_iron_bud.json
@@ -12,10 +12,12 @@ b3ad5a03624bdcb96f737e813cc68dc1cdc47e00 assets\dncmod\models\block\silver_ore.j
 3f68b5b4001a83cc96d20fddc2426a6f0351b5e4 assets\dncmod\models\item\astral_crystal.json
 a7d91fdb96ce9404da9f869c94dddc396ffaf7a1 assets\dncmod\blockstates\dark_steel_block.json
 2b56783b04c2594eaab6f8d16d5922c4f6ccd107 assets\dncmod\blockstates\white_iron_cluster.json
+89a49a9766debd04692e162720bcb3e83250cf73 assets\dncmod\models\item\spell_book.json
 f1561145d7e55ac3119f45c8369abc67dd25533b assets\dncmod\models\block\dark_stone_ore.json
 6bad27d10deaef213cb40e27cbf6b653ab15e5d3 assets\dncmod\models\item\dark_steel_ingot.json
 cb7a1b20033eba41264ffba83c3156ce255c16d4 assets\dncmod\models\block\mithril_block.json
 6e81000847c2b0b454e50aa6fe9edf0e430e3949 assets\dncmod\models\item\raw_silver.json
+19a04224d748be4bf78c2db3de2c3dc2944d18b8 assets\dncmod\models\item\parchment.json
 d211d90d925715e3570e500e18a53fa4cbb8693e assets\dncmod\models\block\white_iron_cluster.json
 9886d220a340ef0f35244d36136e8d7f18c6c2eb assets\dncmod\models\item\tin_ore.json
 f799392f50f7da5e904f3174975ade42e478beb9 assets\dncmod\models\item\obsidian_ingot.json

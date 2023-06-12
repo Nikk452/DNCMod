@@ -27,7 +27,9 @@
   "item.dncmod.raw_platinum": "Raw Platinum",
   "item.dncmod.raw_adamantine": "Raw Adamantine",
   "item.dncmod.raw_bronze": "Raw Bronze",
-  "item.dncmod.scroll": "Old Scroll",
+  "item.dncmod.scroll": "Parchment Scroll",
+  "item.dncmod.parchment":"Parchment",
+  "item.dncmod.spell_book": "Spell Book",
 
   "item.dncmod.spear": "Spear",
   "item.dncmod.short_sword": "Short Sword",

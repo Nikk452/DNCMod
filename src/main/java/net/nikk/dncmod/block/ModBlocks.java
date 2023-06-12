@@ -106,6 +106,6 @@ public class ModBlocks {
     }
 
     public static void registerModBlocks() {
-        DNCMod.LOGGER.debug("Registering ModBlocks for " + DNCMod.MOD_ID);
+        DNCMod.LOGGER.debug("[Dungeons & Crafting] Registering Mod Blocks");
     }
 }

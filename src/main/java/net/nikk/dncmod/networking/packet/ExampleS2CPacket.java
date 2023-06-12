@@ -3,13 +3,11 @@ package net.nikk.dncmod.networking.packet;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.nikk.dncmod.screen.CharCreationScreen1;
-import net.nikk.dncmod.screen.StatScreen1;
 import net.nikk.dncmod.util.IEntityDataSaver;
 
 public class ExampleS2CPacket {

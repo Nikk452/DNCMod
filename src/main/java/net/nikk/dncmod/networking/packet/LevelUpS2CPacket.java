@@ -6,8 +6,6 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
-import net.nikk.dncmod.screen.CharCreationScreen1;
-import net.nikk.dncmod.screen.StatScreen1;
 import net.nikk.dncmod.util.IEntityDataSaver;
 
 public class LevelUpS2CPacket {

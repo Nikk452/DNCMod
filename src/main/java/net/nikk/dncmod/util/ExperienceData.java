@@ -102,16 +102,16 @@ public class ExperienceData {
     private static void classMovementSpeed(ServerPlayerEntity player, int class_type, int total_level, boolean levelDown){
         if(levelDown){
             switch(class_type){
-                case 0 -> {AttributeData.setMovementSpeed(player,(total_level+1)*0.025,total_level*0.025,"fighter_movement_speed_bonus","18aca998-d739-4c3c-8afb-e875ca5cb615");}
-                case 2 -> {AttributeData.setMovementSpeed(player,(total_level+1)*0.01,total_level*0.01,"druid_movement_speed_bonus","b899a106-ea11-46da-b9e5-b63e580a9521");}
-                case 5 -> {AttributeData.setMovementSpeed(player,(total_level+1)*0.1,total_level*0.1,"monk_movement_speed_bonus","722e1a26-63a6-4b76-bb78-2ce8180b1183");}
+                case 0 -> AttributeData.setMovementSpeed(player,(total_level+1)*0.025,total_level*0.025,"fighter_movement_speed_bonus","18aca998-d739-4c3c-8afb-e875ca5cb615");
+                case 2 -> AttributeData.setMovementSpeed(player,(total_level+1)*0.01,total_level*0.01,"druid_movement_speed_bonus","b899a106-ea11-46da-b9e5-b63e580a9521");
+                case 5 -> AttributeData.setMovementSpeed(player,(total_level+1)*0.1,total_level*0.1,"monk_movement_speed_bonus","722e1a26-63a6-4b76-bb78-2ce8180b1183");
                 default -> {}
             }
         }else{
             switch(class_type){
-                case 0 -> {AttributeData.setMovementSpeed(player,(total_level-1)*0.025,total_level*0.025,"fighter_movement_speed_bonus","18aca998-d739-4c3c-8afb-e875ca5cb615");}
-                case 2 -> {AttributeData.setMovementSpeed(player,(total_level-1)*0.01,total_level*0.01,"druid_movement_speed_bonus","b899a106-ea11-46da-b9e5-b63e580a9521");}
-                case 5 -> {AttributeData.setMovementSpeed(player,(total_level-1)*0.1,total_level*0.1,"monk_movement_speed_bonus","722e1a26-63a6-4b76-bb78-2ce8180b1183");}
+                case 0 -> AttributeData.setMovementSpeed(player,(total_level-1)*0.025,total_level*0.025,"fighter_movement_speed_bonus","18aca998-d739-4c3c-8afb-e875ca5cb615");
+                case 2 -> AttributeData.setMovementSpeed(player,(total_level-1)*0.01,total_level*0.01,"druid_movement_speed_bonus","b899a106-ea11-46da-b9e5-b63e580a9521");
+                case 5 -> AttributeData.setMovementSpeed(player,(total_level-1)*0.1,total_level*0.1,"monk_movement_speed_bonus","722e1a26-63a6-4b76-bb78-2ce8180b1183");
                 default -> {}
             }
         }

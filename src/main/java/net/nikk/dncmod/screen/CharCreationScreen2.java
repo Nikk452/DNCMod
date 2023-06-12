@@ -10,7 +10,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.nikk.dncmod.DNCMod;
-
 public class CharCreationScreen2 extends Screen {
     private final String race;
     private final String firstName;

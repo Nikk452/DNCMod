@@ -1,7 +1,6 @@
 package net.nikk.dncmod;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -12,7 +11,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.nikk.dncmod.block.ModBlocks;
 import net.nikk.dncmod.config.ModConfig;
 import net.nikk.dncmod.entity.ModEntities;
@@ -20,61 +18,42 @@ import net.nikk.dncmod.entity.custom.GoblinEntity;
 import net.nikk.dncmod.event.*;
 import net.nikk.dncmod.item.ModItems;
 import net.nikk.dncmod.networking.Networking;
+import net.nikk.dncmod.screen.ModScreenHandlers;
 import net.nikk.dncmod.world.feature.ModConfiguredFeatures;
-import net.nikk.dncmod.world.gen.ModOreGeneration;
 import net.nikk.dncmod.world.gen.ModWorldGen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.bernie.geckolib3.GeckoLib;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Objects;
 
 public class DNCMod implements ModInitializer {
 	public static final String MOD_ID = "dncmod";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final boolean isExclusive = false;
 	public static ModConfig CONFIG;
 	@Override
 	public void onInitialize() {
-		craftPaths();
+		IOManager.craftPaths();
 		ModConfiguredFeatures.registerConfiguredFeatures();
 		ModItems.registerModItems();
 		ModWorldGen.generateWorldGen();
 		ModBlocks.registerModBlocks();
+		ModEntities.registerModEntities();
+		ModScreenHandlers.registerAllScreenHandlers();
 		Networking.RegisterC2SPackets();
+		GeckoLib.initialize();
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new KillEntityHandler());
-		ServerLifecycleEvents.SERVER_STARTED.register(new ExclusiveServer());
+		ServerLifecycleEvents.SERVER_STARTED.register(new ServerStartedEvent());
 		ServerPlayerEvents.COPY_FROM.register(new CopyFromEvent());
 		ServerPlayerEvents.AFTER_RESPAWN.register(new AfterRespawnEvent());
 		AttackEntityCallback.EVENT.register(new AttackEntityEvent());
 		PlayerBlockBreakEvents.AFTER.register(new MineBlockEvent());
-		GeckoLib.initialize();
+		PickItemCallBack.EVENT.register(new PickItemEvent());
 		FabricDefaultAttributeRegistry.register(ModEntities.GOBLIN, GoblinEntity.setAttributes());
-	}
-	public void craftPaths(){
-		try{
-			if(!Files.isDirectory(Paths.get("./config"))){
-				Files.createDirectory(Paths.get("./config"));
-			}
-			if(!Files.isDirectory(Paths.get("./config/dungeons-and-crafting"))){
-				Files.createDirectory(Paths.get("./config/dungeons-and-crafting"));
-			}
-			if(!Files.exists(Paths.get("./config/dungeons-and-crafting/config.json"))){
-				IOManager.generateModConfig();
-			}
-			if(!Files.exists(Paths.get("./config/dungeons-and-crafting/used_names.json"))){
-				IOManager.generateUsedNames();
-			}
-			CONFIG = IOManager.readModConfig();
-		}
-		catch (IOException e){
-			e.printStackTrace();
-		}
 	}
 
 	public static void sendConfigSyncPacket(ServerPlayerEntity player){
-		if(false) if(!player.getServer().isHost(player.getGameProfile())) {
+		if(!Objects.requireNonNull(player.getServer()).isHost(player.getGameProfile())) {
 			PacketByteBuf buf = PacketByteBufs.create();
 			ModConfig cfg = DNCMod.CONFIG;
 			buf.writeInt(cfg.xp_per_lvl_multi);

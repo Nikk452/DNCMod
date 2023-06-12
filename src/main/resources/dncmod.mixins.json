@@ -13,7 +13,9 @@
     "PlayerListS2CPacketMixin",
     "EntityMixin",
     "PlayerManagerAccess",
-    "SaveHandlerAccess"
+    "SaveHandlerAccess",
+    "ItemEntityMixin",
+    "ScreenHandlerMixin"
   ],
   "client": [
     "ExampleMixin",

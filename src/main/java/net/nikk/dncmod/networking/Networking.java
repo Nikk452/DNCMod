@@ -2,16 +2,9 @@ package net.nikk.dncmod.networking;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.networking.packet.*;
-import net.nikk.dncmod.screen.CharCreationScreen1;
-import net.nikk.dncmod.screen.StatScreen1;
-import net.nikk.dncmod.util.IEntityDataSaver;
 
 public class Networking {
     public static final Identifier CREATION_ID = new Identifier(DNCMod.MOD_ID,"creation");

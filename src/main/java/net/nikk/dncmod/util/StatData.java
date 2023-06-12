@@ -6,9 +6,9 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.nikk.dncmod.networking.Networking;
-
+@SuppressWarnings("unused")
 public class StatData {
-    public static int[] addStat(IEntityDataSaver player, int type, String key, int amount) {
+    public static void addStat(IEntityDataSaver player, int type, String key, int amount) {
         NbtCompound nbt = player.getPersistentData();
         int[] stat = nbt.getIntArray(key).length == 0? new int[]{0, 0, 0, 0, 0, 0} :nbt.getIntArray(key);
         if(stat[type] + amount >= 100) {
@@ -18,7 +18,6 @@ public class StatData {
         }
         nbt.putIntArray(key, stat);
         syncStats(stat, (ServerPlayerEntity) player);
-        return stat;
     }
 
     public static int[] removeStat(IEntityDataSaver player, int type, String key, int amount) {

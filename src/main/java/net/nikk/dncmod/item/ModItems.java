@@ -9,7 +9,9 @@ import net.minecraft.util.registry.Registry;
 import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.entity.ModEntities;
 import net.nikk.dncmod.item.custom.LongBowItem;
-
+import net.nikk.dncmod.item.custom.ScrollItem;
+import net.nikk.dncmod.item.custom.SpellBookItem;
+@SuppressWarnings("unused")
 public class ModItems {
     public static final Item WHITE_IRON_CRYSTAL = registerItem("white_iron_crystal",
             new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
@@ -66,8 +68,6 @@ public class ModItems {
             new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item RAW_ELECTRUM = registerItem("raw_electrum",
             new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
-    public static final Item SCROLL = registerItem("scroll",
-            new Item(new FabricItemSettings().rarity(Rarity.COMMON).group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item LONG_ARROW = registerItem("long_arrow",
             new ArrowItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
 
@@ -99,10 +99,16 @@ public class ModItems {
             new ArmorItem(ModArmorMaterials.ARRIVAL, EquipmentSlot.LEGS ,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
     public static final Item ARRIVAL_BOOTS = registerItem("arrival_boots",
             new ArmorItem(ModArmorMaterials.ARRIVAL, EquipmentSlot.FEET ,new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item SPELL_BOOK = registerItem("spell_book",
+            new SpellBookItem(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS).maxCount(1).rarity(Rarity.RARE)));
+    public static final Item PARCHMENT = registerItem("parchment",
+            new Item(new FabricItemSettings().group(ModItemGroup.DNC_TAB_ITEMS)));
+    public static final Item SCROLL = registerItem("scroll",
+            new ScrollItem(new FabricItemSettings().rarity(Rarity.COMMON).group(ModItemGroup.DNC_TAB_ITEMS)));
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(DNCMod.MOD_ID, name), item);
     }
     public static void registerModItems() {
-        DNCMod.LOGGER.debug("Registering Mod Items for " + DNCMod.MOD_ID);
+        DNCMod.LOGGER.debug("[Dungeons & Crafting] Registering Mod Items");
     }
 }

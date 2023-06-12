@@ -7,9 +7,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.nikk.dncmod.screen.CharCreationScreen1;
 import net.nikk.dncmod.screen.SpellCreationScreen;
-import net.nikk.dncmod.util.IEntityDataSaver;
 
 public class SpellMenuS2CPacket {
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,

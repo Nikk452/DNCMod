@@ -1,6 +1,7 @@
 package net.nikk.dncmod.entity.custom;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.ai.goal.*;
@@ -85,6 +86,12 @@ public class GoblinEntity extends HostileEntity implements IAnimatable, RangedAt
         super.initDataTracker();
         this.getDataTracker().startTracking(DATA_ID_TYPE_VARIANT, 0);
     }
+
+    // example of damage source immunity
+    //@Override
+    //public boolean isInvulnerableTo(DamageSource damageSource) {
+    //    return damageSource.isProjectile() || super.isInvulnerableTo(damageSource);
+    //}
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if(event.isMoving()){

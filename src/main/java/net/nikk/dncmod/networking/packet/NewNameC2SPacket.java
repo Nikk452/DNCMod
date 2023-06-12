@@ -26,10 +26,12 @@ public class NewNameC2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
         String name = buf.readString();
-        String[] ids = player.server.getPlayerNames();
-        PacketByteBuf buffer = PacketByteBufs.create();
-        buffer.writeBoolean(!(Arrays.stream(ids).toList().contains(name)));
-        ServerPlayNetworking.send(player, Networking.NEWNAMES2C, buffer);
+        server.execute(()->{
+            String[] ids = player.server.getPlayerNames();
+            PacketByteBuf buffer = PacketByteBufs.create();
+            buffer.writeBoolean(!(Arrays.stream(ids).toList().contains(name)));
+            ServerPlayNetworking.send(player, Networking.NEWNAMES2C, buffer);
+        });
     }
     @Nullable
     private static NbtCompound getNbtFromUUID(ServerPlayerEntity player, String uuid) {
@@ -41,7 +43,7 @@ public class NewNameC2SPacket {
                 nbtCompound = NbtIo.readCompressed(file);
             }
         } catch (Exception var4) {
-            LOGGER.warn("Failed to load player data for UUID: "+uuid.toString());
+            LOGGER.warn("[Dungeons & Crafting] Failed to load player data for UUID: "+uuid.toString());
         }
 
         if (nbtCompound != null) {

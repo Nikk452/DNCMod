@@ -122,7 +122,7 @@ public class ModHudCallback implements HudRenderCallback{
                 }
             }
             //label rendering
-            if(this.last_label!=nbt.getInt("label")){
+            if(false) if(this.last_label!=nbt.getInt("label")){
                 this.last_label=nbt.getInt("label");
                 String[] temp = new String[this.last_label-1];
                 int max = 0;

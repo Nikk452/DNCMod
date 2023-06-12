@@ -7,14 +7,17 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.PressableTextWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.networking.Networking;
+import net.nikk.dncmod.util.AttributeData;
 import net.nikk.dncmod.util.IEntityDataSaver;
 
 public class SpellCreationScreen extends Screen {
@@ -57,6 +60,18 @@ public class SpellCreationScreen extends Screen {
         int y = (height - backgroundHeight) / 2;
         int line = backgroundHeight/30;
         int collum = backgroundWidth/30;
+        this.addDrawableChild(new PressableTextWidget(-5+(width-textRenderer.getWidth(Text.literal("Type: "+this.type)))/2,y+10+line*3,90,13, Text.of(""),(button) -> {
+            this.type = this.type.equals("Buff")?"Offensive":(this.type.equals("Offensive")?"Healing":"Buff");
+        }, textRenderer));
+        this.addDrawableChild(new PressableTextWidget(x+collum*4-5,y+20+line*3+line,90,13, Text.of(""),(button) -> {
+            this.level+=1;
+        }, textRenderer));
+        this.addDrawableChild(new PressableTextWidget(x+collum*25/2-5,y+20+line*3+line,90,13, Text.of(""),(button) -> {
+            this.duration = this.duration==1?10:(this.duration==10?60:(this.duration==60?600:this.duration==600?3600:1));
+        }, textRenderer));
+        this.addDrawableChild(new PressableTextWidget(x+collum*43/2-5,y+20+line*3+line,90,13, Text.of(""),(button) -> {
+            this.casting = this.casting==1?5:(this.casting==5?10:(this.casting==10?30:this.casting==30?60:1));
+        }, textRenderer));
         this.addDrawableChild(new ButtonWidget(x -12 + collum * 14, y + 22 + line * 24, 75, 20, Text.literal("Complete"), (button) -> {
             NbtCompound nbt = new NbtCompound();
             nbt.putString("type",this.type);
@@ -109,7 +124,7 @@ public class SpellCreationScreen extends Screen {
                     Text.literal("Primal Spell Creation"),
                     Text.literal("Type: "+this.type),
                     Text.literal("Spell Level: "+this.level),
-                    Text.literal("Duration: Instant"),
+                    Text.literal("Duration: "+(this.duration==1?"Instant":"Per "+this.duration+"s")),
                     Text.literal("Casting Time: "+this.casting+"s"),
                     Text.literal("Saving Throw:"),
                     Text.literal("Target: "+this.target),

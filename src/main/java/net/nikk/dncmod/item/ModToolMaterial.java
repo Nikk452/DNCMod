@@ -4,7 +4,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 
 import java.util.function.Supplier;
-
+@SuppressWarnings("unused")
 public enum ModToolMaterial implements ToolMaterial {
     BRONZE(5, 1800, 7.0F, 7.0F, 25,
             () -> Ingredient.ofItems(ModItems.BRONZE_INGOT)),
@@ -42,7 +42,7 @@ public enum ModToolMaterial implements ToolMaterial {
     private final int enchantability;
     private final Supplier<Ingredient> repairIngredient;
 
-    private ModToolMaterial(int miningLevel, int itemDurability, float miningSpeed, float attackDamage,
+    ModToolMaterial(int miningLevel, int itemDurability, float miningSpeed, float attackDamage,
                             int enchantability, Supplier<Ingredient> repairIngredient) {
         this.miningLevel = miningLevel;
         this.itemDurability = itemDurability;

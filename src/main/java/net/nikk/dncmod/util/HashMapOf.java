@@ -1,7 +1,7 @@
 package net.nikk.dncmod.util;
 
 import java.util.HashMap;
-
+@SuppressWarnings("unused")
 public class HashMapOf<K, V> extends HashMap<K, V> {
     public HashMapOf(K k1, V v1){
         putIfAbsent(k1, v1);
