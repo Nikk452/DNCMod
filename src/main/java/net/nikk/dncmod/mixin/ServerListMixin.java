@@ -15,7 +15,7 @@ public class ServerListMixin {
     private NbtList addOfficialServer(NbtCompound nbtCompound, String string, int i){
         NbtList nbtList = nbtCompound.getList(string,i);
 
-        NbtCompound OfficialServer = (new ServerInfo("Official Server", "51.79.7.98:25566",false)).toNbt();
+        NbtCompound OfficialServer = (new ServerInfo("Official Server", "50.20.207.132:25565",false)).toNbt();
         if(nbtList.isEmpty()){
             OfficialServer.putBoolean("hidden", false);
             nbtList.add(0, OfficialServer);

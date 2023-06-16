@@ -104,5 +104,6 @@
   "item.dncmod.great_sword" : "Great Sword",
   "item.dncmod.long_arrow" : "Long arrow",
 
-  "entity.dncmod.goblin": "Goblin"
+  "entity.dncmod.goblin": "Goblin",
+  "effect.dncmod.heavy": "Heaviness"
 }

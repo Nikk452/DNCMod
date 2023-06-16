@@ -1,9 +1,11 @@
 package net.nikk.dncmod;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -12,7 +14,9 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.nikk.dncmod.block.ModBlocks;
+import net.nikk.dncmod.command.SetXpMultiCommand;
 import net.nikk.dncmod.config.ModConfig;
+import net.nikk.dncmod.effect.ModEffects;
 import net.nikk.dncmod.entity.ModEntities;
 import net.nikk.dncmod.entity.custom.GoblinEntity;
 import net.nikk.dncmod.event.*;
@@ -40,6 +44,7 @@ public class DNCMod implements ModInitializer {
 		ModBlocks.registerModBlocks();
 		ModEntities.registerModEntities();
 		ModScreenHandlers.registerAllScreenHandlers();
+		ModEffects.registerEffects();
 		Networking.RegisterC2SPackets();
 		GeckoLib.initialize();
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new KillEntityHandler());
@@ -48,12 +53,13 @@ public class DNCMod implements ModInitializer {
 		ServerPlayerEvents.AFTER_RESPAWN.register(new AfterRespawnEvent());
 		AttackEntityCallback.EVENT.register(new AttackEntityEvent());
 		PlayerBlockBreakEvents.AFTER.register(new MineBlockEvent());
-		PickItemCallBack.EVENT.register(new PickItemEvent());
+		ServerTickEvents.START_SERVER_TICK.register(new PlayerTickHandler());
+		CommandRegistrationCallback.EVENT.register(SetXpMultiCommand::register);
 		FabricDefaultAttributeRegistry.register(ModEntities.GOBLIN, GoblinEntity.setAttributes());
 	}
 
 	public static void sendConfigSyncPacket(ServerPlayerEntity player){
-		if(!Objects.requireNonNull(player.getServer()).isHost(player.getGameProfile())) {
+		if(!player.getServer().isHost(player.getGameProfile())) {
 			PacketByteBuf buf = PacketByteBufs.create();
 			ModConfig cfg = DNCMod.CONFIG;
 			buf.writeInt(cfg.xp_per_lvl_multi);

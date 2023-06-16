@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.networking.Networking;
 
 import java.util.Random;
@@ -71,6 +72,7 @@ public class ExperienceData {
         ServerPlayNetworking.send(player, Networking.LEVELUPS2C, PacketByteBufs.create().writeNbt(nbt_res));
     }
     public static void addExperience(ServerPlayerEntity player,int amount){
+        amount *= DNCMod.CONFIG.xp_per_lvl_multi;
         NbtCompound nbt = ((IEntityDataSaver)player).getPersistentData();
         NbtCompound nbt_res = new NbtCompound();
         nbt.putInt("experience",nbt.getInt("experience")+amount);

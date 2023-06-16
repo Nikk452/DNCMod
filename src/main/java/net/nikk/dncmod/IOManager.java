@@ -20,7 +20,7 @@ public class IOManager {
     }
 
     public static void generateModConfig(){
-        String gson = new GsonBuilder().setPrettyPrinting().create().toJson(new ModConfig(2, true, true,
+        String gson = new GsonBuilder().setPrettyPrinting().create().toJson(new ModConfig(1, true, true,
                 true, true, true, true, true,true,true));
         File file = new File("./config/dungeons-and-crafting/config.json");
         fileWriter(file, gson);
@@ -37,7 +37,7 @@ public class IOManager {
             config = new Gson().fromJson(new FileReader("./config/dungeons-and-crafting/config.json"), ModConfig.class);
         } catch (IOException e){
             e.printStackTrace();
-            config = new ModConfig(2, true, true,
+            config = new ModConfig(1, true, true,
                     true, true, true, true, true,true,true);
         }
         return config;
@@ -66,9 +66,9 @@ public class IOManager {
             if(!Files.exists(Paths.get("./config/dungeons-and-crafting/config.json"))){
                 IOManager.generateModConfig();
             }
-            if(!Files.exists(Paths.get("./config/dungeons-and-crafting/used_names.json"))){
+            /**if(!Files.exists(Paths.get("./config/dungeons-and-crafting/used_names.json"))){
                 IOManager.generateUsedNames();
-            }
+            }*/
             DNCMod.CONFIG = IOManager.readModConfig();
         }
         catch (IOException e){

@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class WeightManager {
-    private static int maxInventoryWeight = 25000;
+    private static int defatltMaxInventoryWeight = 15000;
     private static Map<Item, Integer> itemWeights  = new HashMap<>();
     static {
         itemWeights.put(Items.ENDER_PEARL, 3);
@@ -170,7 +170,9 @@ public class WeightManager {
             }
         }
     }
-
+    public static int getMaxInventoryWeight(PlayerEntity player){
+        return defatltMaxInventoryWeight+((IEntityDataSaver)player).getPersistentData().getIntArray("stats")[0]*1000;
+    }
     public static int getWeight(Item item) {
         if (itemWeights.containsKey(item)) {
             return itemWeights.get(item);
@@ -181,22 +183,22 @@ public class WeightManager {
     public static boolean canPlayerPickup(PlayerEntity player, ItemStack stack) {
         int totalWeight = getPlayerInventoryWeight(player);
         int itemWeight = getWeight(stack.getItem());
-        int remainingSpace = (maxInventoryWeight - totalWeight) / Math.max(itemWeight,1);
+        int remainingSpace = (defatltMaxInventoryWeight - totalWeight) / Math.max(itemWeight,1);
         return stack.getCount() <= remainingSpace;
     }
     public static boolean canPlayerPickup(PlayerEntity player, ItemStack stack, ItemStack lostStack) {
         int totalWeight = getPlayerInventoryWeight(player);
         int itemWeight = getWeight(stack.getItem());
         int lostWeight = getWeight(lostStack.getItem()) * lostStack.getCount();
-        int remainingSpace = (maxInventoryWeight - (totalWeight - lostWeight)) / Math.max(itemWeight,1);
+        int remainingSpace = (defatltMaxInventoryWeight - (totalWeight - lostWeight)) / Math.max(itemWeight,1);
         return stack.getCount() <= remainingSpace;
     }
     public static int getMaxPickUp(PlayerEntity player,ItemStack itemStack){
         int totalWeight = getPlayerInventoryWeight(player);
         int itemWeight = getWeight(itemStack.getItem());
-        return (maxInventoryWeight - totalWeight) / Math.max(itemWeight,1);
+        return (defatltMaxInventoryWeight - totalWeight) / Math.max(itemWeight,1);
     }
-    private static int getPlayerInventoryWeight(PlayerEntity player) {
+    public static int getPlayerInventoryWeight(PlayerEntity player) {
         int totalWeight = 0;
         PlayerInventory inventory = player.getInventory();
         for (int i = 0; i < inventory.size(); i++) {

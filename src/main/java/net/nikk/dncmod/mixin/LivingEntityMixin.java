@@ -2,12 +2,15 @@ package net.nikk.dncmod.mixin;
 
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.Block;
 import net.minecraft.entity.DamageUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
@@ -16,6 +19,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.nikk.dncmod.effect.ModEffects;
 import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.util.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
@@ -71,7 +75,9 @@ public abstract class LivingEntityMixin extends Entity {
 
     @ModifyArg(method = "jump()V", at =@At(value = "INVOKE",target="net/minecraft/entity/LivingEntity.setVelocity (DDD)V"),index=1)
     private double jumpSkill(double ci){
-            if(this.isSprinting()){
+            double he = getEffectModifier((LivingEntity)(Object)this,ModEffects.HEAVY);
+            ci=he>=ci?0:ci-he;
+            if(this.isSprinting() && ci!=0){
                 NbtCompound nbt = ((IEntityDataSaver)(LivingEntity)(Object)this).getPersistentData();
                 if(nbt.getBoolean("created")) if(nbt.getIntArray("skills")[2]>=0) {
                     int dice = this.random.nextBetween(1,20);
@@ -127,5 +133,16 @@ public abstract class LivingEntityMixin extends Entity {
         }
         cir.setReturnValue(amount);
     }
-
+    @Redirect(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", at = @At(value = "INVOKE", target = "net/minecraft/block/Block.getSlipperiness ()F"))
+    private float injected(Block block) {
+        float slip = block.getSlipperiness();
+        double he = (getEffectModifier(((LivingEntity)(Object)this),ModEffects.HEAVY));
+        if(he>0 && he<5){
+            slip += he;
+        }
+        return slip;
+    }
+    public double getEffectModifier(LivingEntity livingEntity, StatusEffect statusEffect) {
+        return livingEntity.hasStatusEffect(statusEffect) ? (double)(0.1F * (float)(livingEntity.getStatusEffect(statusEffect).getAmplifier() + 1)) : 0.0;
+    }
 }

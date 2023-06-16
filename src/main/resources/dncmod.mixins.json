@@ -14,8 +14,7 @@
     "EntityMixin",
     "PlayerManagerAccess",
     "SaveHandlerAccess",
-    "ItemEntityMixin",
-    "ScreenHandlerMixin"
+    "ItemEntityMixin"
   ],
   "client": [
     "ExampleMixin",
