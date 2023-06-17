@@ -1,5 +1,6 @@
 package net.nikk.dncmod;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
@@ -9,10 +10,18 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.registry.Registry;
 import net.nikk.dncmod.block.ModBlocks;
 import net.nikk.dncmod.command.SetXpMultiCommand;
 import net.nikk.dncmod.config.ModConfig;
@@ -23,11 +32,15 @@ import net.nikk.dncmod.event.*;
 import net.nikk.dncmod.item.ModItems;
 import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.screen.ModScreenHandlers;
+import net.nikk.dncmod.util.WeightManager;
+import net.nikk.dncmod.world.ServerState;
 import net.nikk.dncmod.world.feature.ModConfiguredFeatures;
 import net.nikk.dncmod.world.gen.ModWorldGen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.bernie.geckolib3.GeckoLib;
+
+import java.util.Map;
 import java.util.Objects;
 
 public class DNCMod implements ModInitializer {
@@ -72,6 +85,7 @@ public class DNCMod implements ModInitializer {
 			buf.writeBoolean(cfg.isClass_wizard_approved);
 			buf.writeBoolean(cfg.isClass_sorcerer_approved);
 			buf.writeBoolean(cfg.isClass_monk_approved);
+			buf.writeMap(WeightManager.itemWeights, (buffer, item) -> buffer.writeItemStack(item.getDefaultStack()), PacketByteBuf::writeVarInt);
 			ServerPlayNetworking.send(player, Networking.SYNC_CONFIG, buf);
 			LOGGER.info("[Dungeons & Crafting] Sending config to player");
 		}

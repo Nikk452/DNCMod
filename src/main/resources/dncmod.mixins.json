@@ -11,7 +11,7 @@
     "PlayerManagerMixin",
     "EntityRendererMixin",
     "PlayerListS2CPacketMixin",
-    "EntityMixin",
+    "PlayerRendererMixin",
     "PlayerManagerAccess",
     "SaveHandlerAccess",
     "ItemEntityMixin"

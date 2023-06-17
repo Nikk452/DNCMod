@@ -14,5 +14,6 @@ public class PlayerManagerMixin {
     @Inject(method = "onPlayerConnect", at = @At(value = "INVOKE", target = "net/minecraft/server/world/ServerWorld.getGameRules ()Lnet/minecraft/world/GameRules;", shift = At.Shift.BEFORE))
     private void syncConfigOnJoin(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci){
         DNCMod.sendConfigSyncPacket(player);
+
     }
 }

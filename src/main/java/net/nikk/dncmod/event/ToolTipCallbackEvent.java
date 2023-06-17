@@ -17,6 +17,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Rarity;
+import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.item.ModItems;
 import net.nikk.dncmod.item.custom.ScrollItem;
 import net.nikk.dncmod.item.custom.SpellBookItem;
@@ -27,6 +28,7 @@ import java.util.List;
 import static net.minecraft.util.Rarity.*;
 
 public class ToolTipCallbackEvent implements ItemTooltipCallback{
+    boolean isInPounds = DNCMod.CONFIG.isInPounds;
     @Override
     public void getTooltip(ItemStack stack, TooltipContext context, List<Text> lines) {
         lines.clear();
@@ -40,7 +42,12 @@ public class ToolTipCallbackEvent implements ItemTooltipCallback{
         personalLines(stack, lines, EquipmentSlot.CHEST, EntityAttributes.GENERIC_ARMOR, 1);
         personalLines(stack, lines, EquipmentSlot.LEGS, EntityAttributes.GENERIC_ARMOR, 1);
         personalLines(stack, lines, EquipmentSlot.FEET, EntityAttributes.GENERIC_ARMOR, 1);
-        lines.add(Text.literal("Weight: "+ WeightManager.getWeight(stack.getItem())).setStyle(Style.EMPTY.withColor(Formatting.DARK_GRAY)));
+        float weight = WeightManager.getWeight(stack.getItem());
+        if(isInPounds){
+            weight = Math.round(weight/45360f);
+            weight /= 100;
+        }
+        lines.add(Text.literal("Weight: "+(isInPounds?weight+" lb":weight/1000f+" kg")).setStyle(Style.EMPTY.withColor(Formatting.DARK_GRAY)));
         if (stack.hasNbt()) {
             if (stack.getNbt().contains("display", 10)) {
                 NbtCompound nbtCompound = stack.getNbt().getCompound("display");

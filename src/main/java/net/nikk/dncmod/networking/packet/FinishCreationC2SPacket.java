@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -11,6 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.util.AttributeData;
 import net.nikk.dncmod.util.IEntityDataSaver;
+import net.nikk.dncmod.world.ServerState;
 
 public class FinishCreationC2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,
@@ -18,8 +20,10 @@ public class FinishCreationC2SPacket {
         // Everything here happens ONLY on the Server!
         NbtCompound res_nbt = buf.readNbt();
         server.execute(()->{
+            String id = res_nbt.getString("first_name")+" "+res_nbt.getString("last_name");
             NbtCompound nbt = ((IEntityDataSaver) player).getPersistentData();
-            if(!nbt.getBoolean("created")){
+
+            if(!nbt.getBoolean("created")) if(!(ServerState.getServerState(server).UsedNicknames.contains(NbtString.of(id)))){
                 // Play the ding sound
                 // actually add stats to the player
                 nbt.putString("first_name",res_nbt.getString("first_name"));
@@ -63,8 +67,15 @@ public class FinishCreationC2SPacket {
                 nbt.putInt("con_health_boost",con_health);
                 AttributeData.addHealth(player,con_health,"con_health_boost","80b3a28a-42cd-4926-8327-91e75ab0191f");
                 nbt.putBoolean("celestial",true);
+                ServerState.getServerState(server).UsedNicknames.add(NbtString.of(id));
+                ServerState.getServerState(server).markDirty();
+                ServerPlayNetworking.send(player, Networking.CREATION_SYNC_ID, PacketByteBufs.create().writeNbt(nbt));
+            }else{
+                NbtCompound nbt2 = ((IEntityDataSaver)player).getPersistentData();
+                PacketByteBuf buffer = PacketByteBufs.create().writeNbt(nbt2);
+                buffer.writeBoolean(false);
+                ServerPlayNetworking.send(player, Networking.REFRESH_CLIENT_ID, buffer);
             }
-            ServerPlayNetworking.send(player, Networking.CREATION_SYNC_ID, PacketByteBufs.create().writeNbt(nbt));
         });
     }
 }

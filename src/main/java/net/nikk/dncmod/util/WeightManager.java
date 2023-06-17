@@ -6,6 +6,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.recipe.RecipeType;
@@ -21,11 +22,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public class WeightManager {
-    private static int defatltMaxInventoryWeight = 15000;
-    private static Map<Item, Integer> itemWeights  = new HashMap<>();
+    private static final int defaultMaxInventoryWeight = 15000;
+    private static final int weightGainPerSTR = 6804;
+    public static Map<Item, Integer> itemWeights  = new HashMap<>();
     static {
         itemWeights.put(Items.ENDER_PEARL, 3);
         itemWeights.put(Items.NETHERITE_SCRAP, 300);
@@ -79,12 +80,12 @@ public class WeightManager {
         itemWeights.put(Items.CLAY, 1550);
         itemWeights.put(Items.COAL, 90);
         itemWeights.put(Items.RAW_COPPER, 365);
-        //itemWeights.put(Items.COPPER_INGOT, 365);
         itemWeights.put(Items.FLINT, 315);
         itemWeights.put(Items.DIAMOND, 390);
         itemWeights.put(Items.DRIPSTONE_BLOCK, 50);
         itemWeights.put(Items.EMERALD, 295);
         itemWeights.put(Items.RAW_GOLD, 1360);
+        itemWeights.put(Items.ENCHANTED_GOLDEN_APPLE,98070);
         itemWeights.put(Items.GRAVEL, 1650);
         itemWeights.put(Items.RAW_IRON, 600);
         itemWeights.put(Items.LAPIS_LAZULI, 300);
@@ -129,6 +130,15 @@ public class WeightManager {
         itemWeights.put(Items.WHEAT,85);
         itemWeights.put(Items.EGG,100);
         itemWeights.put(Items.TURTLE_EGG,185);
+        itemWeights.put(Items.NETHERITE_HELMET,8890);
+        itemWeights.put(Items.NETHERITE_CHESTPLATE,10060);
+        itemWeights.put(Items.NETHERITE_LEGGINGS,9970);
+        itemWeights.put(Items.NETHERITE_BOOTS,8810);
+        itemWeights.put(Items.NETHERITE_SWORD,7526);
+        itemWeights.put(Items.NETHERITE_SHOVEL,7242);
+        itemWeights.put(Items.NETHERITE_AXE,8322);
+        itemWeights.put(Items.NETHERITE_PICKAXE,9222);
+        itemWeights.put(Items.NETHERITE_HOE,8232);
         itemWeights.put(ModItems.RAW_ADAMANTINE,365);
         itemWeights.put(ModItems.RAW_BRONZE,635);
         itemWeights.put(ModItems.RAW_ELECTRUM,545);
@@ -171,7 +181,8 @@ public class WeightManager {
         }
     }
     public static int getMaxInventoryWeight(PlayerEntity player){
-        return defatltMaxInventoryWeight+((IEntityDataSaver)player).getPersistentData().getIntArray("stats")[0]*1000;
+        NbtCompound data = ((IEntityDataSaver)player).getPersistentData();
+        return data.getBoolean("created")?data.getIntArray("stats")[0]*weightGainPerSTR: defaultMaxInventoryWeight;
     }
     public static int getWeight(Item item) {
         if (itemWeights.containsKey(item)) {
@@ -183,20 +194,23 @@ public class WeightManager {
     public static boolean canPlayerPickup(PlayerEntity player, ItemStack stack) {
         int totalWeight = getPlayerInventoryWeight(player);
         int itemWeight = getWeight(stack.getItem());
-        int remainingSpace = (defatltMaxInventoryWeight - totalWeight) / Math.max(itemWeight,1);
+        NbtCompound data = ((IEntityDataSaver)player).getPersistentData();
+        int remainingSpace = ((data.getBoolean("created")?data.getIntArray("stats")[0]*weightGainPerSTR: defaultMaxInventoryWeight) - totalWeight) / Math.max(itemWeight,1);
         return stack.getCount() <= remainingSpace;
     }
     public static boolean canPlayerPickup(PlayerEntity player, ItemStack stack, ItemStack lostStack) {
         int totalWeight = getPlayerInventoryWeight(player);
         int itemWeight = getWeight(stack.getItem());
         int lostWeight = getWeight(lostStack.getItem()) * lostStack.getCount();
-        int remainingSpace = (defatltMaxInventoryWeight - (totalWeight - lostWeight)) / Math.max(itemWeight,1);
+        NbtCompound data = ((IEntityDataSaver)player).getPersistentData();
+        int remainingSpace = ((data.getBoolean("created")?data.getIntArray("stats")[0]*weightGainPerSTR: defaultMaxInventoryWeight) - (totalWeight - lostWeight)) / Math.max(itemWeight,1);
         return stack.getCount() <= remainingSpace;
     }
     public static int getMaxPickUp(PlayerEntity player,ItemStack itemStack){
         int totalWeight = getPlayerInventoryWeight(player);
         int itemWeight = getWeight(itemStack.getItem());
-        return (defatltMaxInventoryWeight - totalWeight) / Math.max(itemWeight,1);
+        NbtCompound data = ((IEntityDataSaver)player).getPersistentData();
+        return ((data.getBoolean("created")?data.getIntArray("stats")[0]*weightGainPerSTR: defaultMaxInventoryWeight) - totalWeight) / Math.max(itemWeight,1);
     }
     public static int getPlayerInventoryWeight(PlayerEntity player) {
         int totalWeight = 0;

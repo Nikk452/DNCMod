@@ -17,7 +17,7 @@ public class SetXpMultiCommand {
     public static void register(CommandDispatcher<ServerCommandSource> commandDispatcher,
                                 CommandRegistryAccess commandRegistryAccess,
                                 CommandManager.RegistrationEnvironment registrationEnvironment) {
-        commandDispatcher.register(CommandManager.literal("DNCMod")
+        commandDispatcher.register(CommandManager.literal("DNCMod").requires(source -> source.hasPermissionLevel(2))
                         .then(CommandManager.literal("setXpMultiplier")
                                 .then(CommandManager.argument("amount", IntegerArgumentType.integer())
                                         .executes(context -> run(context,IntegerArgumentType.getInteger(context, "amount")))
@@ -27,11 +27,9 @@ public class SetXpMultiCommand {
     }
 
     public static int run(CommandContext<ServerCommandSource> context, int amount) throws CommandSyntaxException {
-        if(context.getSource().getPlayer().hasPermissionLevel(4)){
-            DNCMod.CONFIG.xp_per_lvl_multi = amount;
-            IOManager.updateModConfig(DNCMod.CONFIG);
-            context.getSource().sendFeedback(Text.literal("Xp multiplier was changed to: x"+amount),true);
-        }else context.getSource().sendFeedback(Text.literal("permission denied").formatted(Formatting.DARK_RED),false);
+        DNCMod.CONFIG.xp_per_lvl_multi = amount;
+        IOManager.updateModConfig(DNCMod.CONFIG);
+        context.getSource().sendFeedback(Text.literal("Xp multiplier was changed to: x"+amount),true);
         return 1;
     }
 }

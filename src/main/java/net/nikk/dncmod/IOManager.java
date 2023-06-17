@@ -2,7 +2,6 @@ package net.nikk.dncmod;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.nikk.dncmod.config.ModConfig;
-import net.nikk.dncmod.config.NamesConfig;
 import net.nikk.dncmod.util.HashMapOf;
 
 import java.io.File;
@@ -20,13 +19,8 @@ public class IOManager {
     }
 
     public static void generateModConfig(){
-        String gson = new GsonBuilder().setPrettyPrinting().create().toJson(new ModConfig(1, true, true,
+        String gson = new GsonBuilder().setPrettyPrinting().create().toJson(new ModConfig(1,false, true, true,
                 true, true, true, true, true,true,true));
-        File file = new File("./config/dungeons-and-crafting/config.json");
-        fileWriter(file, gson);
-    }
-    public static void generateUsedNames(){
-        String gson = new GsonBuilder().setPrettyPrinting().create().toJson(new HashMapOf<>("minecraft:overworld", new NamesConfig("5:00", "20:00", "3:00")));
         File file = new File("./config/dungeons-and-crafting/config.json");
         fileWriter(file, gson);
     }
@@ -37,7 +31,7 @@ public class IOManager {
             config = new Gson().fromJson(new FileReader("./config/dungeons-and-crafting/config.json"), ModConfig.class);
         } catch (IOException e){
             e.printStackTrace();
-            config = new ModConfig(1, true, true,
+            config = new ModConfig(1, false, true, true,
                     true, true, true, true, true,true,true);
         }
         return config;
@@ -66,9 +60,6 @@ public class IOManager {
             if(!Files.exists(Paths.get("./config/dungeons-and-crafting/config.json"))){
                 IOManager.generateModConfig();
             }
-            /**if(!Files.exists(Paths.get("./config/dungeons-and-crafting/used_names.json"))){
-                IOManager.generateUsedNames();
-            }*/
             DNCMod.CONFIG = IOManager.readModConfig();
         }
         catch (IOException e){

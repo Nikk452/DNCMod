@@ -28,13 +28,12 @@ public class EntityMixin {
     }
     @Inject(method = "isInvisible()Z", at = @At("RETURN"), cancellable = true)
     private void stealthSkill(CallbackInfoReturnable<Boolean> ci) {
+        boolean bl = ci.getReturnValue();
         NbtCompound nbt = ((IEntityDataSaver)(Object)(this)).getPersistentData();
-        if(nbt.getBoolean("created")){
-            if(nbt.getIntArray("skills")[5]>=0) {
-                if(((Entity)(Object)(this)).isSneaking()){
-                    ci.setReturnValue(true);
-                }else ci.setReturnValue(ci.getReturnValue());
-            }else ci.setReturnValue(ci.getReturnValue());
-        }else ci.setReturnValue(ci.getReturnValue());
+        if(nbt.getBoolean("created"))
+            if(nbt.getIntArray("skills")[5]>=0)
+                if(!((Entity)(Object)(this)).isInSneakingPose())
+                    bl = true;
+        ci.setReturnValue(bl);
     }
 }

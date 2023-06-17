@@ -10,7 +10,7 @@ import net.nikk.dncmod.util.IEntityDataSaver;
 public class NewNameS2CPacket {
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
-        Boolean bl = buf.readBoolean();
+        boolean bl = buf.readBoolean();
         NbtCompound nbt = ((IEntityDataSaver) client.player).getPersistentData();
         client.execute(() -> nbt.putString("allowed_name", Boolean.toString(bl)));
     }

@@ -169,7 +169,7 @@ public class ModHudCallback implements HudRenderCallback{
             }
         }
         //bars rendering
-        if(!client.interactionManager.getCurrentGameMode().isCreative()&&client.interactionManager.getCurrentGameMode()!= GameMode.SPECTATOR){
+        if(!client.interactionManager.getCurrentGameMode().isCreative()&&client.interactionManager.getCurrentGameMode()!= GameMode.SPECTATOR&&!client.options.hudHidden){
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             //xp bar rendering
