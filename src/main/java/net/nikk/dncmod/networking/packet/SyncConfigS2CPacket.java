@@ -29,8 +29,12 @@ public class SyncConfigS2CPacket {
             boolean isClass_sorcerer_approved = buf.readBoolean();
             boolean isClass_monk_approved = buf.readBoolean();
             Map<ItemStack, Integer> itemStackWeights = buf.readMap(PacketByteBuf::readItemStack, PacketByteBuf::readVarInt);
-            Map<Item, Integer> itemsMap = itemStackWeights.entrySet().stream()
-                    .collect(Collectors.toMap(entry -> entry.getKey().getItem(), Map.Entry::getValue));
+            Map<Item, Integer> itemsMap = new HashMap<>();
+            for (Map.Entry<ItemStack, Integer> entry : itemStackWeights.entrySet()) {
+                Item item = entry.getKey().getItem();
+                int weight = entry.getValue();
+                itemsMap.put(item, weight);
+            }
             DNCMod.CONFIG = new ModConfig(xp_per_lvl_multi,DNCMod.CONFIG.isInPounds ,isRace_human_approved,
                     isRace_dwarf_approved, isRace_elf_approved,
                     isClass_fighter_approved, isClass_druid_approved,
