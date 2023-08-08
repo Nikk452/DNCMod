@@ -1,6 +1,8 @@
 package net.nikk.dncmod.mixin;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.nikk.dncmod.util.IEntityDataSaver;
@@ -36,4 +38,8 @@ public class EntityMixin {
                     bl = true;
         ci.setReturnValue(bl);
     }
+    /*@Inject(method = "isInvulnerableTo(Lnet/minecraft/entity/damage/DamageSource;)Z", at = @At("RETURN"), cancellable = true)
+    private void injected(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
+
+    }*/
 }

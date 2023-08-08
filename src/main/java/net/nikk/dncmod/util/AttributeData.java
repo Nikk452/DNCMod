@@ -1,5 +1,6 @@
 package net.nikk.dncmod.util;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -9,13 +10,13 @@ import net.nikk.dncmod.DNCMod;
 import java.util.UUID;
 
 public class AttributeData {
-    public static void addHealth(ServerPlayerEntity player,int amount, String name, String uuid){
+    public static void addHealth(LivingEntity entity, int amount, String name, String uuid){
         EntityAttributeModifier STAT_HEALTH_BOOST = new EntityAttributeModifier(UUID.fromString(uuid),
                 DNCMod.MOD_ID+":" +name, amount, EntityAttributeModifier.Operation.ADDITION);
-        EntityAttributeInstance health = player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+        EntityAttributeInstance health = entity.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
         if(health!=null && !health.hasModifier(STAT_HEALTH_BOOST)){
             health.addPersistentModifier(STAT_HEALTH_BOOST);
-            player.setHealth(player.getMaxHealth());
+            entity.setHealth(entity.getMaxHealth());
         }
     }
     public static void removeHealth(ServerPlayerEntity player,int amount, String name, String uuid){
@@ -29,8 +30,8 @@ public class AttributeData {
             }
         }
     }
-    public static void setHealth(ServerPlayerEntity player,int amount,int new_amount, String name, String uuid){
-        EntityAttributeInstance health = player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+    public static void setHealth(LivingEntity entity,int amount,int new_amount, String name, String uuid){
+        EntityAttributeInstance health = entity.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
         EntityAttributeModifier STAT_HEALTH_BOOST = new EntityAttributeModifier(UUID.fromString(uuid),
                 DNCMod.MOD_ID+":"+name, amount, EntityAttributeModifier.Operation.ADDITION);
         EntityAttributeModifier STAT_HEALTH_BOOST2 = new EntityAttributeModifier(UUID.fromString(uuid),
@@ -38,7 +39,7 @@ public class AttributeData {
         if (health != null) {
             if(health.hasModifier(STAT_HEALTH_BOOST)) health.removeModifier(STAT_HEALTH_BOOST);
             health.addPersistentModifier(STAT_HEALTH_BOOST2);
-            player.setHealth(player.getMaxHealth());
+            entity.setHealth(entity.getMaxHealth());
         }
     }
     public static void setMovementSpeed(ServerPlayerEntity player,double amount,double new_amount, String name, String uuid){

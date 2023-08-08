@@ -1,8 +1,14 @@
 package net.nikk.dncmod;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.nikk.dncmod.config.ModConfig;
+import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.util.HashMapOf;
+import net.nikk.dncmod.util.WeightManager;
 
 import java.io.File;
 import java.io.FileReader;
@@ -64,6 +70,25 @@ public class IOManager {
         }
         catch (IOException e){
             e.printStackTrace();
+        }
+    }
+    public static void sendConfigSyncPacket(ServerPlayerEntity player){
+        if(!player.getServer().isHost(player.getGameProfile())) {
+            PacketByteBuf buf = PacketByteBufs.create();
+            ModConfig cfg = DNCMod.CONFIG;
+            buf.writeInt(cfg.xp_per_lvl_multi);
+            buf.writeBoolean(cfg.isRace_human_approved);
+            buf.writeBoolean(cfg.isRace_elf_approved);
+            buf.writeBoolean(cfg.isRace_dwarf_approved);
+            buf.writeBoolean(cfg.isClass_fighter_approved);
+            buf.writeBoolean(cfg.isClass_druid_approved);
+            buf.writeBoolean(cfg.isClass_cleric_approved);
+            buf.writeBoolean(cfg.isClass_wizard_approved);
+            buf.writeBoolean(cfg.isClass_sorcerer_approved);
+            buf.writeBoolean(cfg.isClass_monk_approved);
+            buf.writeMap(WeightManager.itemWeights, (buffer, item) -> buffer.writeItemStack(item.getDefaultStack()), PacketByteBuf::writeVarInt);
+            ServerPlayNetworking.send(player, Networking.SYNC_CONFIG, buf);
+            DNCMod.LOGGER.info("[Dungeons & Crafting] Sending config to player");
         }
     }
 }

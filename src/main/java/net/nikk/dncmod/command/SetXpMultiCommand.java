@@ -17,7 +17,7 @@ public class SetXpMultiCommand {
     public static void register(CommandDispatcher<ServerCommandSource> commandDispatcher,
                                 CommandRegistryAccess commandRegistryAccess,
                                 CommandManager.RegistrationEnvironment registrationEnvironment) {
-        commandDispatcher.register(CommandManager.literal("DNCMod").requires(source -> source.hasPermissionLevel(2))
+        commandDispatcher.register(CommandManager.literal(DNCMod.MOD_ID).requires(source -> source.hasPermissionLevel(2))
                         .then(CommandManager.literal("setXpMultiplier")
                                 .then(CommandManager.argument("amount", IntegerArgumentType.integer())
                                         .executes(context -> run(context,IntegerArgumentType.getInteger(context, "amount")))

@@ -28,6 +28,8 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Objects;
+
 @SuppressWarnings("unused")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -108,10 +110,9 @@ public abstract class LivingEntityMixin extends Entity {
         return swimmingModifier;
     }
     //@Redirect(method = "applyDamage(Lnet/minecraft/entity/damage/DamageSource;F)V", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.applyArmorToDamage (Lnet/minecraft/entity/damage/DamageSource;F)F"))
-    //private float injected(LivingEntity entity,DamageSource source, float amount) {
-    //    return 0;
-    //}
-
+    //@Inject(method = "applyDamage(Lnet/minecraft/entity/damage/DamageSource;F)V", at = @At("HEAD"), cancellable = true)
+    //private void injected(DamageSource source, float amount, CallbackInfo ci) {ci.cancel();}
+/*
     @Inject(method = "applyArmorToDamage(Lnet/minecraft/entity/damage/DamageSource;F)F", at = @At("HEAD"), cancellable = true)
     private void ArmorSystem(DamageSource source, float amount,CallbackInfoReturnable<Float> cir) {
         if (!source.bypassesArmor()) {
@@ -122,7 +123,8 @@ public abstract class LivingEntityMixin extends Entity {
             int attack = ((LivingEntity)(Object)this).getRandom().nextBetween(1,20);
             if(nbt.getBoolean("created")){
                 AC += nbt.getIntArray("stat_mod")[1];
-                if(source.getSource().isPlayer()){
+                Entity x = source.getSource();
+                if(x!=null) if(x.isPlayer()){
                     critical = (int) ((amount-damage)*100);
                     float num = ((amount-damage)*100);
                     attack = Integer.parseInt(String.valueOf(num).substring(String.valueOf(num).indexOf('.')+1));
@@ -132,6 +134,22 @@ public abstract class LivingEntityMixin extends Entity {
             this.damageArmor(source, amount);
         }
         cir.setReturnValue(amount);
+        cir.cancel();
+    }*/
+    @Inject(method="damage(Lnet/minecraft/entity/damage/DamageSource;F)Z",at = @At("HEAD"), cancellable = true)
+    private void injected(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
+        boolean bl = cir.getReturnValue();
+        if(!bl && damageSource.getAttacker()!=null){
+            if(damageSource.getAttacker().isLiving()){
+                NbtCompound defender = ((IEntityDataSaver)(LivingEntity)(Object)(this)).getPersistentData();
+                NbtCompound attacker = ((IEntityDataSaver)damageSource.getAttacker()).getPersistentData();
+                if(defender.getBoolean("created")){
+
+                }
+                else if(((LivingEntity)(Object)(this)).isPlayer()) bl = false;
+            }
+        }
+        cir.setReturnValue(bl);
     }
     @Redirect(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", at = @At(value = "INVOKE", target = "net/minecraft/block/Block.getSlipperiness ()F"))
     private float injected(Block block) {

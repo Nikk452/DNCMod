@@ -14,7 +14,8 @@
     "PlayerRendererMixin",
     "PlayerManagerAccess",
     "SaveHandlerAccess",
-    "ItemEntityMixin"
+    "ItemEntityMixin",
+    "ServerWorldMixin"
   ],
   "client": [
     "ExampleMixin",

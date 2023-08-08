@@ -2,8 +2,11 @@ package net.nikk.dncmod.util;
 
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.networking.Networking;
 
@@ -71,15 +74,18 @@ public class ExperienceData {
         nbt_res.putIntArray("hit_dices", dices);
         ServerPlayNetworking.send(player, Networking.LEVELUPS2C, PacketByteBufs.create().writeNbt(nbt_res));
     }
-    public static void addExperience(ServerPlayerEntity player,int amount){
-        amount *= DNCMod.CONFIG.xp_per_lvl_multi;
-        NbtCompound nbt = ((IEntityDataSaver)player).getPersistentData();
-        NbtCompound nbt_res = new NbtCompound();
-        nbt.putInt("experience",nbt.getInt("experience")+amount);
-        nbt_res.putInt("experience",nbt.getInt("experience"));
-        ServerPlayNetworking.send(player, Networking.LEVELUPS2C, PacketByteBufs.create().writeNbt(nbt_res));
+    public static void addExperience(ServerWorld world, LivingEntity livingEntity, int amount){
+        NbtCompound nbt = ((IEntityDataSaver)livingEntity).getPersistentData();
+        if(nbt.getBoolean("created")) {
+            nbt.putInt("experience", nbt.getInt("experience") + amount);
+            if (livingEntity instanceof PlayerEntity) {
+                NbtCompound nbt_res = new NbtCompound();
+                nbt_res.putInt("experience", nbt.getInt("experience"));
+                ServerPlayNetworking.send((ServerPlayerEntity) livingEntity, Networking.LEVELUPS2C, PacketByteBufs.create().writeNbt(nbt_res));
+            }
+        }
     }
-    private static int RollHPDice(int class_type,int level) {
+    public static int RollHPDice(int class_type,int level) {
         Random random = new Random();
         if (level==0){
             switch (class_type) {
