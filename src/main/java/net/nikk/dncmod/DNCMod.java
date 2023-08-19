@@ -46,7 +46,6 @@ public class DNCMod implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STARTED.register(new ServerStartedEvent());
 		ServerPlayerEvents.COPY_FROM.register(new CopyFromEvent());
 		ServerPlayerEvents.AFTER_RESPAWN.register(new AfterRespawnEvent());
-		//AttackEntityCallback.EVENT.register(new AttackEntityEvent());
 		PlayerBlockBreakEvents.AFTER.register(new MineBlockEvent());
 		ServerTickEvents.START_SERVER_TICK.register(new ServerTickHandler());
 		CommandRegistrationCallback.EVENT.register(SetXpMultiCommand::register);

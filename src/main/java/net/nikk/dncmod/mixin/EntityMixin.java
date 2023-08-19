@@ -1,5 +1,6 @@
 package net.nikk.dncmod.mixin;
 
+import com.mojang.datafixers.DataFixer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -7,6 +8,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.nikk.dncmod.util.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -17,7 +20,7 @@ public class EntityMixin {
     private void perceptionSkill(PlayerEntity player, CallbackInfoReturnable<Boolean> ci) {
         NbtCompound nbt = ((IEntityDataSaver)(Object)(this)).getPersistentData();
         NbtCompound nbt2 = ((IEntityDataSaver)(player)).getPersistentData();
-        if(nbt.getBoolean("created")) if(nbt.getIntArray("skills")[5]>=0)
+        if(nbt.getBoolean("created")) if(nbt.getIntArray("skills").length>0) if(nbt.getIntArray("skills")[5]>=0)
             if(((Entity)(Object)(this)).isSneaking()){
                 if(nbt2.getBoolean("created")){
                     int perception_p = 8+nbt2.getIntArray("skills")[18]+nbt2.getIntArray("stat_mod")[4];
@@ -32,14 +35,10 @@ public class EntityMixin {
     private void stealthSkill(CallbackInfoReturnable<Boolean> ci) {
         boolean bl = ci.getReturnValue();
         NbtCompound nbt = ((IEntityDataSaver)(Object)(this)).getPersistentData();
-        if(nbt.getBoolean("created"))
+        if(nbt.getBoolean("created")) if(nbt.getIntArray("skills").length>0)
             if(nbt.getIntArray("skills")[5]>=0)
                 if(!((Entity)(Object)(this)).isInSneakingPose())
                     bl = true;
         ci.setReturnValue(bl);
     }
-    /*@Inject(method = "isInvulnerableTo(Lnet/minecraft/entity/damage/DamageSource;)Z", at = @At("RETURN"), cancellable = true)
-    private void injected(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
-
-    }*/
 }

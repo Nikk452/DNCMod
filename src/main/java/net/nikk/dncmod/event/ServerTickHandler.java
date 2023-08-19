@@ -15,8 +15,8 @@ import net.nikk.dncmod.util.WeightManager;
 public class ServerTickHandler implements ServerTickEvents.StartTick{
     @Override
     public void onStartTick(MinecraftServer server) {
-        if(server.getTicks()%72==0){
-        //if(server.getTicks()%72000==0){
+        //if(server.getTicks()%72==0){
+        if(server.getTicks()%72000==0){
             for (LivingEntity livingEntity:server.getOverworld().getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), EntityPredicates.VALID_LIVING_ENTITY)) {
                 ExperienceData.addExperience((ServerWorld) livingEntity.getWorld(),livingEntity,1);
             }

@@ -11,25 +11,27 @@ import net.nikk.dncmod.util.IEntityDataSaver;
 public class LevelUpS2CPacket {
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
-        NbtCompound nbt_res = buf.readNbt();
-        NbtCompound nbt = ((IEntityDataSaver) client.player).getPersistentData();
-        boolean leveled = nbt_res.getBoolean("leveled");
-        client.execute(() -> {
-            if(leveled){
-                nbt.putIntArray("classes",nbt_res.getIntArray("classes"));
-                nbt.putIntArray("hit_dices",nbt_res.getIntArray("hit_dices"));
-                nbt.putInt("total_level", nbt_res.getInt("total_level"));
-                nbt.putInt("max_experience", nbt_res.getInt("max_experience"));
-                nbt.putInt("proficiency_modifier", nbt_res.getInt("proficiency_modifier"));
-                client.player.sendMessage(Text.literal("You have leveled up!"));
-            } else if (nbt_res.getBoolean("down")) {
-                nbt.putIntArray("classes",nbt_res.getIntArray("classes"));
-                nbt.putIntArray("hit_dices",nbt_res.getIntArray("hit_dices"));
-                nbt.putInt("total_level", nbt_res.getInt("total_level"));
-                nbt.putInt("max_experience", nbt_res.getInt("max_experience"));
-                nbt.putInt("proficiency_modifier", nbt_res.getInt("proficiency_modifier"));
-            }
-            nbt.putInt("experience", nbt_res.getInt("experience"));
-        });
+        if(client.player!=null){
+            NbtCompound nbt_res = buf.readNbt();
+            NbtCompound nbt = ((IEntityDataSaver) client.player).getPersistentData();
+            boolean leveled = nbt_res.getBoolean("leveled");
+            client.execute(() -> {
+                if(leveled){
+                    nbt.putIntArray("classes",nbt_res.getIntArray("classes"));
+                    nbt.putIntArray("hit_dices",nbt_res.getIntArray("hit_dices"));
+                    nbt.putInt("total_level", nbt_res.getInt("total_level"));
+                    nbt.putInt("max_experience", nbt_res.getInt("max_experience"));
+                    nbt.putInt("proficiency_modifier", nbt_res.getInt("proficiency_modifier"));
+                    client.player.sendMessage(Text.literal("You have leveled up!"));
+                } else if (nbt_res.getBoolean("down")) {
+                    nbt.putIntArray("classes",nbt_res.getIntArray("classes"));
+                    nbt.putIntArray("hit_dices",nbt_res.getIntArray("hit_dices"));
+                    nbt.putInt("total_level", nbt_res.getInt("total_level"));
+                    nbt.putInt("max_experience", nbt_res.getInt("max_experience"));
+                    nbt.putInt("proficiency_modifier", nbt_res.getInt("proficiency_modifier"));
+                }
+                nbt.putInt("experience", nbt_res.getInt("experience"));
+            });
+        }
     }
 }
