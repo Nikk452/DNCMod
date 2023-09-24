@@ -1,9 +1,9 @@
 package net.nikk.dncmod.screen;
 
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.nikk.dncmod.DNCMod;
 
 public class ModScreenHandlers {
@@ -11,7 +11,7 @@ public class ModScreenHandlers {
             new ScreenHandlerType<SpellBookScreenHandler>(SpellBookScreenHandler::new);
 
     public static void registerAllScreenHandlers() {
-        Registry.register(Registry.SCREEN_HANDLER, new Identifier(DNCMod.MOD_ID, "spell_book_screen"),
+        Registry.register(Registries.SCREEN_HANDLER, new Identifier(DNCMod.MOD_ID, "spell_book_screen"),
                 SPELL_BOOK_SCREEN_HANDLER);
     }
 }

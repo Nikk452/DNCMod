@@ -17,6 +17,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.networking.Networking;
+import net.nikk.dncmod.screen.custom.ModButtonWidget;
 import net.nikk.dncmod.util.AttributeData;
 import net.nikk.dncmod.util.IEntityDataSaver;
 
@@ -72,7 +73,7 @@ public class SpellCreationScreen extends Screen {
         this.addDrawableChild(new PressableTextWidget(x+collum*43/2-5,y+20+line*3+line,90,13, Text.of(""),(button) -> {
             this.casting = this.casting==1?5:(this.casting==5?10:(this.casting==10?30:this.casting==30?60:1));
         }, textRenderer));
-        this.addDrawableChild(new ButtonWidget(x -12 + collum * 14, y + 22 + line * 24, 75, 20, Text.literal("Complete"), (button) -> {
+        this.addDrawableChild(new ModButtonWidget(x -12 + collum * 14, y + 22 + line * 24, 75, 20, Text.literal("Complete"), (button) -> {
             NbtCompound nbt = new NbtCompound();
             nbt.putString("type",this.type);
             nbt.putString("target",this.target);
@@ -92,7 +93,7 @@ public class SpellCreationScreen extends Screen {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         //texture drawing
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         if (this.anime>y || this.anime>-35) {
@@ -100,7 +101,7 @@ public class SpellCreationScreen extends Screen {
             this.shade_color = this.shade_color >= 1f ? 1f : this.shade_color + 0.013f;
             RenderSystem.setShaderColor(this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f);
             renderBackground(matrices);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShaderColor(this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f);
@@ -110,7 +111,7 @@ public class SpellCreationScreen extends Screen {
             if(this.animate) this.animate = false;
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
             renderBackground(matrices);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
             RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
             RenderSystem.enableBlend();

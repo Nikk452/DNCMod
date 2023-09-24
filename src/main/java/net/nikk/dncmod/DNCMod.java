@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.nikk.dncmod.block.ModBlocks;
@@ -16,6 +15,7 @@ import net.nikk.dncmod.effect.ModEffects;
 import net.nikk.dncmod.entity.ModEntities;
 import net.nikk.dncmod.entity.custom.GoblinEntity;
 import net.nikk.dncmod.event.*;
+import net.nikk.dncmod.item.ModItemGroup;
 import net.nikk.dncmod.item.ModItems;
 import net.nikk.dncmod.networking.Networking;
 import net.nikk.dncmod.screen.ModScreenHandlers;
@@ -23,7 +23,6 @@ import net.nikk.dncmod.world.feature.ModConfiguredFeatures;
 import net.nikk.dncmod.world.gen.ModWorldGen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import software.bernie.geckolib3.GeckoLib;
 
 public class DNCMod implements ModInitializer {
 	public static final String MOD_ID = "dncmod";
@@ -33,7 +32,7 @@ public class DNCMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		IOManager.craftPaths();
-		ModConfiguredFeatures.registerConfiguredFeatures();
+		ModItemGroup.registerItemGroup();
 		ModItems.registerModItems();
 		ModWorldGen.generateWorldGen();
 		ModBlocks.registerModBlocks();
@@ -41,7 +40,6 @@ public class DNCMod implements ModInitializer {
 		ModScreenHandlers.registerAllScreenHandlers();
 		ModEffects.registerEffects();
 		Networking.RegisterC2SPackets();
-		GeckoLib.initialize();
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(new KillEntityHandler());
 		ServerLifecycleEvents.SERVER_STARTED.register(new ServerStartedEvent());
 		ServerPlayerEvents.COPY_FROM.register(new CopyFromEvent());

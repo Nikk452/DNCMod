@@ -110,7 +110,7 @@ public class ToolTipCallbackEvent implements ItemTooltipCallback{
             else text.add(Text.literal("Type: Scroll").setStyle(Style.EMPTY.withColor(rarity.formatting)));
         } else if(item instanceof BookItem || item instanceof WritableBookItem || item instanceof WrittenBookItem || item instanceof EnchantedBookItem || item instanceof KnowledgeBookItem){
             text.add(Text.literal("Type: Book").setStyle(Style.EMPTY.withColor(rarity.formatting)));
-        }else if(item instanceof BlockItem || item.getGroup()==ItemGroup.DECORATIONS){
+        }else if(item instanceof BlockItem || ItemGroups.COLORED_BLOCKS.contains(item.getDefaultStack())){
             text.add(Text.literal("Type: Placeable").setStyle(Style.EMPTY.withColor(rarity.formatting)));
         }else if(item instanceof ArrowItem){
             text.add(Text.literal("Type: Arrow").setStyle(Style.EMPTY.withColor(rarity.formatting)));

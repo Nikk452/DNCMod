@@ -10,6 +10,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.nikk.dncmod.DNCMod;
+import net.nikk.dncmod.screen.custom.ModButtonWidget;
+
 public class CharCreationScreen2 extends Screen {
     private final String race;
     private final String firstName;
@@ -36,9 +38,9 @@ public class CharCreationScreen2 extends Screen {
         int backgroundWidth = 412;
         int collum = backgroundWidth/30;
         int x = (width - backgroundWidth) / 2;
-        this.addDrawableChild(new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> this.client.setScreen(new CharCreationScreen3(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index))));
-        this.addDrawableChild(new ButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> this.client.setScreen(new CharCreationScreen1(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index,false))));
-        this.classeswheel = new ButtonWidget(x+collum*25/2, height/2+30, 90, 20, Text.literal("Next Page"), (button) -> this.switchClass());
+        this.addDrawableChild(new ModButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> this.client.setScreen(new CharCreationScreen3(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index))));
+        this.addDrawableChild(new ModButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> this.client.setScreen(new CharCreationScreen1(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index,false))));
+        this.classeswheel = new ModButtonWidget(x+collum*25/2, height/2+30, 90, 20, Text.literal("Next Page"), (button) -> this.switchClass());
         this.addDrawableChild(this.classeswheel);
     }
 
@@ -49,12 +51,12 @@ public class CharCreationScreen2 extends Screen {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         //texture drawing
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
         renderBackground(matrices);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
         RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
         RenderSystem.enableBlend();

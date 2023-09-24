@@ -67,7 +67,7 @@ public class ModHudCallback implements HudRenderCallback{
         int scaledWidth = client.getWindow().getScaledWidth();
         int x = scaledWidth / 2 - 91;
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         int k = scaledWidth - 34;
         int l = scaledHeight - 34;
         //ui rendering
@@ -84,14 +84,14 @@ public class ModHudCallback implements HudRenderCallback{
                 }
                 if(this.dice_time<=10){
                     RenderSystem.setShaderColor(this.dice_time/10f, this.dice_time/10f, this.dice_time/10f, this.dice_time/10f);
-                    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                    RenderSystem.setShader(GameRenderer::getPositionTexProgram);
                     RenderSystem.enableBlend();
                     RenderSystem.defaultBlendFunc();
                     RenderSystem.setShaderColor(this.dice_time/10f, this.dice_time/10f, this.dice_time/10f, this.dice_time/10f);
                     RenderSystem.setShaderTexture(0,DICE);
                     DrawableHelper.drawTexture(matrices, k, l,32,32, 0, 0, 32, 32,32, 32);
                 } else if (this.dice_time<=40) {
-                    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                    RenderSystem.setShader(GameRenderer::getPositionTexProgram);
                     RenderSystem.enableBlend();
                     RenderSystem.defaultBlendFunc();
                     RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
@@ -100,7 +100,7 @@ public class ModHudCallback implements HudRenderCallback{
                     textRenderer.draw(matrices, ""+this.current_dice, t, l+13, 0);
                     textRenderer.draw(matrices, nbt.getIntArray("dice")[1]+" +", t-25, l+13, 0);
                 }else if (this.dice_time<=70) {
-                    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                    RenderSystem.setShader(GameRenderer::getPositionTexProgram);
                     RenderSystem.enableBlend();
                     RenderSystem.defaultBlendFunc();
                     RenderSystem.setShaderColor((90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f);
@@ -109,7 +109,7 @@ public class ModHudCallback implements HudRenderCallback{
                     textRenderer.draw(matrices, ""+this.current_dice, t, l+13, 0);
                     textRenderer.draw(matrices, nbt.getIntArray("dice")[1]+" +", t-25, l+13, 0);
                 }else if (this.dice_time<=90) {
-                    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                    RenderSystem.setShader(GameRenderer::getPositionTexProgram);
                     RenderSystem.enableBlend();
                     RenderSystem.defaultBlendFunc();
                     RenderSystem.setShaderColor((90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f);
@@ -146,7 +146,7 @@ public class ModHudCallback implements HudRenderCallback{
                 for(int i = 0;i<this.LabelTime.size();i++){
                     if(this.LabelTime.get(i)>client.world.getTime()){
                         int deltaTime = (int) (this.LabelTime.get(i)-client.world.getTime());
-                        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
                         RenderSystem.enableBlend();
                         RenderSystem.defaultBlendFunc();
                         RenderSystem.setShaderColor(1.2f, 1.2f, 1.2f, 0.75f);
@@ -171,7 +171,7 @@ public class ModHudCallback implements HudRenderCallback{
         //bars rendering
         if(!client.interactionManager.getCurrentGameMode().isCreative()&&client.interactionManager.getCurrentGameMode()!= GameMode.SPECTATOR&&!client.options.hudHidden){
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             //xp bar rendering
             int i = nbt.getInt("max_experience")>0?nbt.getInt("max_experience"):500;
             float exp_progress = nbt.getInt("experience")>=i?1.0F:(float)nbt.getInt("experience")/(float)i;

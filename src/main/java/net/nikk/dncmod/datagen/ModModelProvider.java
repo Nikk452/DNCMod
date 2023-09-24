@@ -1,6 +1,7 @@
 package net.nikk.dncmod.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
@@ -9,7 +10,7 @@ import net.nikk.dncmod.block.ModBlocks;
 import net.nikk.dncmod.item.ModItems;
 
 public class ModModelProvider extends FabricModelProvider {
-    public ModModelProvider(FabricDataGenerator dataGenerator) {
+    public ModModelProvider(FabricDataOutput dataGenerator) {
         super(dataGenerator);
     }
 

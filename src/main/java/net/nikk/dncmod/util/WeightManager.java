@@ -10,8 +10,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.block.ModBlocks;
@@ -163,7 +163,7 @@ public class WeightManager {
     public static void initialize(MinecraftServer server) {
         RecipeManager recipeManager = Objects.requireNonNull(server.getWorld(World.OVERWORLD)).getRecipeManager();
         DNCMod.LOGGER.info("[Dungeons & Crafting] assigning weight to items");
-        for (Item item : Registry.ITEM) {
+        for (Item item : Registries.ITEM) {
             if (!itemWeights.containsKey(item)) {
                 Stream<Recipe<?>> itemRecipes = recipeManager.values().stream();
                 if(hasRecipeOfType(recipeManager,item,RecipeType.SMELTING) || hasRecipeOfType(recipeManager,item,RecipeType.BLASTING)){

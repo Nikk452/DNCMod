@@ -16,6 +16,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.networking.Networking;
+import net.nikk.dncmod.screen.custom.ModButtonWidget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,7 @@ public class CharCreationScreen5 extends Screen {
         int collum = backgroundWidth/30;
         int y = (height - backgroundHeight) / 2;
         int x = (width - backgroundWidth) / 2;
-        this.next_button = new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
+        this.next_button = new ModButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
             switch (this.classname) {
                 case "Fighter" -> this.E1 = this.skillcount[0] <= 0 || this.skillcount[1] <= 0 || !this.allSlotsTaken;
                 case "Wizard" -> this.E1 = this.skillcount[3] <= 1 || this.skillcount[4] <= 0 || !this.allSlotsTaken;
@@ -79,13 +80,13 @@ public class CharCreationScreen5 extends Screen {
                 this.complete = true;
             }});
         this.addDrawableChild(this.next_button);
-        this.previous_button = new ButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> this.client.setScreen(new CharCreationScreen4(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index)));
+        this.previous_button = new ModButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> this.client.setScreen(new CharCreationScreen4(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index)));
         this.addDrawableChild(this.previous_button);
         //4 slots
         int[] fy = {11,16,21,26};
         for (int i = 0;i<4;i++) {
             int idx = i;
-            this.slots[i] = new ButtonWidget(x+collum*4-4, y+23+line*fy[i]/2+line, 75, 15, Text.literal("Empty"), (button) -> this.emptySlot(idx));
+            this.slots[i] = new ModButtonWidget(x+collum*4-4, y+23+line*fy[i]/2+line, 75, 15, Text.literal("Empty"), (button) -> this.emptySlot(idx));
             this.addDrawableChild(this.slots[i]);
             this.slots[i].active = false;
         }
@@ -112,7 +113,7 @@ public class CharCreationScreen5 extends Screen {
             for(int i = 0;i<27;i++) this.skillsbuttons.get(i).active = true;
         });
         this.addDrawableChild(this.error_window);
-        this.complete_button = new ButtonWidget(x -12 + collum * 14, y + 22 + line * 24, 75, 20, Text.literal("Complete"), (button) -> {
+        this.complete_button = new ModButtonWidget(x -12 + collum * 14, y + 22 + line * 24, 75, 20, Text.literal("Complete"), (button) -> {
             NbtCompound nbt = new NbtCompound();
             nbt.putString("first_name",this.firstName);
             nbt.putString("last_name",this.lastName);
@@ -173,12 +174,12 @@ public class CharCreationScreen5 extends Screen {
         int line = backgroundHeight/30;
         int collum = backgroundWidth/30;
         //texture drawing
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
         renderBackground(matrices);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
         RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
         RenderSystem.enableBlend();
@@ -232,7 +233,7 @@ public class CharCreationScreen5 extends Screen {
         arr.add(List.of(new Text[]{Text.literal("[Charisma] Skill: Intimidation"),Text.literal("When you attempt to influence"),Text.literal("someone through overt threats,"),Text.literal("hostile actions, and physical violence")}));
         arr.add(List.of(new Text[]{Text.literal("[Charisma] Skill: Performance"), Text.literal("Performance determines how well"),Text.literal("you can delight an audience with"),Text.literal("music, dance, acting, storytelling"),Text.literal("or some other form of entertainment")}));
         for(int i=0;i<27;i++){
-            renderSkillTooltips(matrices,this.skillsbuttons.get(i).active,mouseX,mouseY,this.skillsbuttons.get(i).x,this.skillsbuttons.get(i).y,arr.get(i));
+            renderSkillTooltips(matrices,this.skillsbuttons.get(i).active,mouseX,mouseY,this.skillsbuttons.get(i).getX(),this.skillsbuttons.get(i).getY(),arr.get(i));
         }
         RenderSystem.setShaderColor(1.00f, 1.00f, 1.00f, 1.00f);
         if(this.E1){

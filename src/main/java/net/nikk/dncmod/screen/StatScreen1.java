@@ -25,6 +25,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.networking.Networking;
+import net.nikk.dncmod.screen.custom.ModButtonWidget;
 import net.nikk.dncmod.util.AttributeData;
 import net.nikk.dncmod.util.IEntityDataSaver;
 
@@ -55,7 +56,7 @@ public class StatScreen1 extends Screen {
             this.anime = 300d;
             this.shade_color = 0f;
         }else{this.anime = -40;}
-        this.addDrawableChild(new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> this.client.setScreen(new StatScreen2())));
+        this.addDrawableChild(new ModButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> this.client.setScreen(new StatScreen2())));
         this.addDrawableChild(new PressableTextWidget(((width - backgroundWidth) / 2)+(backgroundWidth/30)*4, ((height - backgroundHeight) / 2)+17+(backgroundHeight/30)*10+(backgroundHeight/30),90,13, Text.of(""),(button) -> {
             PacketByteBuf bufs = PacketByteBufs.create();
             bufs.writeInt(AttributeData.getIndexOfLargest(((IEntityDataSaver)client.player).getPersistentData().getIntArray("classes")));
@@ -68,7 +69,7 @@ public class StatScreen1 extends Screen {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         //texture drawing
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         if (this.anime>y || this.anime>-35) {
@@ -76,7 +77,7 @@ public class StatScreen1 extends Screen {
             this.shade_color = this.shade_color >= 1f ? 1f : this.shade_color + 0.013f;
             RenderSystem.setShaderColor(this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f);
             renderBackground(matrices);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShaderColor(this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f);
@@ -86,7 +87,7 @@ public class StatScreen1 extends Screen {
             if(this.animate) this.animate = false;
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
             renderBackground(matrices);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
             RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
             RenderSystem.enableBlend();

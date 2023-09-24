@@ -12,16 +12,13 @@ import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.WorldSavePath;
 import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.networking.Networking;
+import net.nikk.dncmod.screen.custom.ModButtonWidget;
 import net.nikk.dncmod.util.IEntityDataSaver;
-
-import java.io.File;
 
 public class CharCreationScreen1 extends Screen {
     private TextFieldWidget textField1;
@@ -75,7 +72,7 @@ public class CharCreationScreen1 extends Screen {
         this.textField2.setMaxLength(12);
         this.addDrawableChild(this.textField2);
         this.textField2.setText(this.lastName);
-        this.createCharButton = new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
+        this.createCharButton = new ModButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
             this.createCharButton.active = false;
             this.textField1.setFocusUnlocked(false);
             this.textField2.setFocusUnlocked(false);
@@ -113,7 +110,7 @@ public class CharCreationScreen1 extends Screen {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         //texture drawing
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         if (this.anime>y || this.anime>-35) {
@@ -121,7 +118,7 @@ public class CharCreationScreen1 extends Screen {
             this.shade_color = this.shade_color >= 1f ? 1f : this.shade_color + 0.013f;
             RenderSystem.setShaderColor(this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f);
             renderBackground(matrices);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShaderColor(this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f);
@@ -131,7 +128,7 @@ public class CharCreationScreen1 extends Screen {
             if(this.animate) this.animate = false;
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
             renderBackground(matrices);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);

@@ -15,6 +15,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.networking.Networking;
+import net.nikk.dncmod.screen.custom.ModButtonWidget;
 import net.nikk.dncmod.util.IEntityDataSaver;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class CharCreationScreen4 extends Screen {
         int collum = backgroundWidth/30;
         int y = (height - backgroundHeight) / 2;
         int x = (width - backgroundWidth) / 2;
-        this.next = new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
+        this.next = new ModButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> {
             switch(this.classname){
                 case "Fighter":
                     this.E1 = this.stats[stat_ind[0]] < 15 && this.stats[stat_ind[1]] < 15;
@@ -77,10 +78,10 @@ public class CharCreationScreen4 extends Screen {
                 this.client.setScreen(new CharCreationScreen5(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extra_stat,this.stat_ind));
             }});
         this.addDrawableChild(this.next);
-        this.previous_page = new ButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> {
+        this.previous_page = new ModButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> {
             this.client.setScreen(new CharCreationScreen3(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extra_stat,this.stat_ind));});
         this.addDrawableChild(this.previous_page);
-        this.rollstats = new ButtonWidget(x+collum*19, y+20+line*5/2+line, 25, 20, Text.literal("Roll"), (button) -> this.RollStats());
+        this.rollstats = new ModButtonWidget(x+collum*19, y+20+line*5/2+line, 25, 20, Text.literal("Roll"), (button) -> this.RollStats());
         rollstats.active = Arrays.stream(this.stats).sum() == 0;
         this.addDrawableChild(this.rollstats);
         //12 buttons for up down
@@ -88,7 +89,7 @@ public class CharCreationScreen4 extends Screen {
         for(int i = 0;i<12;i++){
             int dir = (i+2)%2==0?-1:1;
             int idx = floor(i/2);
-            this.MyButtons.add(new ButtonWidget(x+collum*5-4, y + 23 + line * BY[i]/2 + line,5,4,Text.literal(""),(button) -> this.moveStats(idx,dir)));
+            this.MyButtons.add(new ModButtonWidget(x+collum*5-4, y + 23 + line * BY[i]/2 + line,5,4,Text.literal(""),(button) -> this.moveStats(idx,dir)));
             this.addDrawableChild(this.MyButtons.get(i));
         }
         this.error_window = new TexturedButtonWidget(x+collum*8+4, y+20+line*3,194,160,0,0,0,new Identifier(DNCMod.MOD_ID,"textures/gui/uialarm.png"),194,160,(button) -> {
@@ -129,12 +130,12 @@ public class CharCreationScreen4 extends Screen {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         //texture drawing
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
         renderBackground(matrices);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
         RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
         RenderSystem.enableBlend();

@@ -31,20 +31,8 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.nikk.dncmod.entity.variant.GoblinVariant;
 import net.nikk.dncmod.item.ModItems;
-import software.bernie.geckolib3.core.AnimationState;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import javax.annotation.Nullable;
-
-import static software.bernie.geckolib3.util.GeckoLibUtil.createFactory;
-public class GoblinEntity extends HostileEntity implements IAnimatable, RangedAttackMob {
+import org.jetbrains.annotations.Nullable;
+public class GoblinEntity extends HostileEntity implements RangedAttackMob {
     private static final TrackedData<Integer> DATA_ID_TYPE_VARIANT;
     private final BowAttackGoal<GoblinEntity> bowAttackGoal = new BowAttackGoal<>(this, 1.0, 20, 15.0F);
     private final MeleeAttackGoal meleeAttackGoal = new MeleeAttackGoal(this, 1.2, false) {
@@ -58,7 +46,6 @@ public class GoblinEntity extends HostileEntity implements IAnimatable, RangedAt
             GoblinEntity.this.setAttacking(true);
         }
     };
-    private final AnimationFactory factory = createFactory(this);
     public GoblinEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -92,35 +79,6 @@ public class GoblinEntity extends HostileEntity implements IAnimatable, RangedAt
     //public boolean isInvulnerableTo(DamageSource damageSource) {
     //    return damageSource.isProjectile() || super.isInvulnerableTo(damageSource);
     //}
-
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if(event.isMoving()){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.goblin.walk", ILoopType.EDefaultLoopTypes.LOOP));
-            return PlayState.CONTINUE;
-        }
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.goblin.idle", ILoopType.EDefaultLoopTypes.LOOP));
-        return PlayState.CONTINUE;
-    }
-    private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
-        if(this.handSwinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
-            event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.goblin.attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
-            this.handSwinging = false;
-        }
-
-        return PlayState.CONTINUE;
-    }
-    @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<>(this, "controller",
-                0, this::predicate));
-        animationData.addAnimationController(new AnimationController<>(this, "attackController",
-                0, this::attackPredicate));
-    }
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
     @Override
     protected SoundEvent getAmbientSound() {
         return SoundEvents.ENTITY_ZOMBIE_VILLAGER_AMBIENT;

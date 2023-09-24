@@ -1,8 +1,6 @@
 package net.nikk.dncmod.entity.custom;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -25,6 +23,7 @@ public class SpellEntity extends PersistentProjectileEntity {
     private int ticksInAir;
     public SpellEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
+        this.calculateDimensions();
     }
     public SpellEntity(World world, LivingEntity owner) {
         super(ModEntities.SPELL, owner,world);
@@ -109,6 +108,11 @@ public class SpellEntity extends PersistentProjectileEntity {
         }
     }
 
+    @Override
+    public EntityDimensions getDimensions(EntityPose pose) {
+        return super.getDimensions(pose).scaled(10);
+    }
+
     public void doDamage() {
         float q = 4.0F;
         int k = MathHelper.floor(this.getX() - (double) q - 1.0D);
@@ -128,7 +132,7 @@ public class SpellEntity extends PersistentProjectileEntity {
                     entity.damage(DamageSource.player((PlayerEntity) this.getOwner()), 20);
                 }
                 this.world.createExplosion(this, this.getX(), this.getBodyY(0.0625D), this.getZ(), 0.0F,
-                        Explosion.DestructionType.NONE);
+                        World.ExplosionSourceType.NONE);
             }
         }
     }

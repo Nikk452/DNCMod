@@ -14,9 +14,10 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 import net.nikk.dncmod.DNCMod;
+import net.nikk.dncmod.screen.custom.ModButtonWidget;
+import org.joml.Quaternionf;
 
 public class CharCreationScreen3 extends Screen {
     private String race;
@@ -44,11 +45,11 @@ public class CharCreationScreen3 extends Screen {
         int backgroundWidth = 412;
         int collum = backgroundWidth/30;
         int x = (width - backgroundWidth) / 2;
-        this.addDrawableChild(new ButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> this.client.setScreen(new CharCreationScreen4(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index))));
-        this.addDrawableChild(new ButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> this.client.setScreen(new CharCreationScreen2(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index))));
-        this.classeswheel = new ButtonWidget(x+collum*25/2, height/2+30, 90, 20, Text.literal("Next Page"), (button) -> this.switchRace());
+        this.addDrawableChild(new ModButtonWidget(width/2+85, height/2+70, 75, 20, Text.literal("Next Page"), (button) -> this.client.setScreen(new CharCreationScreen4(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index))));
+        this.addDrawableChild(new ModButtonWidget(width/2-158, height/2+70, 75, 20, Text.literal("Previous Page"), (button) -> this.client.setScreen(new CharCreationScreen2(this.firstName,this.lastName,this.classname,this.race,this.stats,this.extrastat,this.stat_index))));
+        this.classeswheel = new ModButtonWidget(x+collum*25/2, height/2+30, 90, 20, Text.literal("Next Page"), (button) -> this.switchRace());
         this.addDrawableChild(this.classeswheel);
-        this.statswheel = new ButtonWidget(width/2+85, height/2, 75, 20, Text.literal("Strength"), (button) -> this.extrastat = this.extrastat==5?0:this.extrastat+1);
+        this.statswheel = new ModButtonWidget(width/2+85, height/2, 75, 20, Text.literal("Strength"), (button) -> this.extrastat = this.extrastat==5?0:this.extrastat+1);
         this.addDrawableChild(this.statswheel);
         this.statswheel.visible= false;
     }
@@ -60,12 +61,12 @@ public class CharCreationScreen3 extends Screen {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         //texture drawing
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
         renderBackground(matrices);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
         RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
         RenderSystem.enableBlend();
@@ -133,9 +134,9 @@ public class CharCreationScreen3 extends Screen {
         MatrixStack matrixStack2 = new MatrixStack();
         matrixStack2.translate(0.0, 0.0, 1000.0);
         matrixStack2.scale((float)size, (float)size, (float)size);
-        Quaternion quaternion = Vec3f.POSITIVE_Z.getDegreesQuaternion(180.0F);
-        Quaternion quaternion2 = Vec3f.POSITIVE_X.getDegreesQuaternion(g * 20.0F);
-        quaternion.hamiltonProduct(quaternion2);
+        Quaternionf quaternion = RotationAxis.POSITIVE_Z.rotationDegrees(180.0F);
+        Quaternionf quaternion2 = RotationAxis.POSITIVE_X.rotationDegrees(g * 20.0F);
+        quaternion.mul(quaternion2);
         matrixStack2.multiply(quaternion);
         float h = entity.bodyYaw;
         float i = entity.getYaw();

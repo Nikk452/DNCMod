@@ -1,15 +1,17 @@
 package net.nikk.dncmod.block;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.util.registry.Registry;
 import net.nikk.dncmod.DNCMod;
 import net.nikk.dncmod.item.ModItemGroup;
 
@@ -22,58 +24,58 @@ public class ModBlocks {
     public static final Block ARCANE_WOOD = registerBlock("arcane_wood",
             new Block(FabricBlockSettings.of(Material.WOOD).strength(2f).requiresTool()), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block SILVER_ORE = registerBlock("silver_ore",
-            new OreBlock(FabricBlockSettings.of(Material.STONE).strength(3.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.STONE).strength(3.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 5)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block TIN_ORE = registerBlock("tin_ore",
-            new OreBlock(FabricBlockSettings.of(Material.STONE).strength(3.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.STONE).strength(3.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 7)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block TITANIUM_ORE = registerBlock("titanium_ore",
-            new OreBlock(FabricBlockSettings.of(Material.STONE).strength(3.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.STONE).strength(3.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 7)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block PLATINUM_ORE = registerBlock("platinum_ore",
-            new OreBlock(FabricBlockSettings.of(Material.STONE).strength(3.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.STONE).strength(3.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 4)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block LEAD_ORE = registerBlock("lead_ore",
-            new OreBlock(FabricBlockSettings.of(Material.STONE).strength(3.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.STONE).strength(3.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 5)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block DARK_STONE_ORE = registerBlock("dark_stone_ore",
-            new OreBlock(FabricBlockSettings.of(Material.STONE).strength(5f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.STONE).strength(5f).requiresTool(),
                     UniformIntProvider.create(2, 5)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block ADAMANTINE_BLOCK = registerBlock("adamantine_block",
-            new OreBlock(FabricBlockSettings.of(Material.METAL).strength(5.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.METAL).strength(5.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 5)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block ARCANUM_BLOCK = registerBlock("arcanum_block",
-            new OreBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 7)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block BRONZE_BLOCK = registerBlock("bronze_block",
-            new OreBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 7)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block MITHRIL_BLOCK = registerBlock("mithril_block",
-            new OreBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 4)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block ELECTRUM_BLOCK = registerBlock("electrum_block",
-            new OreBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 5)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block DARK_STONE_BLOCK = registerBlock("dark_stone_block",
-            new OreBlock(FabricBlockSettings.of(Material.STONE).strength(5f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.STONE).strength(5f).requiresTool(),
                     UniformIntProvider.create(2, 5)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block DARK_STEEL_BLOCK = registerBlock("dark_steel_block",
-            new OreBlock(FabricBlockSettings.of(Material.METAL).strength(5f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.METAL).strength(5f).requiresTool(),
                     UniformIntProvider.create(2, 5)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block SILVER_BLOCK = registerBlock("silver_block",
-            new OreBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 5)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block TIN_BLOCK = registerBlock("tin_block",
-            new OreBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 7)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block TITANIUM_BLOCK = registerBlock("titanium_block",
-            new OreBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 7)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block PLATINUM_BLOCK = registerBlock("platinum_block",
-            new OreBlock(FabricBlockSettings.of(Material.METAL).strength(5.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.METAL).strength(5.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 4)), ModItemGroup.DNC_TAB_BLOCKS);
     public static final Block LEAD_BLOCK = registerBlock("lead_block",
-            new OreBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
+            new ExperienceDroppingBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f,3.0f).requiresTool(),
                     UniformIntProvider.create(2, 5)), ModItemGroup.DNC_TAB_BLOCKS);
 
     public static final Block WHITE_IRON_CLUSTER = registerBlock("white_iron_cluster",
@@ -93,16 +95,18 @@ public class ModBlocks {
                 return 1;
             })),ModItemGroup.DNC_TAB_BLOCKS);
     private static Block registerBlockWithoutItem(String name, Block block) {
-        return Registry.register(Registry.BLOCK, new Identifier(DNCMod.MOD_ID, name), block);
+        return Registry.register(Registries.BLOCK, new Identifier(DNCMod.MOD_ID, name), block);
     }
     private static Block registerBlock(String name, Block block, ItemGroup tab) {
         registerBlockItem(name, block, tab);
-        return Registry.register(Registry.BLOCK, new Identifier(DNCMod.MOD_ID, name), block);
+        return Registry.register(Registries.BLOCK, new Identifier(DNCMod.MOD_ID, name), block);
     }
 
     private static Item registerBlockItem(String name, Block block, ItemGroup tab) {
-        return Registry.register(Registry.ITEM, new Identifier(DNCMod.MOD_ID, name),
-                new BlockItem(block, new FabricItemSettings().group(tab)));
+        Item item = Registry.register(Registries.ITEM, new Identifier(DNCMod.MOD_ID, name),
+                new BlockItem(block, new FabricItemSettings()));
+        ItemGroupEvents.modifyEntriesEvent(tab).register(entries -> entries.add(item));
+        return item;
     }
 
     public static void registerModBlocks() {
