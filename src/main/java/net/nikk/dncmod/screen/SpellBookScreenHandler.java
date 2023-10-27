@@ -71,11 +71,6 @@ public class SpellBookScreenHandler extends ScreenHandler {
         return itemStack;
     }
 
-    public void close(PlayerEntity player) {
-        super.close(player);
-        this.inventory.onClose(player);
-    }
-
     private void loadItemsFromNBT() {
         NbtList itemsTag = inventory.getStack(0).getOrCreateNbt().getList("Items", NbtType.COMPOUND);
         for (int i = 0; i < itemsTag.size(); i++) {

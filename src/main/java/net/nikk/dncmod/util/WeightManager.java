@@ -10,6 +10,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
@@ -161,21 +162,22 @@ public class WeightManager {
         itemWeights.put(ModItems.SPELL_BOOK,1000);
     }
     public static void initialize(MinecraftServer server) {
+        DynamicRegistryManager dManager = server.getRegistryManager();
         RecipeManager recipeManager = Objects.requireNonNull(server.getWorld(World.OVERWORLD)).getRecipeManager();
         DNCMod.LOGGER.info("[Dungeons & Crafting] assigning weight to items");
         for (Item item : Registries.ITEM) {
             if (!itemWeights.containsKey(item)) {
                 Stream<Recipe<?>> itemRecipes = recipeManager.values().stream();
-                if(hasRecipeOfType(recipeManager,item,RecipeType.SMELTING) || hasRecipeOfType(recipeManager,item,RecipeType.BLASTING)){
-                    itemWeights.put(item,addNewItemWeightBasedOnRecipe(recipeManager,item, true));
-                } else if(hasRecipeOfType(recipeManager,item,RecipeType.CRAFTING) || hasRecipeOfType(recipeManager,item,RecipeType.STONECUTTING)){
-                    itemWeights.put(item,addNewItemWeightBasedOnRecipe(recipeManager,item, true));
-                }else if(hasRecipeOfType(recipeManager,item,RecipeType.SMITHING) || hasRecipeOfType(recipeManager,item,RecipeType.STONECUTTING)){
-                    itemWeights.put(item,addNewItemWeightBasedOnRecipe(recipeManager,item, true));
-                } else if (itemRecipes.noneMatch(recipe -> recipe.getOutput().getItem() == item)) {
+                if(hasRecipeOfType(recipeManager,item,RecipeType.SMELTING, dManager) || hasRecipeOfType(recipeManager,item,RecipeType.BLASTING, dManager)){
+                    itemWeights.put(item,addNewItemWeightBasedOnRecipe(recipeManager,item, true, dManager));
+                } else if(hasRecipeOfType(recipeManager,item,RecipeType.CRAFTING, dManager) || hasRecipeOfType(recipeManager,item,RecipeType.STONECUTTING, dManager)){
+                    itemWeights.put(item,addNewItemWeightBasedOnRecipe(recipeManager,item, true, dManager));
+                }else if(hasRecipeOfType(recipeManager,item,RecipeType.SMITHING, dManager) || hasRecipeOfType(recipeManager,item,RecipeType.STONECUTTING, dManager)){
+                    itemWeights.put(item,addNewItemWeightBasedOnRecipe(recipeManager,item, true, dManager));
+                } else if (itemRecipes.noneMatch(recipe -> recipe.getOutput(dManager).getItem() == item)) {
                     itemWeights.put(item, 500); // Set the base value to 600
                 } else {
-                    itemWeights.put(item,addNewItemWeightBasedOnRecipe(recipeManager,item, true));
+                    itemWeights.put(item,addNewItemWeightBasedOnRecipe(recipeManager,item, true, dManager));
                 }
             }
         }
@@ -221,14 +223,14 @@ public class WeightManager {
         }
         return totalWeight;
     }
-    private static <C extends Inventory,T extends Recipe<C>> boolean hasRecipeOfType(RecipeManager recipeManager, Item item, RecipeType<T> recipeType){
-        return recipeManager.listAllOfType(recipeType).stream().anyMatch(recipe -> recipe.getOutput().getItem().equals(item));
+    private static <C extends Inventory,T extends Recipe<C>> boolean hasRecipeOfType(RecipeManager recipeManager, Item item, RecipeType<T> recipeType, DynamicRegistryManager dManager){
+        return recipeManager.listAllOfType(recipeType).stream().anyMatch(recipe -> recipe.getOutput(dManager).getItem().equals(item));
     }
-    private static int addNewItemWeightBasedOnRecipe(RecipeManager recipeManager,Item item, boolean bl1){
+    private static int addNewItemWeightBasedOnRecipe(RecipeManager recipeManager,Item item, boolean bl1, DynamicRegistryManager dManager){
         Stream<Recipe<?>> itemRecipes = recipeManager.values().stream(); // Create a new stream for recipe matching
 
         Optional<Recipe<?>> matchingRecipe = itemRecipes
-                .filter(recipe -> recipe.getOutput().getItem() == item)
+                .filter(recipe -> recipe.getOutput(dManager).getItem() == item)
                 .findFirst();
 
         if (matchingRecipe.isPresent()) {
@@ -239,14 +241,14 @@ public class WeightManager {
                         ItemStack[] stacks = input.getMatchingStacks();
                         if (stacks.length > 0) {
                             Item ingredientItem = stacks[0].getItem();
-                            return itemWeights.getOrDefault(ingredientItem, bl1?addNewItemWeightBasedOnRecipe(recipeManager,ingredientItem, false):300);
+                            return itemWeights.getOrDefault(ingredientItem, bl1?addNewItemWeightBasedOnRecipe(recipeManager,ingredientItem, false, dManager):300);
                         } else {
                             return 300;
                         }
                     })
                     .sum();
 
-            int outputCount = recipe.getOutput().getCount(); // Get the number of items produced by the recipe
+            int outputCount = recipe.getOutput(dManager).getCount(); // Get the number of items produced by the recipe
             if (outputCount > 1) {
                 weight /= outputCount; // Divide the weight by the number of items the recipe produces
             }

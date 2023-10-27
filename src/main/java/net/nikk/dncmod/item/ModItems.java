@@ -96,11 +96,11 @@ public class ModItems {
     public static final Item GOBLIN_SPAWN_EGG = registerItem("goblin_spawn_egg",
             new SpawnEggItem(ModEntities.GOBLIN,0x799C65,0x315234,new FabricItemSettings()));
     public static final Item ARRIVAL_JACKET = registerItem("arrival_jacket",
-            new ArmorItem(ModArmorMaterials.ARRIVAL, EquipmentSlot.CHEST ,new FabricItemSettings()));
+            new ArmorItem(ModArmorMaterials.ARRIVAL, ArmorItem.Type.CHESTPLATE ,new FabricItemSettings()));
     public static final Item ARRIVAL_PANTS = registerItem("arrival_pants",
-            new ArmorItem(ModArmorMaterials.ARRIVAL, EquipmentSlot.LEGS ,new FabricItemSettings()));
+            new ArmorItem(ModArmorMaterials.ARRIVAL, ArmorItem.Type.LEGGINGS ,new FabricItemSettings()));
     public static final Item ARRIVAL_BOOTS = registerItem("arrival_boots",
-            new ArmorItem(ModArmorMaterials.ARRIVAL, EquipmentSlot.FEET ,new FabricItemSettings()));
+            new ArmorItem(ModArmorMaterials.ARRIVAL, ArmorItem.Type.BOOTS ,new FabricItemSettings()));
     public static final Item SPELL_BOOK = registerItem("spell_book",
             new SpellBookItem(new FabricItemSettings().maxCount(1).rarity(Rarity.RARE)));
     public static final Item PARCHMENT = registerItem("parchment",

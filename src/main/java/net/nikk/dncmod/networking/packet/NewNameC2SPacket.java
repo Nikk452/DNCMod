@@ -48,7 +48,7 @@ public class NewNameC2SPacket {
 
         if (nbtCompound != null) {
             int i = nbtCompound.contains("DataVersion", 3) ? nbtCompound.getInt("DataVersion") : -1;
-            nbtCompound = NbtHelper.update(((SaveHandlerAccess)saveHandler).getDataFixer(), DataFixTypes.PLAYER, nbtCompound, i);
+            //nbtCompound = NbtHelper.update(((SaveHandlerAccess)saveHandler).getDataFixer(), DataFixTypes.PLAYER, nbtCompound, i);
         }
 
         return nbtCompound;

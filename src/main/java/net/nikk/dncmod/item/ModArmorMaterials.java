@@ -1,6 +1,7 @@
 package net.nikk.dncmod.item;
 
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
@@ -40,15 +41,14 @@ public enum ModArmorMaterials implements ArmorMaterial {
         this.knockbackResistance = knockbackResistance;
         this.repairIngredientSupplier = new Lazy<Ingredient>(repairIngredientSupplier);
     }
-
     @Override
-    public int getDurability(EquipmentSlot slot) {
-        return BASE_DURABILITY[slot.getEntitySlotId()] * this.durabilityMultiplier;
+    public int getDurability(ArmorItem.Type type) {
+        return 0;
     }
 
     @Override
-    public int getProtectionAmount(EquipmentSlot slot) {
-        return this.protectionAmounts[slot.getEntitySlotId()];
+    public int getProtection(ArmorItem.Type type) {
+        return 0;
     }
 
     @Override

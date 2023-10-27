@@ -129,7 +129,7 @@ public class SpellEntity extends PersistentProjectileEntity {
             double y = (double) (MathHelper.sqrt((float) entity.squaredDistanceTo(vec3d)) / q);
             if (y <= 1.0D) {
                 if (entity instanceof LivingEntity) {
-                    entity.damage(DamageSource.player((PlayerEntity) this.getOwner()), 20);
+                    entity.damage(this.getDamageSources().mobAttack((LivingEntity) this.getOwner()), 20);
                 }
                 this.world.createExplosion(this, this.getX(), this.getBodyY(0.0625D), this.getZ(), 0.0F,
                         World.ExplosionSourceType.NONE);

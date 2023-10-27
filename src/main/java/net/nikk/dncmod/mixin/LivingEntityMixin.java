@@ -6,7 +6,7 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.EntityDamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.WolfEntity;
@@ -16,6 +16,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -38,7 +39,7 @@ public abstract class LivingEntityMixin extends Entity {
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
-    float JumpSkillAmp = 0;
+    /**float JumpSkillAmp = 0;
     @Shadow
     protected void damageArmor(DamageSource source, float amount) {}
     @Shadow
@@ -180,7 +181,7 @@ public abstract class LivingEntityMixin extends Entity {
             cir.setReturnValue(false);
         } else if (((LivingEntity)(Object)this).isDead()) {
             cir.setReturnValue(false);
-        } else if (source.isFire() && ((LivingEntity)(Object)this).hasStatusEffect(StatusEffects.FIRE_RESISTANCE)) {
+        } else if (source.isIn(DamageTypeTags.IS_FIRE) && ((LivingEntity)(Object)this).hasStatusEffect(StatusEffects.FIRE_RESISTANCE)) {
             cir.setReturnValue(false);
         } else if(mbl){
             cir.setReturnValue(false);
@@ -198,7 +199,7 @@ public abstract class LivingEntityMixin extends Entity {
                 ((LivingEntity)(Object)this).damageShield(amount);
                 g = amount;
                 amount = 0.0F;
-                if (!source.isProjectile()) {
+                if (!source.isIn(DamageTypeTags.IS_PROJECTILE)) {
                     Entity entity = source.getSource();
                     if (entity instanceof LivingEntity) {
                         this.takeShieldHit((LivingEntity)entity);
@@ -264,11 +265,11 @@ public abstract class LivingEntityMixin extends Entity {
                     byte b;
                     if (source == DamageSource.DROWN) {
                         b = 36;
-                    } else if (source.isFire()) {
+                    } else if (source.isIn(DamageTypeTags.IS_FIRE)) {
                         b = 37;
-                    } else if (source == DamageSource.SWEET_BERRY_BUSH) {
+                    } else if (source.isOf(DamageTypes.SWEET_BERRY_BUSH)) {
                         b = 44;
-                    } else if (source == DamageSource.FREEZE) {
+                    } else if (source.isIn(DamageTypeTags.IS_FREEZING)) {
                         b = 57;
                     } else {
                         b = 2;
@@ -347,5 +348,5 @@ public abstract class LivingEntityMixin extends Entity {
         else if (x % 2 == 0 && x != 0) return x;
         else if (x==0) return 2;
         else return x+1;
-    }
+    }*/
 }
