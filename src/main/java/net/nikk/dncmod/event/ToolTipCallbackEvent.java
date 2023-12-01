@@ -11,6 +11,7 @@ import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -24,6 +25,7 @@ import net.nikk.dncmod.item.custom.SpellBookItem;
 import net.nikk.dncmod.util.WeightManager;
 
 import java.util.List;
+import java.util.Objects;
 
 import static net.minecraft.util.Rarity.*;
 
@@ -110,7 +112,7 @@ public class ToolTipCallbackEvent implements ItemTooltipCallback{
             else text.add(Text.literal("Type: Scroll").setStyle(Style.EMPTY.withColor(rarity.formatting)));
         } else if(item instanceof BookItem || item instanceof WritableBookItem || item instanceof WrittenBookItem || item instanceof EnchantedBookItem || item instanceof KnowledgeBookItem){
             text.add(Text.literal("Type: Book").setStyle(Style.EMPTY.withColor(rarity.formatting)));
-        }else if(item instanceof BlockItem || ItemGroups.COLORED_BLOCKS.contains(item.getDefaultStack())){
+        }else if(item instanceof BlockItem || Objects.requireNonNull(Registries.ITEM_GROUP.get(ItemGroups.COLORED_BLOCKS)).contains(item.getDefaultStack())){
             text.add(Text.literal("Type: Placeable").setStyle(Style.EMPTY.withColor(rarity.formatting)));
         }else if(item instanceof ArrowItem){
             text.add(Text.literal("Type: Arrow").setStyle(Style.EMPTY.withColor(rarity.formatting)));

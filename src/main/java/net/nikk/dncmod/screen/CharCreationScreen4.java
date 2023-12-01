@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
@@ -122,7 +123,7 @@ public class CharCreationScreen4 extends Screen {
         }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext matrices, int mouseX, int mouseY, float delta) {
         if(!(Arrays.equals(((IEntityDataSaver) MinecraftClient.getInstance().player).getPersistentData().getIntArray("stats"), this.stats)))
             this.stats = ((IEntityDataSaver)MinecraftClient.getInstance().player).getPersistentData().getIntArray("stats").length == 0? new int[]{0,0,0,0,0,0}:((IEntityDataSaver)MinecraftClient.getInstance().player).getPersistentData().getIntArray("stats");
         int backgroundWidth = 412;
@@ -137,40 +138,33 @@ public class CharCreationScreen4 extends Screen {
         renderBackground(matrices);
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
-        RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
+        matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"), x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
         this.rollstats.render(matrices,mouseX,mouseY,delta);
         this.next.render(matrices,mouseX,mouseY,delta);
         this.previous_page.render(matrices,mouseX,mouseY,delta);
         for(int i = 0;i<12;i++) this.MyButtons.get(i).render(matrices,mouseX,mouseY,delta);
         //text drawing
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        MatrixStack textRendererMatrixStack = new MatrixStack();
-        textRendererMatrixStack.scale(1.0F, 1.0F, 1.0F);
+        DrawContext textRendererMatrixStack = new DrawContext(MinecraftClient.getInstance(), matrices.getVertexConsumers());
+        textRendererMatrixStack.getMatrices().scale(1.0F, 1.0F, 1.0F);
         int line = backgroundHeight/30;
         int collum = backgroundWidth/30;
-        textRenderer.draw(textRendererMatrixStack, "Character Creation", x+collum*12, y+20+line*2/3, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, Text.literal("There are 6 ").styled(style -> style.withBold(false).withItalic(false)).append("stats ").styled(style -> style.withBold(true).withItalic(true)).append("on this ").append("page:").styled(style -> style.withBold(true).withItalic(true)).append(" "), x+collum*4, y+20+line*3+line, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, "Strength: "+ this.stats[stat_ind[0]], x+collum*6+6, y+20+line*12/2+line, 	15859709);
-        RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/strengthicon.png"));
-        drawTexture(matrices, x+collum*5+1, y+20+line*11/2+line, 0, 0, 15, 15,15,15);
-        textRenderer.draw(textRendererMatrixStack, "Dexterity: "+ this.stats[stat_ind[1]], x+collum*6+6, y+20+line*17/2+line, 	15859709);
-        RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/dexterityicon.png"));
-        drawTexture(matrices, x+collum*5+1, y+20+line*16/2+line, 0, 0, 15, 15,15,15);
-        textRenderer.draw(textRendererMatrixStack, "Constitution: "+ this.stats[stat_ind[2]], x+collum*6+6, y+20+line*22/2+line, 	15859709);
-        RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/constitutionicon.png"));
-        drawTexture(matrices, x+collum*5+1, y+20+line*21/2+line, 0, 0, 15, 15,15,15);
-        textRenderer.draw(textRendererMatrixStack, "Intelligence: "+ this.stats[stat_ind[3]], x+collum*6+6, y+20+line*27/2+line, 	15859709);
-        RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/intelligenceicon.png"));
-        drawTexture(matrices, x+collum*5+1, y+20+line*26/2+line, 0, 0, 15, 15,15,15);
-        textRenderer.draw(textRendererMatrixStack, "Wisdom: "+ this.stats[stat_ind[4]], x+collum*6+6, y+20+line*32/2+line, 	15859709);
-        RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/wisdomicon.png"));
-        drawTexture(matrices, x+collum*5+1, y+20+line*31/2+line, 0, 0, 15, 15,15,15);
-        textRenderer.draw(textRendererMatrixStack, "Charisma: "+ this.stats[stat_ind[5]], x+collum*6+6, y+20+line*37/2+line, 	15859709);
-        RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/charismaicon.png"));
-        drawTexture(matrices, x+collum*5+1, y+20+line*36/2+line, 0, 0, 15, 15,15,15);
+        textRendererMatrixStack.drawText(textRenderer, "Character Creation", x+collum*12, y+20+line*2/3, 	15859709, false);
+        textRendererMatrixStack.drawText(textRenderer, Text.literal("There are 6 ").styled(style -> style.withBold(false).withItalic(false)).append("stats ").styled(style -> style.withBold(true).withItalic(true)).append("on this ").append("page:").styled(style -> style.withBold(true).withItalic(true)).append(" "), x+collum*4, y+20+line*3+line, 	15859709, false);
+        textRendererMatrixStack.drawText(textRenderer, "Strength: "+ this.stats[stat_ind[0]], x+collum*6+6, y+20+line*12/2+line, 	15859709, false);
+        matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/strengthicon.png"), x+collum*5+1, y+20+line*11/2+line, 0, 0, 15, 15,15,15);
+        textRendererMatrixStack.drawText(textRenderer, "Dexterity: "+ this.stats[stat_ind[1]], x+collum*6+6, y+20+line*17/2+line, 	15859709,false);
+        matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/dexterityicon.png"), x+collum*5+1, y+20+line*16/2+line, 0, 0, 15, 15,15,15);
+        textRendererMatrixStack.drawText(textRenderer, "Constitution: "+ this.stats[stat_ind[2]], x+collum*6+6, y+20+line*22/2+line, 	15859709,false);
+        matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/constitutionicon.png"), x+collum*5+1, y+20+line*21/2+line, 0, 0, 15, 15,15,15);
+        textRendererMatrixStack.drawText(textRenderer, "Intelligence: "+ this.stats[stat_ind[3]], x+collum*6+6, y+20+line*27/2+line, 	15859709,false);
+        matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/intelligenceicon.png"), x+collum*5+1, y+20+line*26/2+line, 0, 0, 15, 15,15,15);
+        textRendererMatrixStack.drawText(textRenderer, "Wisdom: "+ this.stats[stat_ind[4]], x+collum*6+6, y+20+line*32/2+line, 	15859709,false);
+        matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/wisdomicon.png"), x+collum*5+1, y+20+line*31/2+line, 0, 0, 15, 15,15,15);
+        textRendererMatrixStack.drawText(textRenderer, "Charisma: "+ this.stats[stat_ind[5]], x+collum*6+6, y+20+line*37/2+line, 	15859709,false);
+        matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/charismaicon.png"), x+collum*5+1, y+20+line*36/2+line, 0, 0, 15, 15,15,15);
         RenderSystem.setShaderColor(1.00f, 1.00f, 1.00f, 1.00f);
         if(this.E1){
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
@@ -181,8 +175,9 @@ public class CharCreationScreen4 extends Screen {
             for(int i = 0;i<12;i++) this.MyButtons.get(i).active = false;
             this.error_window.render(matrices,mouseX,mouseY,delta);
             this.error_window.active = true;
-            textRenderer.draw(textRendererMatrixStack, Text.literal("ERROR!").formatted(Formatting.BOLD), x + collum * 14 + 5, y + 28 + line * 8, 16121850);
-            textRenderer.draw(textRendererMatrixStack, "WRONG STATS", x + collum * 13+4, y + 25 + line * 12, 16121850);textRenderer.draw(textRendererMatrixStack, "FOR YOUR CLASS", x + collum * 13-4, y + 20 + line * 14, 16121850);
+            textRendererMatrixStack.drawText(textRenderer, Text.literal("ERROR!").formatted(Formatting.BOLD), x + collum * 14 + 5, y + 28 + line * 8, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer, "WRONG STATS", x + collum * 13+4, y + 25 + line * 12, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer, "FOR YOUR CLASS", x + collum * 13-4, y + 20 + line * 14, 16121850, false);
         }
     }
     @Override

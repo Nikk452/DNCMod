@@ -9,8 +9,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.effect.StatusEffects;
@@ -52,7 +51,7 @@ public class ModHudCallback implements HudRenderCallback{
             "textures/gui/mana_bar_ui.png");
 
     @Override
-    public void onHudRender(MatrixStack matrices, float tickDelta) {
+    public void onHudRender(DrawContext matrices, float tickDelta) {
         MinecraftClient client = MinecraftClient.getInstance();
         NbtCompound nbt = ((IEntityDataSaver)client.player).getPersistentData();
         if(nbt.isEmpty()){
@@ -88,33 +87,29 @@ public class ModHudCallback implements HudRenderCallback{
                     RenderSystem.enableBlend();
                     RenderSystem.defaultBlendFunc();
                     RenderSystem.setShaderColor(this.dice_time/10f, this.dice_time/10f, this.dice_time/10f, this.dice_time/10f);
-                    RenderSystem.setShaderTexture(0,DICE);
-                    DrawableHelper.drawTexture(matrices, k, l,32,32, 0, 0, 32, 32,32, 32);
+                    matrices.drawTexture(DICE, k, l,32,32, 0, 0, 32, 32,32, 32);
                 } else if (this.dice_time<=40) {
                     RenderSystem.setShader(GameRenderer::getPositionTexProgram);
                     RenderSystem.enableBlend();
                     RenderSystem.defaultBlendFunc();
                     RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-                    RenderSystem.setShaderTexture(0,DICE);
-                    DrawableHelper.drawTexture(matrices, k, l,32,32, 0, 0, 32, 32,32, 32);
-                    textRenderer.draw(matrices, ""+this.current_dice, t, l+13, 0);
-                    textRenderer.draw(matrices, nbt.getIntArray("dice")[1]+" +", t-25, l+13, 0);
+                    matrices.drawTexture(DICE, k, l,32,32, 0, 0, 32, 32,32, 32);
+                    matrices.drawText(textRenderer, ""+this.current_dice, t, l+13, 0,false);
+                    matrices.drawText(textRenderer, nbt.getIntArray("dice")[1]+" +", t-25, l+13, 0,false);
                 }else if (this.dice_time<=70) {
                     RenderSystem.setShader(GameRenderer::getPositionTexProgram);
                     RenderSystem.enableBlend();
                     RenderSystem.defaultBlendFunc();
                     RenderSystem.setShaderColor((90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f);
-                    RenderSystem.setShaderTexture(0,DICE);
-                    DrawableHelper.drawTexture(matrices, k, l,32,32, 0, 0, 32, 32,32, 32);
-                    textRenderer.draw(matrices, ""+this.current_dice, t, l+13, 0);
-                    textRenderer.draw(matrices, nbt.getIntArray("dice")[1]+" +", t-25, l+13, 0);
+                    matrices.drawTexture(DICE, k, l,32,32, 0, 0, 32, 32,32, 32);
+                    matrices.drawText(textRenderer, ""+this.current_dice, t, l+13, 0,false);
+                    matrices.drawText(textRenderer, nbt.getIntArray("dice")[1]+" +", t-25, l+13, 0,false);
                 }else if (this.dice_time<=90) {
                     RenderSystem.setShader(GameRenderer::getPositionTexProgram);
                     RenderSystem.enableBlend();
                     RenderSystem.defaultBlendFunc();
                     RenderSystem.setShaderColor((90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f, (90-this.dice_time)/50f);
-                    RenderSystem.setShaderTexture(0,DICE);
-                    DrawableHelper.drawTexture(matrices, k, l,32,32, 0, 0, 32, 32,32, 32);
+                    matrices.drawTexture(DICE, k, l,32,32, 0, 0, 32, 32,32, 32);
                 } else{
                     nbt.putIntArray("dice",new IntArrayList());
                     this.current_dice=0;
@@ -150,12 +145,11 @@ public class ModHudCallback implements HudRenderCallback{
                         RenderSystem.enableBlend();
                         RenderSystem.defaultBlendFunc();
                         RenderSystem.setShaderColor(1.2f, 1.2f, 1.2f, 0.75f);
-                        RenderSystem.setShaderTexture(0,new Identifier(DNCMod.MOD_ID, this.label_id.get(i)));
                         k=412;
                         l=256;
-                        DrawableHelper.drawTexture(matrices, this.labelX.get(i), this.labelY.get(i),(this.label_max.get(i)+2)*k/60,(this.Labels.get(i).length+6)*l/25, 0, 0, 64, 32,64, 32);
+                        matrices.drawTexture(new Identifier(DNCMod.MOD_ID, this.label_id.get(i)), this.labelX.get(i), this.labelY.get(i),(this.label_max.get(i)+2)*k/60,(this.Labels.get(i).length+6)*l/25, 0, 0, 64, 32,64, 32);
                         for(int s=0;s<this.Labels.get(i).length;s++){
-                            textRenderer.draw(matrices, ""+this.Labels.get(i)[s], this.labelX.get(i)+(((this.label_max.get(i)+2)*k/60)-textRenderer.getWidth(this.Labels.get(i)[s]))/2, this.labelY.get(i)+(3+s)*l/25, 15859709);
+                            matrices.drawText(textRenderer, ""+this.Labels.get(i)[s], this.labelX.get(i)+(((this.label_max.get(i)+2)*k/60)-textRenderer.getWidth(this.Labels.get(i)[s]))/2, this.labelY.get(i)+(3+s)*l/25, 15859709, false);
                         }
                     }else{
                         this.label_id.remove(i);
@@ -175,28 +169,26 @@ public class ModHudCallback implements HudRenderCallback{
             //xp bar rendering
             int i = nbt.getInt("max_experience")>0?nbt.getInt("max_experience"):500;
             float exp_progress = nbt.getInt("experience")>=i?1.0F:(float)nbt.getInt("experience")/(float)i;
-            RenderSystem.setShaderTexture(0, exp_progress==1.0F?FULL_EXP_BAR:EXP_BAR);
             if (i > 0) {
                 k = (int)(exp_progress * 182.0F);
                 l = scaledHeight - 32 + 3;
-                DrawableHelper.drawTexture(matrices, x, l, 0, 0, 182, 5,182, 10);
+                matrices.drawTexture(exp_progress==1.0F?FULL_EXP_BAR:EXP_BAR, x, l, 0, 0, 182, 5,182, 10);
                 if (k > 0) {
-                    DrawableHelper.drawTexture(matrices, x, l, 0, 5, k, 5,182, 10);
+                    matrices.drawTexture(exp_progress==1.0F?FULL_EXP_BAR:EXP_BAR, x, l, 0, 5, k, 5,182, 10);
                 }
             }
             if (nbt.getInt("total_level") > 0) {
                 String string = "" + nbt.getInt("total_level");
                 k = (scaledWidth - textRenderer.getWidth(string)) / 2;
                 l = scaledHeight - 31 - 4;
-                textRenderer.draw(matrices, string, (float)(k + 1), (float)l, 0);
-                textRenderer.draw(matrices, string, (float)(k - 1), (float)l, 0);
-                textRenderer.draw(matrices, string, (float)k, (float)(l + 1), 0);
-                textRenderer.draw(matrices, string, (float)k, (float)(l - 1), 0);
-                textRenderer.draw(matrices, string, (float)k, (float)l, exp_progress==1.0F?16448889:3328754);
+                matrices.drawText(textRenderer, string, (k + 1), l, 0,false);
+                matrices.drawText(textRenderer, string, (k - 1), l, 0,false);
+                matrices.drawText(textRenderer, string, k, (l + 1), 0,false);
+                matrices.drawText(textRenderer, string, k, (l - 1), 0,false);
+                matrices.drawText(textRenderer, string, k, l, exp_progress==1.0F?16448889:3328754,false);
                 client.getProfiler().pop();
             }
             //health bar rendering
-            RenderSystem.setShaderTexture(0,GUI_ICONS_TEXTURE);
             float max_hp = client.player.getMaxHealth();
             float cur_hp = client.player.getHealth();
             int state = fromPlayerState(client.player);
@@ -207,8 +199,8 @@ public class ModHudCallback implements HudRenderCallback{
                 for(int hearts = 9;hearts>=0;hearts--){
                     int v = 9 * (client.world.getLevelProperties().isHardcore() ? 5 : 0);
                     int p = x + (hearts % 10) * 8;
-                    DrawableHelper.drawTexture(matrices, p, l,getU(true,false,0), v,9, 9, 256, 256);
-                    if(hearts<cur_hp/max_hp*10) DrawableHelper.drawTexture(matrices, p, l,getU(false,false,state),v, hearts+1<=cur_hp/max_hp*10?9:(int)f, 9, 256, 256);
+                    matrices.drawTexture(GUI_ICONS_TEXTURE, p, l,getU(true,false,0), v,9, 9, 256, 256);
+                    if(hearts<cur_hp/max_hp*10) matrices.drawTexture(GUI_ICONS_TEXTURE, p, l,getU(false,false,state),v, hearts+1<=cur_hp/max_hp*10?9:(int)f, 9, 256, 256);
                 }
             }
         }

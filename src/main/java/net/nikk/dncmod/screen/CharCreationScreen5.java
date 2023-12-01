@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
@@ -166,7 +167,7 @@ public class CharCreationScreen5 extends Screen {
         this.skillsnum -= 1;
         this.allSlotsTaken= false;
     }
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext matrices, int mouseX, int mouseY, float delta) {
         int backgroundWidth = 412;
         int backgroundHeight = 256;
         int x = (width - backgroundWidth) / 2;
@@ -181,27 +182,26 @@ public class CharCreationScreen5 extends Screen {
         renderBackground(matrices);
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
-        RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
+        matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"), x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
         this.previous_button.render(matrices,mouseX,mouseY,delta);
         this.next_button.render(matrices,mouseX,mouseY,delta);
         for(int i = 0;i<4;i++) this.slots[i].render(matrices,mouseX,mouseY,delta);
         for(int i = 0;i<27;i++) this.skillsbuttons.get(i).render(matrices,mouseX,mouseY,delta);
         //text drawing
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        MatrixStack textRendererMatrixStack = new MatrixStack();
-        textRendererMatrixStack.scale(1.0F, 1.0F, 1.0F);
-        textRenderer.draw(textRendererMatrixStack, "Character Creation", x+collum*12, y+20+line*2/3, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, Text.literal("Select your future skills:").styled(style -> style.withBold(false).withItalic(false)).append("").styled(style -> style.withBold(true).withItalic(true)).append("").append("").styled(style -> style.withBold(true).withItalic(true)).append(" "), x+collum*4, y+20+line*2+line, 	15859709);
+        DrawContext textRendererMatrixStack = new DrawContext(MinecraftClient.getInstance(),matrices.getVertexConsumers());
+        textRendererMatrixStack.getMatrices().scale(1.0F, 1.0F, 1.0F);
+        matrices.drawText(textRenderer, "Character Creation", x+collum*12, y+20+line*2/3, 	15859709, false);
+        matrices.drawText(textRenderer, Text.literal("Select your future skills:").styled(style -> style.withBold(false).withItalic(false)).append("").styled(style -> style.withBold(true).withItalic(true)).append("").append("").styled(style -> style.withBold(true).withItalic(true)).append(" "), x+collum*4, y+20+line*2+line, 	15859709, false);
         switch (this.classname) {
-            case "Fighter" -> textRenderer.draw(textRendererMatrixStack, Text.literal("(1 Strength, 1 Dexterity, 2 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709);
-            case "Wizard" -> textRenderer.draw(textRendererMatrixStack, Text.literal("(2 Intelligence, 1 Wisdom, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709);
-            case "Druid" -> textRenderer.draw(textRendererMatrixStack, Text.literal("(1 Strength, 1 Dexterity, 1 Wisdom, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709);
-            case "Cleric" -> textRenderer.draw(textRendererMatrixStack, Text.literal("(2 Wisdom, 1 Intelligence, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709);
-            case "Sorcerer" -> textRenderer.draw(textRendererMatrixStack, Text.literal("(2 Charisma, 1 Wisdom, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709);
-            case "Monk" -> textRenderer.draw(textRendererMatrixStack, Text.literal("(2 Wisdom, 1 Dexterity, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709);
+            case "Fighter" -> textRendererMatrixStack.drawText(textRenderer, Text.literal("(1 Strength, 1 Dexterity, 2 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709, false);
+            case "Wizard" -> textRendererMatrixStack.drawText(textRenderer, Text.literal("(2 Intelligence, 1 Wisdom, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709, false);
+            case "Druid" -> textRendererMatrixStack.drawText(textRenderer, Text.literal("(1 Strength, 1 Dexterity, 1 Wisdom, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709, false);
+            case "Cleric" -> textRendererMatrixStack.drawText(textRenderer, Text.literal("(2 Wisdom, 1 Intelligence, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709, false);
+            case "Sorcerer" -> textRendererMatrixStack.drawText(textRenderer, Text.literal("(2 Charisma, 1 Wisdom, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709, false);
+            case "Monk" -> textRendererMatrixStack.drawText(textRenderer, Text.literal("(2 Wisdom, 1 Dexterity, 1 of any)"), x + collum * 4, y + 20 + line * 4 + line - 3, 15859709, false);
         }
         RenderSystem.setShaderColor(1.00f, 1.00f, 1.00f, 1.00f);
         ArrayList<List<Text>> arr = new ArrayList<>(27);
@@ -233,7 +233,7 @@ public class CharCreationScreen5 extends Screen {
         arr.add(List.of(new Text[]{Text.literal("[Charisma] Skill: Intimidation"),Text.literal("When you attempt to influence"),Text.literal("someone through overt threats,"),Text.literal("hostile actions, and physical violence")}));
         arr.add(List.of(new Text[]{Text.literal("[Charisma] Skill: Performance"), Text.literal("Performance determines how well"),Text.literal("you can delight an audience with"),Text.literal("music, dance, acting, storytelling"),Text.literal("or some other form of entertainment")}));
         for(int i=0;i<27;i++){
-            renderSkillTooltips(matrices,this.skillsbuttons.get(i).active,mouseX,mouseY,this.skillsbuttons.get(i).getX(),this.skillsbuttons.get(i).getY(),arr.get(i));
+            renderSkillTooltips(matrices,textRenderer,this.skillsbuttons.get(i).active,mouseX,mouseY,this.skillsbuttons.get(i).getX(),this.skillsbuttons.get(i).getY(),arr.get(i));
         }
         RenderSystem.setShaderColor(1.00f, 1.00f, 1.00f, 1.00f);
         if(this.E1){
@@ -245,8 +245,9 @@ public class CharCreationScreen5 extends Screen {
             for(int i = 0;i<27;i++) this.skillsbuttons.get(i).active = false;
             this.error_window.render(matrices,mouseX,mouseY,delta);
             this.error_window.active = true;
-            textRenderer.draw(textRendererMatrixStack, Text.literal("ERROR!").formatted(Formatting.BOLD), x + collum * 14 + 5, y + 28 + line * 8, 16121850);
-            textRenderer.draw(textRendererMatrixStack, "WRONG SKILLS", x + collum * 13+4, y + 25 + line * 12, 16121850);textRenderer.draw(textRendererMatrixStack, "FOR YOUR CLASS", x + collum * 13-4, y + 20 + line * 14, 16121850);
+            textRendererMatrixStack.drawText(textRenderer, Text.literal("ERROR!").formatted(Formatting.BOLD), x + collum * 14 + 5, y + 28 + line * 8, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer, "WRONG SKILLS", x + collum * 13+4, y + 25 + line * 12, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer, "FOR YOUR CLASS", x + collum * 13-4, y + 20 + line * 14, 16121850, false);
         }
         if(this.complete){
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
@@ -261,23 +262,23 @@ public class CharCreationScreen5 extends Screen {
             this.complete_window.active = true;
             String[] extravalue = {"","","","","","",""};
             extravalue[this.extrastat+1] = Objects.equals(this.race, "Elf") ? " +2":"";
-            textRenderer.draw(textRendererMatrixStack, Text.literal("Complete?").formatted(Formatting.BOLD), x + collum * 14-6, y + 24 + line, 16121850);
-            textRenderer.draw(textRendererMatrixStack, "[Name: "+this.firstName+" "+this.lastName+"]", x + collum * 10 +6, y + 25 + line * 3, 16121850);
-            textRenderer.draw(textRendererMatrixStack, "["+this.race+" "+this.classname+" Lv.0]", x + collum * 10 +6, y + 20 + line * 6, 16121850);
-            textRenderer.draw(textRendererMatrixStack, Text.literal("Strength- ").append(String.valueOf(this.stats[this.stat_index[0]])).append(extravalue[1]), x + collum * 10 +6, y + 15 + line * 9, 16121850);
-            textRenderer.draw(textRendererMatrixStack, Text.literal("Dexterity- ").append(String.valueOf(this.stats[this.stat_index[1]])).append(extravalue[2]), x + collum * 10 +6, y + 10 + line * 11, 16121850);
-            textRenderer.draw(textRendererMatrixStack, Text.literal("Constitution- ").append(String.valueOf(this.stats[this.stat_index[2]])).append(extravalue[3]), x + collum * 10 +6, y + 5 + line * 13, 16121850);
-            textRenderer.draw(textRendererMatrixStack, Text.literal("Intelligence- ").append(String.valueOf(this.stats[this.stat_index[3]])).append(extravalue[4]), x + collum * 10 +6, y + line * 15, 16121850);
-            textRenderer.draw(textRendererMatrixStack, Text.literal("Wisdom- ").append(String.valueOf(this.stats[this.stat_index[4]])).append(extravalue[5]), x + collum * 10 +6, y -5 + line * 17, 16121850);
-            textRenderer.draw(textRendererMatrixStack, Text.literal("Charisma- ").append(String.valueOf(this.stats[this.stat_index[5]])).append(extravalue[6]), x + collum * 10 +6, y -10 + line * 19, 16121850);
-            textRenderer.draw(textRendererMatrixStack,  Text.literal("[").append(Text.translatable(this.skillnames[0])).append(", ").append(Text.translatable(this.skillnames[1])).append(", "), x + collum * 10 +6, y - 15 + line * 22, 16121850);
-            textRenderer.draw(textRendererMatrixStack, Text.translatable(this.skillnames[2]).append(", ").append(Text.translatable(this.skillnames[3])).append("]"), x + collum * 10 +6, y - 20 + line * 24, 16121850);
+            textRendererMatrixStack.drawText(textRenderer, Text.literal("Complete?").formatted(Formatting.BOLD), x + collum * 14-6, y + 24 + line, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer, "[Name: "+this.firstName+" "+this.lastName+"]", x + collum * 10 +6, y + 25 + line * 3, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer, "["+this.race+" "+this.classname+" Lv.0]", x + collum * 10 +6, y + 20 + line * 6, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer, Text.literal("Strength- ").append(String.valueOf(this.stats[this.stat_index[0]])).append(extravalue[1]), x + collum * 10 +6, y + 15 + line * 9, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer, Text.literal("Dexterity- ").append(String.valueOf(this.stats[this.stat_index[1]])).append(extravalue[2]), x + collum * 10 +6, y + 10 + line * 11, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer, Text.literal("Constitution- ").append(String.valueOf(this.stats[this.stat_index[2]])).append(extravalue[3]), x + collum * 10 +6, y + 5 + line * 13, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer, Text.literal("Intelligence- ").append(String.valueOf(this.stats[this.stat_index[3]])).append(extravalue[4]), x + collum * 10 +6, y + line * 15, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer, Text.literal("Wisdom- ").append(String.valueOf(this.stats[this.stat_index[4]])).append(extravalue[5]), x + collum * 10 +6, y -5 + line * 17, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer, Text.literal("Charisma- ").append(String.valueOf(this.stats[this.stat_index[5]])).append(extravalue[6]), x + collum * 10 +6, y -10 + line * 19, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer,  Text.literal("[").append(Text.translatable(this.skillnames[0])).append(", ").append(Text.translatable(this.skillnames[1])).append(", "), x + collum * 10 +6, y - 15 + line * 22, 16121850, false);
+            textRendererMatrixStack.drawText(textRenderer, Text.translatable(this.skillnames[2]).append(", ").append(Text.translatable(this.skillnames[3])).append("]"), x + collum * 10 +6, y - 20 + line * 24, 16121850, false);
         }
     }
-    private void renderSkillTooltips(MatrixStack matrices,Boolean active,int mouseX,int mouseY, int x, int y, List<Text> arr){
+    private void renderSkillTooltips(DrawContext matrices,TextRenderer textRenderer,Boolean active,int mouseX,int mouseY, int x, int y, List<Text> arr){
         if(!this.allSlotsTaken && active){
             if(mouseX >= x && mouseX< x +15 && mouseY >= y && mouseY<y+15){
-                renderTooltip(matrices, arr,x,y);
+                matrices.drawTooltip(textRenderer, arr,x,y);
 
             }
         }

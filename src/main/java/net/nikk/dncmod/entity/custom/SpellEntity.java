@@ -80,7 +80,7 @@ public class SpellEntity extends PersistentProjectileEntity {
                     double xPos = getX() + xzRadius * Math.cos(rot + rotationOffset);
                     double yPos = getY() + yRadius;
                     double zPos = getZ() + xzRadius * Math.sin(rot + rotationOffset);
-                    world.addParticle(ParticleTypes.FLAME, xPos, yPos, zPos, 0.0, 0.0, 0.0);
+                    this.getWorld().addParticle(ParticleTypes.FLAME, xPos, yPos, zPos, 0.0, 0.0, 0.0);
                 }
             }
         }
@@ -95,7 +95,7 @@ public class SpellEntity extends PersistentProjectileEntity {
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
         super.onBlockHit(blockHitResult);
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             this.doDamage();
             this.remove(Entity.RemovalReason.DISCARDED);
         }
@@ -103,7 +103,7 @@ public class SpellEntity extends PersistentProjectileEntity {
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient) {
             this.doDamage();
         }
     }
@@ -121,7 +121,7 @@ public class SpellEntity extends PersistentProjectileEntity {
         int u = MathHelper.floor(this.getY() + (double) q + 1.0D);
         int v = MathHelper.floor(this.getZ() - (double) q - 1.0D);
         int w = MathHelper.floor(this.getZ() + (double) q + 1.0D);
-        List<Entity> list = this.world.getOtherEntities(this,
+        List<Entity> list = this.getWorld().getOtherEntities(this,
                 new Box((double) k, (double) t, (double) v, (double) l, (double) u, (double) w));
         Vec3d vec3d = new Vec3d(this.getX(), this.getY(), this.getZ());
         for (int x = 0; x < list.size(); ++x) {
@@ -131,7 +131,7 @@ public class SpellEntity extends PersistentProjectileEntity {
                 if (entity instanceof LivingEntity) {
                     entity.damage(this.getDamageSources().mobAttack((LivingEntity) this.getOwner()), 20);
                 }
-                this.world.createExplosion(this, this.getX(), this.getBodyY(0.0625D), this.getZ(), 0.0F,
+                this.getWorld().createExplosion(this, this.getX(), this.getBodyY(0.0625D), this.getZ(), 0.0F,
                         World.ExplosionSourceType.NONE);
             }
         }

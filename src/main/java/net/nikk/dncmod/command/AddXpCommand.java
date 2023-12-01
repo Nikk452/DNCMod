@@ -28,12 +28,12 @@ public class AddXpCommand {
     public static int run(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> targets, int amount, String s) throws CommandSyntaxException {
         if(amount>0) if (s.equals("All")){
             for(ServerPlayerEntity player : context.getSource().getServer().getPlayerManager().getPlayerList()){
-                ExperienceData.addExperience(player.getWorld(),player, amount);
+                ExperienceData.addExperience(player.getServerWorld(),player, amount);
             }
         } else {
             ExperienceData.addExperience(context.getSource().getWorld(),context.getSource().getPlayer(), amount);
         }
-        context.getSource().sendFeedback(Text.literal(amount+" xp was added to"+(s.equals("")?context.getSource().getName():"All")),true);
+        context.getSource().sendFeedback(() -> Text.literal(amount+" xp was added to"+(s.equals("")?context.getSource().getName():"All")),true);
         return 1;
     }
 }

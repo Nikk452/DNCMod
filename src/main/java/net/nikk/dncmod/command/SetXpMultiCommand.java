@@ -29,7 +29,7 @@ public class SetXpMultiCommand {
     public static int run(CommandContext<ServerCommandSource> context, int amount) throws CommandSyntaxException {
         DNCMod.CONFIG.xp_per_lvl_multi = amount;
         IOManager.updateModConfig(DNCMod.CONFIG);
-        context.getSource().sendFeedback(Text.literal("Xp multiplier was changed to: x"+amount),true);
+        context.getSource().sendFeedback(() -> Text.literal("Xp multiplier was changed to: x"+amount),true);
         return 1;
     }
 }

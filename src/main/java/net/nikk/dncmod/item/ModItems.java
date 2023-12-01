@@ -1,6 +1,7 @@
 package net.nikk.dncmod.item;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
@@ -107,61 +108,14 @@ public class ModItems {
             new Item(new FabricItemSettings()));
     public static final Item SCROLL = registerItem("scroll",
             new ScrollItem(new FabricItemSettings().rarity(Rarity.COMMON)));
-    public static void addToItemGroup(ItemGroup group, Item item) {
-        ItemGroupEvents.modifyEntriesEvent(group).register(entries -> entries.add(item));
-    }
-    public static void addItemsToItemGroups() {
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, WHITE_IRON_CRYSTAL);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, TITANIUM_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, TIN_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, SILVER_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, REDSTONE_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, PLATINUM_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, OBSIDIAN_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, LEAD_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, MITHRIL_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, ELECTRUM_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, DARK_STONE);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, DARK_STEEL_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, SHADOWTFRALL);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, BRONZE_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, ADAMANTINE_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, ARCANUM_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, ASTRAL_CRYSTAL);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, RAW_ADAMANTINE);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, RAW_TITANIUM);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, RAW_TIN);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, RAW_SILVER);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, RAW_BRONZE);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, RAW_PLATINUM);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, RAW_OBSIDIAN);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, RAW_LEAD);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, MITHRIL_INGOT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, RAW_ELECTRUM);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, LONG_ARROW);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, CLUB);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, QUARTERSTAFF);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, DAGGER);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, SHORT_SWORD);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, GREAT_SWORD);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, SPEAR);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, SHORT_BOW);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, LONG_BOW);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, SLING);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, DART);
-        addToItemGroup(ItemGroups.SPAWN_EGGS, GOBLIN_SPAWN_EGG);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, ARRIVAL_JACKET);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, ARRIVAL_PANTS);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, ARRIVAL_BOOTS);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, SPELL_BOOK);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, PARCHMENT);
-        addToItemGroup(ModItemGroup.DNC_TAB_ITEMS, SCROLL);
+    private static void itemGroupSpawnEgg(FabricItemGroupEntries entries) {
+        entries.add(GOBLIN_SPAWN_EGG);
     }
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, new Identifier(DNCMod.MOD_ID, name), item);
     }
     public static void registerModItems() {
         DNCMod.LOGGER.debug("[Dungeons & Crafting] Registering Mod Items");
-        addItemsToItemGroups();
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(ModItems::itemGroupSpawnEgg);
     }
 }

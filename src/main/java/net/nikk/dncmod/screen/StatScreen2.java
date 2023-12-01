@@ -3,6 +3,7 @@ package net.nikk.dncmod.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
@@ -36,7 +37,7 @@ public class StatScreen2 extends Screen {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext matrices, int mouseX, int mouseY, float delta) {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         //texture drawing
@@ -47,15 +48,14 @@ public class StatScreen2 extends Screen {
         renderBackground(matrices);
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
-        RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
+        matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"), x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
         //drawTexture(matrices, LocationX, LocationY, Z?... 1 , u is 0, v is 0,ActualImageWidth,ActualImageHeight,texturewidthScaled,textureheightScaled);
         //text drawing
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        MatrixStack textRendererMatrixStack = new MatrixStack();
-        textRendererMatrixStack.scale(1.0F, 1.0F, 1.0F);
+        DrawContext textRendererMatrixStack = new DrawContext(MinecraftClient.getInstance(), matrices.getVertexConsumers());
+        textRendererMatrixStack.getMatrices().scale(1,1,1);
         ArrayList<Text> texts = new ArrayList<>();
         texts.add(Text.literal("Status"));
         texts.add(Text.literal("   Class   ").styled(style -> style.withUnderline(true)));
@@ -86,13 +86,12 @@ public class StatScreen2 extends Screen {
             }
         }
         for(int i = 0; i< (long) texts.size(); i++){
-            textRendererMatrixStack.scale(1f,1f,1f);
-            if(i==4) textRendererMatrixStack.scale(0.72f,0.72f,0.72f);
+            textRendererMatrixStack.getMatrices().scale(1,1,1);
+            if(i==4) textRendererMatrixStack.getMatrices().scale(0.72f,0.72f,0.72f);
             if(i>=4){
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/"+images.get(i-4)+".png"));
-                drawTexture(matrices,x+collum*21-2,y+20+line*i+line-3+((i-4)*15/4),8,8,0,0,16,16,16,16);
+                matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/"+images.get(i-4)+".png"),x+collum*21-2,y+20+line*i+line-3+((i-4)*15/4),8,8,0,0,16,16,16,16);
             }
-            textRenderer.draw(textRendererMatrixStack, texts.get(i), locsX.get(i), locsY.get(i), 	15859709);
+            textRendererMatrixStack.drawText(textRenderer, texts.get(i), locsX.get(i), locsY.get(i), 	15859709, false);
         }
         super.render(matrices, mouseX, mouseY, delta);
     }

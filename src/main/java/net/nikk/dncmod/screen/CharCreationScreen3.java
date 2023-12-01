@@ -3,6 +3,7 @@ package net.nikk.dncmod.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.DiffuseLighting;
@@ -55,7 +56,7 @@ public class CharCreationScreen3 extends Screen {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext matrices, int mouseX, int mouseY, float delta) {
         int backgroundWidth = 412;
         int backgroundHeight = 256;
         int x = (width - backgroundWidth) / 2;
@@ -68,19 +69,18 @@ public class CharCreationScreen3 extends Screen {
         renderBackground(matrices);
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
-        RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
+        matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"), x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
         //drawTexture(matrices, LocationX, LocationY, Z?... 1 , u is 0, v is 0,ActualImageWidth,ActualImageHeight,texturewidthScaled,textureheightScaled);
         //text drawing
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        MatrixStack textRendererMatrixStack = new MatrixStack();
-        textRendererMatrixStack.scale(1.0F, 1.0F, 1.0F);
+        DrawContext textRendererMatrixStack = new DrawContext(MinecraftClient.getInstance(), matrices.getVertexConsumers());
+        textRendererMatrixStack.getMatrices().scale(1.0F, 1.0F, 1.0F);
         int line = backgroundHeight/30;
         int collum = backgroundWidth/30;
-        textRenderer.draw(textRendererMatrixStack, "Character Creation", x+collum*12, y+20+line*2/3, 	15859709);
-        textRenderer.draw(textRendererMatrixStack, Text.literal("Pick a ").styled(style -> style.withBold(false).withItalic(false)).append("race").styled(style -> style.withBold(true).withItalic(true)).append(", any ").append("race").styled(style -> style.withBold(true).withItalic(true)).append(" from the following options:"), x+collum*4, y+20+line*3+line, 	15859709);
+        textRendererMatrixStack.drawText(textRenderer, "Character Creation", x+collum*12, y+20+line*2/3, 	15859709, false);
+        textRendererMatrixStack.drawText(textRenderer, Text.literal("Pick a ").styled(style -> style.withBold(false).withItalic(false)).append("race").styled(style -> style.withBold(true).withItalic(true)).append(", any ").append("race").styled(style -> style.withBold(true).withItalic(true)).append(" from the following options:"), x+collum*4, y+20+line*3+line, 	15859709, false);
         RenderSystem.setShaderColor(1.00f, 1.00f, 1.00f, 1.00f);
         loadClass(matrices,x,collum,y,line);
         Text[] stat_names = {Text.literal("Strength"),Text.literal("Dexterity"),Text.literal("Constitution"),Text.literal("Intelligence"),Text.literal("Wisdom"),Text.literal("Charisma")};
@@ -88,25 +88,25 @@ public class CharCreationScreen3 extends Screen {
         switch (this.race) {
             case "Human" -> {
                 this.statswheel.visible = false;
-                textRenderer.draw(textRendererMatrixStack, "This race will grant", x + collum * 23 / 2 + 3, y + 20 + line * 19 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "the player a bonus Feat.", x + collum * 21 / 2 + 3, y + 20 + line * 21 + line, 15859709);
+                textRendererMatrixStack.drawText(textRenderer, "This race will grant", x + collum * 23 / 2 + 3, y + 20 + line * 19 + line, 15859709,false);
+                textRendererMatrixStack.drawText(textRenderer, "the player a bonus Feat.", x + collum * 21 / 2 + 3, y + 20 + line * 21 + line, 15859709,false);
                 drawEntity(x + collum * 32 / 2 - 4, y + 20 + line * 14 + line, 30, x + collum * 32 / 2 - 4 - mouseX, y + 20 + line * 14 + line - mouseY, this.client.player);
                 this.classeswheel.setMessage(Text.literal("Human Race"));
             }
             case "Elf" -> {
                 this.statswheel.visible = true;
-                textRenderer.draw(textRendererMatrixStack, "Select A Stat", x + collum * 22 + 8, y + 20 + line * 11 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "This race will grant the player", x + collum * 20 / 2 + 3, y + 20 + line * 19 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "a +2 bonus to one", x + collum * 24 / 2 + 3, y + 20 + line * 21 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "Stat of their choice.", x + collum * 23 / 2 + 6, y + 20 + line * 23 + line, 15859709);
+                textRendererMatrixStack.drawText(textRenderer, "Select A Stat", x + collum * 22 + 8, y + 20 + line * 11 + line, 15859709,false);
+                textRendererMatrixStack.drawText(textRenderer, "This race will grant the player", x + collum * 20 / 2 + 3, y + 20 + line * 19 + line, 15859709,false);
+                textRendererMatrixStack.drawText(textRenderer, "a +2 bonus to one", x + collum * 24 / 2 + 3, y + 20 + line * 21 + line, 15859709,false);
+                textRendererMatrixStack.drawText(textRenderer, "Stat of their choice.", x + collum * 23 / 2 + 6, y + 20 + line * 23 + line, 15859709,false);
                 drawEntity(x + collum * 32 / 2 - 4, y + 20 + line * 14 + line, 30, x + collum * 32 / 2 - 4 - mouseX, y + 20 + line * 14 + line - mouseY, EntityType.ENDERMAN.create(MinecraftClient.getInstance().world));
                 this.classeswheel.setMessage(Text.literal("Elven Race"));
             }
             case "Dwarf" -> {
                 this.statswheel.visible = false;
-                textRenderer.draw(textRendererMatrixStack, "This race will grant the player", x + collum * 20 / 2 + 3, y + 20 + line * 19 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "bonus hit points equal to half", x + collum * 20 / 2 + 3, y + 20 + line * 21 + line, 15859709);
-                textRenderer.draw(textRendererMatrixStack, "your con modifier rounded down.", x + collum * 19 / 2 + 3, y + 20 + line * 23 + line, 15859709);
+                textRendererMatrixStack.drawText(textRenderer, "This race will grant the player", x + collum * 20 / 2 + 3, y + 20 + line * 19 + line, 15859709,false);
+                textRendererMatrixStack.drawText(textRenderer, "bonus hit points equal to half", x + collum * 20 / 2 + 3, y + 20 + line * 21 + line, 15859709,false);
+                textRendererMatrixStack.drawText(textRenderer, "your con modifier rounded down.", x + collum * 19 / 2 + 3, y + 20 + line * 23 + line, 15859709,false);
                 drawEntity(x + collum * 32 / 2 - 4, y + 20 + line * 14 + line, 30, x + collum * 32 / 2 - 4 - mouseX, y + 20 + line * 14 + line - mouseY, EntityType.CREEPER.create(MinecraftClient.getInstance().world));
                 this.classeswheel.setMessage(Text.literal("Dwarf Race"));
             }
@@ -166,31 +166,25 @@ public class CharCreationScreen3 extends Screen {
         RenderSystem.applyModelViewMatrix();
         DiffuseLighting.enableGuiDepthLighting();
     }
-    private void loadClass(MatrixStack matrices,int x, int collum, int y, int line){
+    private void loadClass(DrawContext matrices,int x, int collum, int y, int line){
         switch (this.classname) {
             case "Fighter" -> {
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/fighter.png"));
-                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
+                matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/fighter.png"), x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
             }
             case "Wizard" -> {
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/wizard.png"));
-                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
+                matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/wizard.png"), x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
             }
             case "Druid" -> {
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/druid.png"));
-                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
+                matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/druid.png"), x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
             }
             case "Cleric" -> {
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/cleric.png"));
-                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
+                matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/cleric.png"), x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
             }
             case "Sorcerer" -> {
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/sorcerer.png"));
-                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
+                matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/sorcerer.png"), x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
             }
             case "Monk" -> {
-                RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/monk.png"));
-                drawTexture(matrices, x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
+                matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/monk.png"), x + collum * 25 / 2, y + 20 + line * 5 + line, 0, 0, 90, 90, 90, 90);
             }
         }
     }

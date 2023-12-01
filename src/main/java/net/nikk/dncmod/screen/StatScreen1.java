@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.PressableTextWidget;
@@ -65,7 +66,7 @@ public class StatScreen1 extends Screen {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext matrices, int mouseX, int mouseY, float delta) {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         //texture drawing
@@ -81,23 +82,21 @@ public class StatScreen1 extends Screen {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShaderColor(this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f);
-            RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
-            drawTexture(matrices, x, Math.max((int) this.anime, y), 0, 0, backgroundWidth, backgroundHeight, 412, 256);
+            matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"), x, Math.max((int) this.anime, y), 0, 0, backgroundWidth, backgroundHeight, 412, 256);
         }else{
             if(this.animate) this.animate = false;
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
             renderBackground(matrices);
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
-            RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
-            drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
+            matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"), x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
             //drawTexture(matrices, LocationX, LocationY, Z?... 1 , u is 0, v is 0,ActualImageWidth,ActualImageHeight,texturewidthScaled,textureheightScaled);
             //text drawing
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            MatrixStack textRendererMatrixStack = new MatrixStack();
-            textRendererMatrixStack.scale(1.0F, 1.0F, 1.0F);
+            DrawContext textRendererMatrixStack = new DrawContext(MinecraftClient.getInstance(), matrices.getVertexConsumers());
+            textRendererMatrixStack.getMatrices().scale(1.0F, 1.0F, 1.0F);
             int line = backgroundHeight/30;
             int collum = backgroundWidth/30;
             String[] class_names = {"Fighter","Wizard","Druid","Cleric","Sorcerer","Monk"};
@@ -124,7 +123,7 @@ public class StatScreen1 extends Screen {
                     Text.literal(" ["+class_names[idx]+" Lv."+classes[idx]+"]")};
             int[] locsX = {width/2-18,x+collum*4,x+collum*4,x+collum*4,x+collum*4,x+collum*4,x+collum*4,x+collum*4,x+collum*4,x+collum*13+collum/2,x+collum*23,x+collum*22-4,x+collum*22-4,x+collum*22-4,x+collum*22-4,x+collum*22-4,x+collum*22-4,x+collum*13+4};
             int[] locsY = {y+20+line*2/3, y+20+line*2+line,y+20+line*4+line,y+20+line*6+line,y+20+line*8+line,y+20+line*10+line,y+20+line*12+line,y+20+line*14+line,y+20+line*16+line,y+20+line*2+line,y+20+line*2+line,y+20+line*4+line,y+20+line*6+line,y+20+line*8+line,y+20+line*10+line,y+20+line*12+line,y+20+line*14+line,y+20+line*4+line};
-            for(int i=0;i<18;i++) textRenderer.draw(textRendererMatrixStack, texts[i], locsX[i], locsY[i], 	15859709);
+            for(int i=0;i<18;i++) textRendererMatrixStack.drawText(textRenderer, texts[i], locsX[i], locsY[i], 15859709, false);
             super.render(matrices, mouseX, mouseY, delta);
         }
     }

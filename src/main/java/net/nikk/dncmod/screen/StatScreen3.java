@@ -3,6 +3,7 @@ package net.nikk.dncmod.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
@@ -35,7 +36,7 @@ public class StatScreen3 extends Screen {
             this.client.setScreen(new StatScreen2());}));
     }
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext matrices, int mouseX, int mouseY, float delta) {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         //texture drawing
@@ -46,16 +47,15 @@ public class StatScreen3 extends Screen {
         renderBackground(matrices);
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
-        RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
+        matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"), x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
         //drawTexture(matrices, LocationX, LocationY, Z?... 1 , u is 0, v is 0,ActualImageWidth,ActualImageHeight,texturewidthScaled,textureheightScaled);
         //text drawing
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        MatrixStack textRendererMatrixStack = new MatrixStack();
-        textRendererMatrixStack.scale(1.0F, 1.0F, 1.0F);
-        textRenderer.draw(textRendererMatrixStack, "Status", width/2-18, y+20+line*2/3, 	15859709);
+        DrawContext textRendererMatrixStack = new DrawContext(MinecraftClient.getInstance(), matrices.getVertexConsumers());
+        textRendererMatrixStack.getMatrices().scale(1.0F, 1.0F, 1.0F);
+        textRendererMatrixStack.drawText(textRenderer, "Status", width/2-18, y+20+line*2/3, 	15859709,false);
         super.render(matrices, mouseX, mouseY, delta);
     }
 }

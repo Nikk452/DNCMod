@@ -17,6 +17,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -33,13 +34,13 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@SuppressWarnings("unused")
+@SuppressWarnings("all")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
-    /**float JumpSkillAmp = 0;
+    float JumpSkillAmp = 0;
     @Shadow
     protected void damageArmor(DamageSource source, float amount) {}
     @Shadow
@@ -134,6 +135,8 @@ public abstract class LivingEntityMixin extends Entity {
     protected void playHurtSound(DamageSource source) {}
     @Shadow @Nullable
     protected SoundEvent getDeathSound() {return null;}
+    //@Shadow
+    //protected void scheduleVelocityUpdate(){}
     @Shadow
     public float getSoundVolume() {return 0f;}
     @Inject(method="damage(Lnet/minecraft/entity/damage/DamageSource;F)Z",at = @At("HEAD"), cancellable = true)
@@ -175,43 +178,47 @@ public abstract class LivingEntityMixin extends Entity {
                 }
             }
         }
-        if (this.isInvulnerableTo(source)) {
+        if (((LivingEntity)(Object)(this)).isInvulnerableTo(source)) {
             cir.setReturnValue(false);
-        } else if (((LivingEntity)(Object)this).world.isClient) {
+        } else if (((LivingEntity)(Object)(this)).getWorld().isClient) {
             cir.setReturnValue(false);
-        } else if (((LivingEntity)(Object)this).isDead()) {
+        } else if (((LivingEntity)(Object)(this)).isDead()) {
             cir.setReturnValue(false);
-        } else if (source.isIn(DamageTypeTags.IS_FIRE) && ((LivingEntity)(Object)this).hasStatusEffect(StatusEffects.FIRE_RESISTANCE)) {
+        } else if (source.isIn(DamageTypeTags.IS_FIRE) && ((LivingEntity)(Object)(this)).hasStatusEffect(StatusEffects.FIRE_RESISTANCE)) {
             cir.setReturnValue(false);
         } else if(mbl){
             cir.setReturnValue(false);
-        }
-        else{
-            if (((LivingEntity)(Object)this).isSleeping() && !((LivingEntity)(Object)this).world.isClient) {
-                ((LivingEntity)(Object)this).wakeUp();
+        }else {
+            if (((LivingEntity)(Object)(this)).isSleeping() && !((LivingEntity)(Object)(this)).getWorld().isClient) {
+                ((LivingEntity)(Object)(this)).wakeUp();
             }
 
             this.despawnCounter = 0;
             float f = amount;
             boolean bl = false;
             float g = 0.0F;
-            if (amount > 0.0F && ((LivingEntity)(Object)this).blockedByShield(source)) {
-                ((LivingEntity)(Object)this).damageShield(amount);
+            if (amount > 0.0F && ((LivingEntity)(Object)(this)).blockedByShield(source)) {
+                ((LivingEntity)(Object)(this)).damageShield(amount);
                 g = amount;
                 amount = 0.0F;
                 if (!source.isIn(DamageTypeTags.IS_PROJECTILE)) {
                     Entity entity = source.getSource();
                     if (entity instanceof LivingEntity) {
-                        this.takeShieldHit((LivingEntity)entity);
+                        LivingEntity livingEntity = (LivingEntity)entity;
+                        this.takeShieldHit(livingEntity);
                     }
                 }
 
                 bl = true;
             }
 
-            ((LivingEntity)(Object)this).limbDistance = 1.5F;
+            if (source.isIn(DamageTypeTags.IS_FREEZING) && ((LivingEntity)(Object)(this)).getType().isIn(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES)) {
+                amount *= 5.0F;
+            }
+
+            ((LivingEntity)(Object)(this)).limbAnimator.setSpeed(1.5F);
             boolean bl2 = true;
-            if ((float)this.timeUntilRegen > 10.0F) {
+            if ((float)((LivingEntity)(Object)(this)).timeUntilRegen > 10.0F && !source.isIn(DamageTypeTags.BYPASSES_COOLDOWN)) {
                 if (amount <= this.lastDamageTaken) {
                     cir.setReturnValue(false);
                 }
@@ -221,34 +228,38 @@ public abstract class LivingEntityMixin extends Entity {
                 bl2 = false;
             } else {
                 this.lastDamageTaken = amount;
-                ((LivingEntity)(Object)this).timeUntilRegen = 20;
+                ((LivingEntity)(Object)(this)).timeUntilRegen = 20;
                 this.applyDamage(source, amount);
-                ((LivingEntity)(Object)this).maxHurtTime = 10;
-                ((LivingEntity)(Object)this).hurtTime = ((LivingEntity)(Object)this).maxHurtTime;
+                ((LivingEntity)(Object)(this)).maxHurtTime = 10;
+                ((LivingEntity)(Object)(this)).hurtTime = ((LivingEntity)(Object)(this)).maxHurtTime;
             }
 
-            if (source.isFallingBlock() && !((LivingEntity)(Object)this).getEquippedStack(EquipmentSlot.HEAD).isEmpty()) {
-                ((LivingEntity)(Object)this).damageHelmet(source, amount);
+            if (source.isIn(DamageTypeTags.DAMAGES_HELMET) && !((LivingEntity)(Object)(this)).getEquippedStack(EquipmentSlot.HEAD).isEmpty()) {
+                ((LivingEntity)(Object)(this)).damageHelmet(source, amount);
                 amount *= 0.75F;
             }
 
-            ((LivingEntity)(Object)this).knockbackVelocity = 0.0F;
             Entity entity2 = source.getAttacker();
             if (entity2 != null) {
-                if (entity2 instanceof LivingEntity && !source.isNeutral()) {
-                    ((LivingEntity)(Object)this).setAttacker((LivingEntity)entity2);
+                if (entity2 instanceof LivingEntity) {
+                    LivingEntity livingEntity2 = (LivingEntity)entity2;
+                    if (!source.isIn(DamageTypeTags.NO_ANGER)) {
+                        ((LivingEntity)(Object)(this)).setAttacker(livingEntity2);
+                    }
                 }
 
                 if (entity2 instanceof PlayerEntity) {
+                    PlayerEntity playerEntity = (PlayerEntity)entity2;
                     this.playerHitTimer = 100;
-                    this.attackingPlayer = (PlayerEntity)entity2;
+                    this.attackingPlayer = playerEntity;
                 } else if (entity2 instanceof WolfEntity) {
                     WolfEntity wolfEntity = (WolfEntity)entity2;
                     if (wolfEntity.isTamed()) {
                         this.playerHitTimer = 100;
-                        LivingEntity livingEntity = wolfEntity.getOwner();
-                        if (livingEntity != null && livingEntity.getType() == EntityType.PLAYER) {
-                            this.attackingPlayer = (PlayerEntity)livingEntity;
+                        LivingEntity var11 = wolfEntity.getOwner();
+                        if (var11 instanceof PlayerEntity) {
+                            PlayerEntity playerEntity2 = (PlayerEntity)var11;
+                            this.attackingPlayer = playerEntity2;
                         } else {
                             this.attackingPlayer = null;
                         }
@@ -258,53 +269,38 @@ public abstract class LivingEntityMixin extends Entity {
 
             if (bl2) {
                 if (bl) {
-                    ((LivingEntity)(Object)this).world.sendEntityStatus(((LivingEntity)(Object)this), (byte)29);
-                } else if (source instanceof EntityDamageSource && ((EntityDamageSource)source).isThorns()) {
-                    ((LivingEntity)(Object)this).world.sendEntityStatus(((LivingEntity)(Object)this), (byte)33);
+                    ((LivingEntity)(Object)(this)).getWorld().sendEntityStatus(((LivingEntity)(Object)(this)), (byte)29);
                 } else {
-                    byte b;
-                    if (source == DamageSource.DROWN) {
-                        b = 36;
-                    } else if (source.isIn(DamageTypeTags.IS_FIRE)) {
-                        b = 37;
-                    } else if (source.isOf(DamageTypes.SWEET_BERRY_BUSH)) {
-                        b = 44;
-                    } else if (source.isIn(DamageTypeTags.IS_FREEZING)) {
-                        b = 57;
-                    } else {
-                        b = 2;
-                    }
-
-                    ((LivingEntity)(Object)this).world.sendEntityStatus(((LivingEntity)(Object)this), b);
+                    ((LivingEntity)(Object)(this)).getWorld().sendEntityDamage(((LivingEntity)(Object)(this)), source);
                 }
 
-                if (source != DamageSource.DROWN && (!bl || amount > 0.0F)) {
-                    ((EntityInvoker)(LivingEntity)(Object)this).invokeScheduleVelocityUpdate();
+                if (!source.isIn(DamageTypeTags.NO_IMPACT) && (!bl || amount > 0.0F)) {
+                    this.scheduleVelocityUpdate();
                 }
 
-                if (entity2 != null) {
-                    double d = entity2.getX() - this.getX();
+                if (entity2 != null && !source.isIn(DamageTypeTags.IS_EXPLOSION)) {
+                    double d = entity2.getX() - ((LivingEntity)(Object)(this)).getX();
 
                     double e;
-                    for(e = entity2.getZ() - ((LivingEntity)(Object)this).getZ(); d * d + e * e < 1.0E-4; e = (Math.random() - Math.random()) * 0.01) {
+                    for(e = entity2.getZ() - ((LivingEntity)(Object)(this)).getZ(); d * d + e * e < 1.0E-4; e = (Math.random() - Math.random()) * 0.01) {
                         d = (Math.random() - Math.random()) * 0.01;
                     }
 
-                    ((LivingEntity)(Object)this).knockbackVelocity = (float)(MathHelper.atan2(e, d) * 57.2957763671875 - (double)((LivingEntity)(Object)this).getYaw());
-                    ((LivingEntity)(Object)this).takeKnockback(0.4000000059604645, d, e);
-                } else {
-                    ((LivingEntity)(Object)this).knockbackVelocity = (float)((int)(Math.random() * 2.0) * 180);
+                    ((LivingEntity)(Object)(this)).takeKnockback(0.4000000059604645, d, e);
+                    if (!bl) {
+                        ((LivingEntity)(Object)(this)).tiltScreen(d, e);
+                    }
                 }
             }
 
-            if (((LivingEntity)(Object)this).isDead()) {
+            if (((LivingEntity)(Object)(this)).isDead()) {
                 if (!this.tryUseTotem(source)) {
                     SoundEvent soundEvent = this.getDeathSound();
                     if (bl2 && soundEvent != null) {
-                        ((LivingEntity)(Object)this).playSound(soundEvent, this.getSoundVolume(), ((LivingEntity)(Object)this).getSoundPitch());
+                        ((LivingEntity)(Object)(this)).playSound(soundEvent, this.getSoundVolume(), ((LivingEntity)(Object)(this)).getSoundPitch());
                     }
 
-                    ((LivingEntity)(Object)this).onDeath(source);
+                    ((LivingEntity)(Object)(this)).onDeath(source);
                 }
             } else if (bl2) {
                 this.playHurtSound(source);
@@ -313,18 +309,18 @@ public abstract class LivingEntityMixin extends Entity {
             boolean bl3 = !bl || amount > 0.0F;
             if (bl3) {
                 this.lastDamageSource = source;
-                this.lastDamageTime = ((LivingEntity)(Object)this).world.getTime();
+                this.lastDamageTime = ((LivingEntity)(Object)(this)).getWorld().getTime();
             }
 
-            if (((LivingEntity)(Object)this) instanceof ServerPlayerEntity) {
-                Criteria.ENTITY_HURT_PLAYER.trigger((ServerPlayerEntity)((LivingEntity)(Object)this), source, f, amount, bl);
+            if (((LivingEntity)(Object)(this)) instanceof ServerPlayerEntity) {
+                Criteria.ENTITY_HURT_PLAYER.trigger((ServerPlayerEntity)((LivingEntity)(Object)(this)), source, f, amount, bl);
                 if (g > 0.0F && g < 3.4028235E37F) {
-                    ((ServerPlayerEntity)((LivingEntity)(Object)this)).increaseStat(Stats.DAMAGE_BLOCKED_BY_SHIELD, Math.round(g * 10.0F));
+                    ((ServerPlayerEntity)((LivingEntity)(Object)(this))).increaseStat(Stats.DAMAGE_BLOCKED_BY_SHIELD, Math.round(g * 10.0F));
                 }
             }
 
             if (entity2 instanceof ServerPlayerEntity) {
-                Criteria.PLAYER_HURT_ENTITY.trigger((ServerPlayerEntity)entity2, ((LivingEntity)(Object)this), source, f, amount, bl);
+                Criteria.PLAYER_HURT_ENTITY.trigger((ServerPlayerEntity)entity2, ((LivingEntity)(Object)(this)), source, f, amount, bl);
             }
 
             cir.setReturnValue(bl3);
@@ -348,5 +344,5 @@ public abstract class LivingEntityMixin extends Entity {
         else if (x % 2 == 0 && x != 0) return x;
         else if (x==0) return 2;
         else return x+1;
-    }*/
+    }
 }

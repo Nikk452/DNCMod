@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.PressableTextWidget;
@@ -89,7 +90,7 @@ public class SpellCreationScreen extends Screen {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext matrices, int mouseX, int mouseY, float delta) {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         //texture drawing
@@ -105,20 +106,18 @@ public class SpellCreationScreen extends Screen {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShaderColor(this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f);
-            RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
-            drawTexture(matrices, x, Math.max((int) this.anime, y), 0, 0, backgroundWidth, backgroundHeight, 412, 256);
+            matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"), x, Math.max((int) this.anime, y), 0, 0, backgroundWidth, backgroundHeight, 412, 256);
         }else{
             if(this.animate) this.animate = false;
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
             renderBackground(matrices);
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
-            RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
-            drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
+            matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"), x, y, 0, 0, backgroundWidth, backgroundHeight,412,256);
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            MatrixStack textRendererMatrixStack = new MatrixStack();
+            DrawContext textRendererMatrixStack = new DrawContext(MinecraftClient.getInstance(), matrices.getVertexConsumers());
             int line = backgroundHeight/30;
             int collum = backgroundWidth/30;
             Text[] texts = {
@@ -136,7 +135,7 @@ public class SpellCreationScreen extends Screen {
             };
             int[] locsX = {(width-textRenderer.getWidth(texts[0]))/2,(width-textRenderer.getWidth(texts[1]))/2,x+collum*4,x+collum*25/2,x+collum*43/2,x+collum*4,x+collum*26/2,x+collum*20,x+collum*4,x+collum*12};
             int[] locsY = {y+20+line*2/3, y+10+line*3, y+20+line*3+line, y+20+line*3+line, y+20+line*3+line, y+20+line*7+line, y+20+line*7+line, y+20+line*7+line, y+20+line*11+line, y+20+line*11+line};
-            for(int i=0;i<texts.length;i++) textRenderer.draw(textRendererMatrixStack, texts[i], locsX[i], locsY[i], 	15859709);
+            for(int i=0;i<texts.length;i++) textRendererMatrixStack.drawText(textRenderer, texts[i], locsX[i], locsY[i], 	15859709, false);
             super.render(matrices, mouseX, mouseY, delta);
         }
     }

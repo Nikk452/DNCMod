@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -97,7 +98,7 @@ public class CharCreationScreen1 extends Screen {
 
     }
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(DrawContext matrices, int mouseX, int mouseY, float delta) {
         if(this.waiting){
             this.allowed_name = ((IEntityDataSaver)client.player).getPersistentData().getString("allowed_name");
             if(this.allowed_name.length()>1){
@@ -122,8 +123,7 @@ public class CharCreationScreen1 extends Screen {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShaderColor(this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f, this.shade_color - 0.1f);
-            RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
-            drawTexture(matrices, x, Math.max((int) this.anime, y), 0, 0, backgroundWidth, backgroundHeight, 412, 256);
+            matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"), x, Math.max((int) this.anime, y), 0, 0, backgroundWidth, backgroundHeight, 412, 256);
         }else{
             if(this.animate) this.animate = false;
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
@@ -132,21 +132,20 @@ public class CharCreationScreen1 extends Screen {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
-            RenderSystem.setShaderTexture(0, new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"));
-            drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight, 412, 256);
+            matrices.drawTexture(new Identifier(DNCMod.MOD_ID, "textures/gui/uifrag.png"), x, y, 0, 0, backgroundWidth, backgroundHeight, 412, 256);
             this.textField1.render(matrices, mouseX, mouseY, delta);
             this.textField2.render(matrices, mouseX, mouseY, delta);
             this.createCharButton.render(matrices, mouseX, mouseY, delta);
             TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-            MatrixStack textRendererMatrixStack = new MatrixStack();
-            textRendererMatrixStack.scale(1.0F, 1F, 1.0F);
+            DrawContext textRendererMatrixStack = new DrawContext(MinecraftClient.getInstance(), matrices.getVertexConsumers());
+            textRendererMatrixStack.getMatrices().scale(1.0F, 1.0F, 1.0F);
             int line = backgroundHeight / 30;
             int collum = backgroundWidth / 30;
-            textRenderer.draw(textRendererMatrixStack, "Character Creation", x + collum * 12, y + 20 + line * 2 / 3, 15859709);
-            textRenderer.draw(textRendererMatrixStack, Text.literal("Choose a character name for this server,").styled(style -> style.withBold(true).withItalic(true)), x + collum * 4, y + 20 + line * 3 + line, 15859709);
-            textRenderer.draw(textRendererMatrixStack, Text.literal("you will be seen as this name while on the server.").styled(style -> style.withItalic(true).withBold(true)), x + collum * 4, y + 20 + line * 5 + line, 15859709);
-            textRenderer.draw(textRendererMatrixStack, "Pick a first name: ", x + collum * 4, y + 20 + line * 8 + line, 15859709);
-            textRenderer.draw(textRendererMatrixStack, "Pick a last name: ", x + collum * 4, y + 20 + line * 11 + line, 15859709);
+            textRendererMatrixStack.drawText(textRenderer, "Character Creation", x + collum * 12, y + 20 + line * 2 / 3, 15859709, false);
+            textRendererMatrixStack.drawText(textRenderer, Text.literal("Choose a character name for this server,").styled(style -> style.withBold(true).withItalic(true)), x + collum * 4, y + 20 + line * 3 + line, 15859709, false);
+            textRendererMatrixStack.drawText(textRenderer, Text.literal("you will be seen as this name while on the server.").styled(style -> style.withItalic(true).withBold(true)), x + collum * 4, y + 20 + line * 5 + line, 15859709, false);
+            textRendererMatrixStack.drawText(textRenderer, "Pick a first name: ", x + collum * 4, y + 20 + line * 8 + line, 15859709, false);
+            textRendererMatrixStack.drawText(textRenderer, "Pick a last name: ", x + collum * 4, y + 20 + line * 11 + line, 15859709, false);
             if (this.E1 || this.E2 || this.E3 || this.E4) {
                 RenderSystem.setShaderColor(0.90f, 0.90f, 0.90f, 0.90f);
                 RenderSystem.enableBlend();
@@ -156,19 +155,19 @@ public class CharCreationScreen1 extends Screen {
                 this.textField2.setFocusUnlocked(false);
                 this.errorwindow.render(matrices, mouseX, mouseY, delta);
                 this.errorwindow.active = true;
-                textRenderer.draw(textRendererMatrixStack, Text.literal("ERROR!").formatted(Formatting.BOLD), x + collum * 14 + 5, y + 28 + line * 8, 16121850);
+                textRendererMatrixStack.drawText(textRenderer, Text.literal("ERROR!").formatted(Formatting.BOLD), x + collum * 14 + 5, y + 28 + line * 8, 16121850, false);
                 if (this.E1) {
-                    textRenderer.draw(textRendererMatrixStack, "THIS NAME IS", x + collum * 13 + 4, y + 25 + line * 12, 16121850);
-                    textRenderer.draw(textRendererMatrixStack, "ALREADY TAKEN!", x + collum * 13, y + 20 + line * 14, 16121850);
+                    textRendererMatrixStack.drawText(textRenderer, "THIS NAME IS", x + collum * 13 + 4, y + 25 + line * 12, 16121850, false);
+                    textRendererMatrixStack.drawText(textRenderer, "ALREADY TAKEN!", x + collum * 13, y + 20 + line * 14, 16121850, false);
                 } else if (this.E2) {
-                    textRenderer.draw(textRendererMatrixStack, "ALPHABETIC", x + collum * 13 + 4, y + 25 + line * 12, 16121850);
-                    textRenderer.draw(textRendererMatrixStack, "LETTERS ONLY!", x + collum * 13, y + 20 + line * 14, 16121850);
+                    textRendererMatrixStack.drawText(textRenderer, "ALPHABETIC", x + collum * 13 + 4, y + 25 + line * 12, 16121850, false);
+                    textRendererMatrixStack.drawText(textRenderer, "LETTERS ONLY!", x + collum * 13, y + 20 + line * 14, 16121850, false);
                 } else if (this.E3) {
-                    textRenderer.draw(textRendererMatrixStack, "ONE OF THE", x + collum * 13 + 7, y + 25 + line * 12, 16121850);
-                    textRenderer.draw(textRendererMatrixStack, "FIELDS ARE EMPTY!", x + collum * 13 - 7, y + 20 + line * 14, 16121850);
+                    textRendererMatrixStack.drawText(textRenderer, "ONE OF THE", x + collum * 13 + 7, y + 25 + line * 12, 16121850, false);
+                    textRendererMatrixStack.drawText(textRenderer, "FIELDS ARE EMPTY!", x + collum * 13 - 7, y + 20 + line * 14, 16121850, false);
                 }else if (this.E4) {
-                    textRenderer.draw(textRendererMatrixStack, "THE NAME IS", x + collum * 13 + 4, y + 25 + line * 12, 16121850);
-                    textRenderer.draw(textRendererMatrixStack, "WAY TOO LONG!", x + collum * 13, y + 20 + line * 14, 16121850);
+                    textRendererMatrixStack.drawText(textRenderer, "THE NAME IS", x + collum * 13 + 4, y + 25 + line * 12, 16121850, false);
+                    textRendererMatrixStack.drawText(textRenderer, "WAY TOO LONG!", x + collum * 13, y + 20 + line * 14, 16121850, false);
                 }
             }
         }

@@ -51,6 +51,7 @@ public class KillEntityHandler implements ServerEntityCombatEvents.AfterKilledOt
                             if(nbt.getInt("experience")>=nbt.getInt("max_experience")){
                                 int[] dices = nbt.getIntArray("hit_dices");
                                 int total_level = nbt.getInt("total_level");
+                                total_level++;
                                 dices[total_level-1]=ExperienceData.RollHPDice((entity1 instanceof HostileEntity)?0:1,total_level);
                                 nbt.putIntArray("hit_dices",dices);
                                 nbt.putInt("hit_dice",dices[total_level-1]);

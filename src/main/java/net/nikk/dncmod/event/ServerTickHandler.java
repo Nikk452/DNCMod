@@ -23,7 +23,7 @@ public class ServerTickHandler implements ServerTickEvents.StartTick{
         }
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             if(server.getTicks()%7200==0){
-                ExperienceData.addExperience(player.getWorld(),player, 1);
+                ExperienceData.addExperience(player.getServerWorld(),player, 1);
             }
             if(server.getTicks()%20==0) {
                 float weightP = (float)WeightManager.getPlayerInventoryWeight(player)/WeightManager.getMaxInventoryWeight(player);
